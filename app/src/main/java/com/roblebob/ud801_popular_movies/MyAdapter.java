@@ -10,6 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MyAdapter extends RecyclerView.Adapter< MyAdapter.MyViewHolder> {
 
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
@@ -19,8 +26,7 @@ public class MyAdapter extends RecyclerView.Adapter< MyAdapter.MyViewHolder> {
             imageView = itemView.findViewById(R.id.image_view);
         }
     }
-
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     @NonNull
     @Override
     public MyAdapter.MyViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType) {
