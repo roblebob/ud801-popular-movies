@@ -21,11 +21,13 @@ public class NetworkUtils {
 
     // TODO: remove api_key before turning from private to public
     private static final String  API_KEY = "1fb7cc437ac29bc81a0cd83f89156d79";
+    public static final String[] ORDER_PATH_array = { "popular" , "top_rated"};
+
 
     public static URL buildUrl(String orderPath, int page) {
         URL url = null;
         final String BASE_URL = "https://api.themoviedb.org/3/movie";
-        final String[] ORDER_PATH_array = { "popular", "top_Rated"};
+
         final List< String> ORDER_PATH_list = new ArrayList< String>( Arrays.asList( ORDER_PATH_array));
         final String ORDER_PATH_default = "popular";
         final String LANGUAGE_default = "en-US";

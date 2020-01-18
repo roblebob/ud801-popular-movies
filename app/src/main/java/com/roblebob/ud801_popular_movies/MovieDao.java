@@ -20,14 +20,14 @@ public interface MovieDao {
     @Query("SELECT * FROM Movie ORDER BY vote_count")
     LiveData<List< Movie>> loadTopRatedMovies();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMovie(Movie movie);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateMovie(Movie movie);
 
     @Delete
-    void deleteMovoe(Movie movie);
+    void deleteMovie(Movie movie);
 
 
 }
