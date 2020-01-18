@@ -1,0 +1,5 @@
+
+    public List< String> translate( List< Integer> integerList) {
+        List< String> stringList = new ArrayList< String>();
+        integerList.forEach((int index) -> { stringList.add( genreDao.loadGenreLabel(index))});
+    }
