@@ -1,5 +1,6 @@
 package com.roblebob.ud801_popular_movies;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -13,11 +14,9 @@ import java.util.List;
 @Entity(tableName = "Movie")
 public class Movie {
 
-
-
-    @PrimaryKey(autoGenerate = false)       private long id;
+    @PrimaryKey(autoGenerate = false)       private int id;
     @ColumnInfo(name = "popularity")        private double popularity;
-    @ColumnInfo(name = "vote_count")        private long voteCount;
+    @ColumnInfo(name = "vote_count")        private int voteCount;
     @ColumnInfo(name = "video")             private boolean video;
     @ColumnInfo(name = "poster_path")       private String posterPath;
     @ColumnInfo(name = "adult")             private boolean adlult;
@@ -30,7 +29,28 @@ public class Movie {
     @ColumnInfo(name = "overview")          private String overview;
     @ColumnInfo(name = "release_date")      private String releaseDate;
 
-    public Movie(long id, double popularity, long voteCount, boolean video, String posterPath,
+    @Ignore
+    public Movie() {}
+
+    @Ignore
+    public Movie( Movie movie)  {
+        this.id = movie.getId();
+        this.popularity = movie.getPopularity();
+        this.voteCount = movie.getVoteCount();
+        this.video = movie.isVideo();
+        this.posterPath = movie.getPosterPath();
+        this.adlult = movie.isAdlult();
+        this.backdropPath = movie.getBackdropPath();
+        this.originalLanguage = movie.getOriginalLanguage();
+        this.originalTitle = movie.getOriginalTitle();
+        this.genreIds = movie.getGenreIds();
+        this.title = movie.getTitle();
+        this.voteAverage = movie.getVoteAverage();
+        this.overview = movie.getOverview();
+        this.releaseDate = movie.getReleaseDate();
+    }
+
+    public Movie(int id, double popularity, int voteCount, boolean video, String posterPath,
                  boolean adlult, String backdropPath, String originalLanguage, String originalTitle,
                  String genreIds, String title, double voteAverage, String overview,
                  String releaseDate) {
@@ -50,9 +70,9 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    public long     getId()                 { return id; }
+    public int     getId()                 { return id; }
     public double   getPopularity()         { return popularity; }
-    public long     getVoteCount()          { return voteCount; }
+    public int     getVoteCount()          { return voteCount; }
     public boolean  isVideo()               { return video; }
     public String   getPosterPath()         { return posterPath; }
     public boolean  isAdlult()              { return adlult; }
@@ -65,9 +85,9 @@ public class Movie {
     public String   getOverview()           { return overview; }
     public String   getReleaseDate()        { return releaseDate; }
 
-    public void setId(long id)                                  { this.id = id; }
+    public void setId(int id)                                  { this.id = id; }
     public void setPopularity(double popularity)                { this.popularity = popularity; }
-    public void setVoteCount(long voteCount)                    { this.voteCount = voteCount; }
+    public void setVoteCount(int voteCount)                    { this.voteCount = voteCount; }
     public void setVideo(boolean video)                         { this.video = video; }
     public void setPosterPath(String posterPath)                { this.posterPath = posterPath; }
     public void setAdlult(boolean adlult)                       { this.adlult = adlult; }
@@ -91,5 +111,28 @@ public class Movie {
         List< Integer> integerList = new ArrayList< Integer>();
         stringList.forEach((String string) -> { integerList .add( Integer .valueOf( string)); });
         return integerList;
+    }
+
+    @Ignore
+    @NonNull
+    @Override
+    public String toString() {
+        return  "\n" +
+                "Movie( " +
+                "id:"               +   this.id             + ", " +
+                "popularity:"       +   this.popularity     + ", " +
+                "vote_count:"       +   this.voteCount      + ", " +
+                "video:"            +   this.video          + ", " +
+                "poster_path:"      +   this.posterPath     + ", " +
+                "adlult:"           +   this.adlult         + ", " +
+                "backdrop_path:"    +   this.backdropPath   + ", " +
+                "original_language:"+   this.originalLanguage +  ", " +
+                "original_title:"   +   this.originalTitle  + ", " +
+                "genre_ids:"        +   this.genreIds       + ", " +
+                "title:"            +   this.title          + ", " +
+                "vote_average:"     +   this.voteAverage    + ", " +
+                "overview:"         +   this.overview       + ", " +
+                "release_date"      +   this.releaseDate    +
+                ")";
     }
 }

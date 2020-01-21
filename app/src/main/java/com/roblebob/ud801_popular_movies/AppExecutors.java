@@ -33,7 +33,7 @@ public class AppExecutors {
         if (sInstance == null) {
             synchronized (LOCK) {
                 sInstance = new AppExecutors(Executors.newSingleThreadExecutor(),
-                        Executors.newFixedThreadPool(4),
+                        Executors.newFixedThreadPool(3),
                         new MainThreadExecutor());
             }
         }

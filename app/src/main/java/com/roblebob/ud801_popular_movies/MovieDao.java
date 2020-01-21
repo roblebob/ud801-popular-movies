@@ -14,13 +14,16 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM Movie ORDER BY popularity")
+    @Query("SELECT * FROM Movie ORDER BY popularity DESC")
     LiveData<List< Movie>> loadPopularMovies();
 
-    @Query("SELECT * FROM Movie ORDER BY vote_count")
+    @Query("SELECT * FROM Movie ORDER BY vote_average DESC")
     LiveData<List< Movie>> loadTopRatedMovies();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Query("SELECT * FROM Movie WHERE id = :id")
+    LiveData< Movie> loadMovieById(int id);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertMovie(Movie movie);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
@@ -28,6 +31,4 @@ public interface MovieDao {
 
     @Delete
     void deleteMovie(Movie movie);
-
-
 }

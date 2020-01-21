@@ -4,7 +4,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import android.content.Context;
-import androidx.room.TypeConverters;
 import android.util.Log;
 
 
@@ -12,7 +11,7 @@ import android.util.Log;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final String DATABASE_NAME = "MovieDB6";
+    private static final String DATABASE_NAME = "MovieDB31";
 
     /* singleton-pattern */
     private static AppDatabase sInstance;
@@ -20,7 +19,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getInstance( Context context) {
         if ( sInstance == null) {
             synchronized (LOCK) {
-                Log.d(LOG_TAG, "Creating new database instance");
+                Log.e(LOG_TAG, "Creating new database instance");
                 sInstance = Room
                         .databaseBuilder(
                                 context.getApplicationContext(),
@@ -29,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         .build();
             }
         }
-        Log.d(LOG_TAG, "Accessing the existing database instance");
+        Log.e(LOG_TAG, "Accessing the existing database instance");
         return sInstance;
     }
 
