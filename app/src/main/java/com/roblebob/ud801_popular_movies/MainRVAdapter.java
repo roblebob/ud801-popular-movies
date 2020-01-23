@@ -59,42 +59,31 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
     public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
         _POS = position;
         final String path = NetworkUtils.buildUrlForMoviePosterImage( mMovieList.get( position) .getPosterPath() , "w185").toString();
-        Log.e(TAG, "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + path);
+        Log.e(TAG + "::onBindViewHolder() ", "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + path);
         Picasso .get().load( path).into( holder.imageView);
-
-
-
     }
 
-    @Override
-    public int getItemCount() {
-        int count = 0;
-        if (mMovieList != null)
-            count = mMovieList .size();
-        return count;
-    }
-
-
+    @Override public int getItemCount() { return  (mMovieList != null)  ?  mMovieList .size()  :  0; }
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public interface ItemClickListener { void onItemClickListener(int id); }
+    public interface ItemClickListener { void onItemClickListener( int id); }
 
-    public class MainRVViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class MainRVViewHolder extends RecyclerView .ViewHolder implements View .OnClickListener {
 
         ImageView imageView;
 
-        public MainRVViewHolder(@NonNull View itemView) {
+        public MainRVViewHolder( @NonNull View itemView) {
             super( itemView);
-            imageView = itemView.findViewById(R.id.main_recycler_view_single_item_IMAGE_VIEW);
-            itemView.setOnClickListener(this);
+            imageView = itemView .findViewById( R.id.main_recycler_view_single_item_IMAGE_VIEW);
+            itemView .setOnClickListener( this);
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick( View v) {
             int pos = getAdapterPosition();
-            int id = mMovieList .get(pos). getId();
-            Log.e(this.getClass().getSimpleName(), "POS:" + pos + "  " + "ID:" + id);
-            itemClickListener.onItemClickListener(id);
+            int id = mMovieList .get( pos). getId();
+            Log .e( this .getClass() .getSimpleName(), "POS:" + pos + "  " + "ID:" + id);
+            itemClickListener .onItemClickListener( id);
         }
     }
 }

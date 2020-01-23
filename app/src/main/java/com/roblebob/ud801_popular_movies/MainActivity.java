@@ -5,24 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.GridLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -57,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
             }
         }) ;
         ////////////////////////////////////////////////////////////////////////////////////////////
-        mRecyclerView = (RecyclerView) this.findViewById( R.id.recycler_view);
+        mRecyclerView = (RecyclerView) this.findViewById( R.id.activity_main_RECYCLER_VIEW);
         mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
         mRecyclerView .setLayoutManager( mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this, this);
