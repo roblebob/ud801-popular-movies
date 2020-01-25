@@ -1,7 +1,7 @@
 package com.roblebob.ud801_popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.solver.widgets.ConstraintWidgetGroup;
+import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -65,8 +64,7 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                 public void onChanged( Movie movie) {
 
                     detailsViewModel .getMovieLive() .removeObserver( this);
-                    Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database update from LiveData");
-                    ;
+                    Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database update from LiveData  " + movie.toString());
                     populateUI( new Movie( movie));
                 }
             });
@@ -76,6 +74,13 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private void  populateUI( Movie movie) {
+
+        Log .e(TAG + "::populateUI() \t", movie.toString() );
+
+        mDetailsRVAdapter .setTrailerNames(  movie .getTrailerNames());
+        mDetailsRVAdapter .setTrailerUrls(   movie .getTrailerUrls());
+        mDetailsRVAdapter .setReviewAuthors( movie .getReviewAuthors());
+        mDetailsRVAdapter .setReviewUrls(    movie .getReviewUrls());
 
 
         if (movie.getTitle() != null)                   ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview))    .setText( movie .getTitle());
@@ -95,9 +100,9 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         if (movie.getVoteAverage() > 0)                 ((TextView) findViewById( R.id.rating))                                     .setText( String.valueOf(movie.getVoteAverage()));
         if (movie.getTagline() != null)                 ((TextView) findViewById( R.id.activity_details_TAGLINE))                   .setText( movie .getTagline());
         if (movie.getOverview() != null)                ((TextView) findViewById( R.id.activity_details_OVERVIEW))                  .setText( movie .getOverview());
-        if (movie.getGenres() != null)                  ((TextView) findViewById( R.id.activity_details_GENRES))                    .setText( movie .getGenres());
-        if (Integer.valueOf( movie.getBudget()) > 0)    ((TextView) findViewById( R.id.activity_Details_BUDGET))                    .setText( movie .getBudget());
-        if (Integer.valueOf( movie.getRevenue()) > 0)   ((TextView) findViewById( R.id.activity_Details_REVENUE))                   .setText( movie .getRevenue());
+        if (movie.getGenres() != null)                  ((TextView) findViewById( R.id.activity_details_GENRES))                    .setText( movie .getGenres() .substring(1, movie .getGenres().length()-1) .replace(",", "\n"));
+        if (movie .getBudget() != null) if (Integer.parseInt( movie.getBudget()) > 0)    ((TextView) findViewById( R.id.activity_Details_BUDGET))                    .setText( movie .getBudget());
+        if (movie .getRevenue() != null) if (Integer.parseInt( movie.getRevenue()) > 0)   ((TextView) findViewById( R.id.activity_Details_REVENUE))                   .setText( movie .getRevenue());
 
 
 

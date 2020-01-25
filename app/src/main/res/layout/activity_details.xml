@@ -148,7 +148,7 @@
 
             <TextView
                 android:id="@+id/activity_details_OVERVIEW"
-                android:layout_width="330dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="41dp"
                 android:lineSpacingMultiplier="1.3"
@@ -274,15 +274,6 @@
                 />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activity_details_RECYCLER_VIEW"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/divider_pre_rv" />
-
             <View android:id="@+id/divider_post_rv"
                 android:layout_width="match_parent"
                 android:layout_height="16dp"
@@ -294,6 +285,17 @@
                 app:layout_constraintStart_toStartOf="parent"
 
                 />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_details_RECYCLER_VIEW"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                app:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
+                app:layout_constraintTop_toBottomOf="@+id/divider_pre_rv" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

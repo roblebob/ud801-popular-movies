@@ -8,11 +8,6 @@ import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 @Entity(tableName = "Movie")
 public class Movie {
 
@@ -33,7 +28,7 @@ public class Movie {
     @ColumnInfo(name = "genres")            private String genres;
     @ColumnInfo(name = "budget")            private String budget;
     @ColumnInfo(name = "revenue")           private String revenue;
-    @ColumnInfo(name = "trailer_titles")    private String trailerTitles;
+    @ColumnInfo(name = "trailer_titles")    private String trailerNames;
     @ColumnInfo(name = "trailer_urls")      private String trailerUrls;
     @ColumnInfo(name = "review_authors")    private String reviewAuthors;
     @ColumnInfo(name = "review_urls")       private String reviewUrls;
@@ -57,7 +52,7 @@ public class Movie {
                  String genres,
                  String budget,
                  String revenue,
-                 String trailerTitles,
+                 String trailerNames,
                  String trailerUrls,
                  String reviewAuthors,
                  String reviewUrls
@@ -79,7 +74,7 @@ public class Movie {
         this.genres = genres;
         this.budget = budget;
         this.revenue = revenue;
-        this.trailerTitles = trailerTitles;
+        this.trailerNames = trailerNames;
         this.trailerUrls = trailerUrls;
         this.reviewAuthors = reviewAuthors;
         this.reviewUrls = reviewUrls;
@@ -105,7 +100,7 @@ public class Movie {
         this.genres = movie.genres;
         this.budget = movie.budget;
         this.revenue = movie.revenue;
-        this.trailerTitles = movie.trailerTitles;
+        this.trailerNames = movie.trailerNames;
         this.trailerUrls = movie.trailerUrls;
         this.reviewAuthors = movie.reviewAuthors;
         this.reviewUrls = movie.reviewUrls;
@@ -131,7 +126,7 @@ public class Movie {
     public String           getGenres()             { return this.genres; }
     public String           getBudget()             { return this.budget; }
     public String           getRevenue()            { return this.revenue; }
-    public String           getTrailerTitles()      { return this.trailerTitles; }
+    public String           getTrailerNames()      { return this.trailerNames; }
     public String           getTrailerUrls()        { return this.trailerUrls; }
     public String           getReviewAuthors()      { return this.reviewAuthors; }
     public String           getReviewUrls()         { return this.reviewUrls; }
@@ -155,7 +150,7 @@ public class Movie {
     public void setGenres(String genres)                        { this.genres = genres; }
     public void setBudget(String budget)                        { this.budget = budget; }
     public void setRevenue(String revenue)                      { this.revenue = revenue; }
-    public void setTrailerTitles(String trailerTitles)          { this.trailerTitles = trailerTitles; }
+    public void setTrailerNames(String trailerNames)            { this.trailerNames = trailerNames; }
     public void setTrailerUrls(String trailerUrls)              { this.trailerUrls = trailerUrls; }
     public void setReviewAuthors( String reviewAuthors)         { this.reviewAuthors = reviewAuthors; }
     public void setReviewUrls( String reviewUrls)               { this.reviewUrls = reviewUrls; }
@@ -186,7 +181,9 @@ public class Movie {
                 "[overview]:"     +   this.overview           + ",  " +
                 "[genres]:"       +   this.genres             + ",  " +
                 "[budget]:"       +   this.budget             + ",  " +
-                "[revenue]:"      +   this.revenue            +
+                "[revenue]:"      +   this.revenue            + ",  " +
+                "[trailerNames]:" +   this.getTrailerNames() + ",  " +
+                "[trailerNames]:" +   this.getTrailerUrls()   + ",  " +
                 ") \t \t ";
     }
 }
