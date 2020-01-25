@@ -18,17 +18,28 @@
             tools:context=".DetailsActivity"
             >
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_center"
+            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintGuide_percent="0.5"
                 app:layout_constraintStart_toStartOf="parent" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_left"
+            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_percent="0.25"
+                app:layout_constraintStart_toStartOf="parent" />
+            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintGuide_percent="0.75"
+                app:layout_constraintStart_toStartOf="parent" />
+            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -42,28 +53,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.9"
+                app:layout_constraintGuide_percent="0.93"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <FrameLayout
-                android:id="@+id/framelayout_heading_inner"
-                android:layout_width="393dp"
-                android:layout_height="106dp"
-                android:background="#00008000"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView android:id="@+id/imageView"
+            <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="240dp"
                 android:adjustViewBounds="true"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_center"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/framelayout_heading_inner"
+                app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/test" />
 
             <TextView android:id="@+id/release_date"
@@ -76,11 +78,11 @@
                 app:layout_constraintStart_toStartOf="@+id/guideline_center"
                 app:layout_constraintTop_toTopOf="@+id/imageView" />
 
-            <TextView android:id="@+id/duration"
+            <TextView android:id="@+id/activity_details_RUNTIME"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="38dp"
-                android:text="120min"
+                android:text="120"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 app:layout_constraintBottom_toTopOf="@+id/release_date"
@@ -88,14 +90,26 @@
                 app:layout_constraintTop_toBottomOf="@+id/release_date"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <TextView
+                android:id="@+id/activity_details_RUNTIME_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="min"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:layout_marginStart="2dp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME"
+                app:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME" />
+
+
             <TextView android:id="@+id/rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8.4"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/button"
-                app:layout_constraintStart_toStartOf="@+id/duration"
-                app:layout_constraintTop_toBottomOf="@+id/duration"
+                app:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME"
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME"
                 tools:layout_editor_absoluteY="282dp" />
 
             <TextView android:id="@+id/rating_max"
@@ -116,8 +130,9 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="@+id/rating" />
 
-            <TextView android:id="@+id/activity_details_TAGLINE"
-                android:layout_width="330dp"
+            <TextView
+                android:id="@+id/activity_details_TAGLINE"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="41dp"
                 android:lineSpacingMultiplier="1.3"
@@ -126,11 +141,13 @@
                 android:textAlignment="viewEnd"
                 android:textSize="20sp"
                 android:textStyle="italic"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                 app:layout_constraintRight_toLeftOf="@+id/guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/guideline_left"
+                app:layout_constraintStart_toStartOf="@+id/guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-            <TextView android:id="@+id/activity_details_OVERVIEW"
+            <TextView
+                android:id="@+id/activity_details_OVERVIEW"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="41dp"
@@ -138,54 +155,133 @@
                 android:singleLine="false"
                 android:text="The near future, a time when both hope and hardships drive humanity to look to the stars and beyond. While a mysterious phenomenon menaces to destroy life on planet Earth, astronaut Roy McBride undertakes a mission across the immensity of space and its many perils ."
                 android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                 app:layout_constraintRight_toLeftOf="@+id/guideline_right"
                 app:layout_constraintStart_toEndOf="@+id/guideline_left"
                 app:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE" />
 
 
-            <TextView android:id="@+id/genre_label"
+            <TextView
+                android:id="@+id/genre_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
                 android:lineSpacingMultiplier="1.3"
                 android:text="Genres: "
-                android:textSize="14sp"
-                app:layout_constraintStart_toEndOf="@+id/guideline_left"
-                app:layout_constraintBaseline_toBaselineOf="@+id/genre_value"
-                tools:layout_editor_absoluteY="864dp" />
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES"
+                app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
-            <TextView android:id="@+id/genre_value"
+            <TextView
+                android:id="@+id/activity_details_GENRES"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginTop="35dp"
+                android:lineSpacingMultiplier="1.3"
+                android:text="Science Fiction,\n Drama,\n Thriller,\n Adventure,\n Mystery"
+                android:textAlignment="viewEnd"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW" />
+
+
+            <TextView
+                android:id="@+id/budget_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:text="Budget: "
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET"
+                app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+
+            <TextView
+                android:id="@+id/activity_Details_BUDGET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="20dp"
                 android:lineSpacingMultiplier="1.3"
-                android:text="GenresValue"
+                android:text="87500000"
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/genre_label"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW" />
+                app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
+                app:layout_constraintLeft_toRightOf="@+id/budget_label"
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES" />
+
+            <TextView
+                android:id="@+id/budget_value_DollarSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:text="$"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET"
+                app:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
+
+
+            <TextView
+                android:id="@+id/revenue_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:text="Revenue: "
+                android:textSize="10sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE"
+                app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+
+            <TextView
+                android:id="@+id/activity_Details_REVENUE"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="20dp"
+                android:lineSpacingMultiplier="1.3"
+                android:text="127175922"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
+                app:layout_constraintLeft_toRightOf="@+id/revenue_label"
+                app:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET" />
+            <TextView
+                android:id="@+id/revenue_DollarSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingMultiplier="1.3"
+                android:text="$"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE"
+                app:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
+
+
+
+
+
+
 
             <View android:id="@+id/divider_pre_rv"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginBottom="45dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/genre_label"
+                app:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE"
                 app:layout_constraintBottom_toTopOf="@+id/activity_details_RECYCLER_VIEW"
                 />
 
-            <androidx.recyclerview.widget.RecyclerView android:id="@+id/activity_details_RECYCLER_VIEW"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_details_RECYCLER_VIEW"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                 app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/divider_pre_rv"
-                app:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/divider_pre_rv" />
 
             <View android:id="@+id/divider_post_rv"
                 android:layout_width="match_parent"
@@ -204,26 +300,97 @@
     </ScrollView>
 
 
-    <FrameLayout
-        android:id="@+id/framelayout_heading_outer"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activity_details_HEADING"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#008577">
 
-        <TextView
-            android:id="@+id/framelayout_heading_outer_textview"
+        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_left"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.07"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.93"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.2"
+            app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.87"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/activity_details_HEADING_TITLE_textview"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="start|center_vertical"
-            android:paddingStart="27dp"
-            android:paddingTop="27dp"
-            android:paddingBottom="27dp"
-            android:text="Chappidde"
-
+            android:text="Chappescasncajn lk mcsalnkc sacnnl"
             android:textSize="36sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
+            app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
+            app:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_GUIDELINE_top" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/activity_details_HEADING_ORG_TITLE"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chappidde"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/activity_details_HEADING_GUIDELINE_bottom"
+            app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
+            app:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_textview" />
+        <TextView android:id="@+id/activity_details_HEADING_ORG_TITLE_left_bracket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="("
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_HEADING_ORG_TITLE"
+            app:layout_constraintEnd_toStartOf="@+id/activity_details_HEADING_ORG_TITLE" />
+        <TextView android:id="@+id/activity_details_HEADING_ORG_TITLE_right_bracket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=")"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_HEADING_ORG_TITLE"
+            app:layout_constraintStart_toEndOf="@+id/activity_details_HEADING_ORG_TITLE" />
+        <TextView android:id="@+id/activity_details_HEADING_ORG_LANG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="en"
+            android:textSize="10sp"
+            app:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_ORG_TITLE"
+            app:layout_constraintStart_toEndOf="@+id/activity_details_HEADING_ORG_TITLE_right_bracket" />
+
+        <androidx.constraintlayout.widget.Group android:id="@+id/activity_details_HEADING_ORG_TITLE_group"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:constraint_referenced_ids="activity_details_HEADING_ORG_TITLE,activity_details_HEADING_ORG_TITLE_left_bracket,activity_details_HEADING_ORG_TITLE_right_bracket,activity_details_HEADING_ORG_LANG"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>

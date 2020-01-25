@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,124 +17,176 @@ import java.util.List;
 public class Movie {
 
     @PrimaryKey(autoGenerate = false)       private int id;
+    @ColumnInfo(name = "is_one_of_my_favorites") private boolean oneOfMyFavorites;
     @ColumnInfo(name = "popularity")        private double popularity;
-    @ColumnInfo(name = "vote_count")        private int voteCount;
-    @ColumnInfo(name = "video")             private boolean video;
-    @ColumnInfo(name = "poster_path")       private String posterPath;
-    @ColumnInfo(name = "adult")             private boolean adlult;
-    @ColumnInfo(name = "backdrop_path")     private String backdropPath;
-    @ColumnInfo(name = "original_language") private String originalLanguage;
-    @ColumnInfo(name = "original_title")    private String originalTitle;
-    @ColumnInfo(name = "genre_ids")         private String genreIds;
-    @ColumnInfo(name = "title")             private String title;
     @ColumnInfo(name = "vote_average")      private double voteAverage;
-    @ColumnInfo(name = "overview")          private String overview;
+    @ColumnInfo(name = "vote_count")        private int voteCount;
+    @ColumnInfo(name = "poster_url")        private String posterUrl;
+
+    @ColumnInfo(name = "title")             private String title;
+    @ColumnInfo(name = "original_title")    private String originalTitle;
+    @ColumnInfo(name = "original_language") private String originalLanguage;
     @ColumnInfo(name = "release_date")      private String releaseDate;
+    @ColumnInfo(name = "runtime")           private String runtime;
+    @ColumnInfo(name = "tagline")           private String tagline;
+    @ColumnInfo(name = "overview")          private String overview;
+    @ColumnInfo(name = "genres")            private String genres;
+    @ColumnInfo(name = "budget")            private String budget;
+    @ColumnInfo(name = "revenue")           private String revenue;
+    @ColumnInfo(name = "trailer_titles")    private String trailerTitles;
+    @ColumnInfo(name = "trailer_urls")      private String trailerUrls;
+    @ColumnInfo(name = "review_authors")    private String reviewAuthors;
+    @ColumnInfo(name = "review_urls")       private String reviewUrls;
 
-    @Ignore
-    public Movie() {}
 
-    @Ignore
-    public Movie( Movie movie)  {
-        this.id = movie.getId();
-        this.popularity = movie.getPopularity();
-        this.voteCount = movie.getVoteCount();
-        this.video = movie.isVideo();
-        this.posterPath = movie.getPosterPath();
-        this.adlult = movie.isAdlult();
-        this.backdropPath = movie.getBackdropPath();
-        this.originalLanguage = movie.getOriginalLanguage();
-        this.originalTitle = movie.getOriginalTitle();
-        this.genreIds = movie.getGenreIds();
-        this.title = movie.getTitle();
-        this.voteAverage = movie.getVoteAverage();
-        this.overview = movie.getOverview();
-        this.releaseDate = movie.getReleaseDate();
-    }
+    public Movie(int id,
+                 boolean oneOfMyFavorites,
+                 double popularity,
+                 double voteAverage,
+                 int    voteCount,
+                 String title,
+                 String posterUrl,
 
-    public Movie(int id, double popularity, int voteCount, boolean video, String posterPath,
-                 boolean adlult, String backdropPath, String originalLanguage, String originalTitle,
-                 String genreIds, String title, double voteAverage, String overview,
-                 String releaseDate) {
+
+                 String originalTitle,
+                 String originalLanguage,
+                 String releaseDate,
+                 String runtime,
+                 String tagline,
+                 String overview,
+                 String genres,
+                 String budget,
+                 String revenue,
+                 String trailerTitles,
+                 String trailerUrls,
+                 String reviewAuthors,
+                 String reviewUrls
+    ){
         this.id = id;
+        this.oneOfMyFavorites = oneOfMyFavorites;
         this.popularity = popularity;
-        this.voteCount = voteCount;
-        this.video = video;
-        this.posterPath = posterPath;
-        this.adlult = adlult;
-        this.backdropPath = backdropPath;
-        this.originalLanguage = originalLanguage;
-        this.originalTitle = originalTitle;
-        this.genreIds = genreIds;
-        this.title = title;
         this.voteAverage = voteAverage;
-        this.overview = overview;
+        this.voteCount = voteCount;
+        this.title = title;
+        this.posterUrl = posterUrl;
+
+        this.originalTitle = originalTitle;
+        this.originalLanguage = originalLanguage;
         this.releaseDate = releaseDate;
+        this.runtime = runtime;
+        this.tagline = tagline;
+        this.overview = overview;
+        this.genres = genres;
+        this.budget = budget;
+        this.revenue = revenue;
+        this.trailerTitles = trailerTitles;
+        this.trailerUrls = trailerUrls;
+        this.reviewAuthors = reviewAuthors;
+        this.reviewUrls = reviewUrls;
     }
 
-    public int     getId()                 { return id; }
-    public double   getPopularity()         { return popularity; }
-    public int     getVoteCount()          { return voteCount; }
-    public boolean  isVideo()               { return video; }
-    public String   getPosterPath()         { return posterPath; }
-    public boolean  isAdlult()              { return adlult; }
-    public String   getBackdropPath()       { return backdropPath; }
-    public String   getOriginalLanguage()   { return originalLanguage; }
-    public String   getOriginalTitle()      { return originalTitle; }
-    public String   getGenreIds()           { return genreIds; }
-    public String   getTitle()              { return title; }
-    public double   getVoteAverage()        { return voteAverage; }
-    public String   getOverview()           { return overview; }
-    public String   getReleaseDate()        { return releaseDate; }
 
-    public void setId(int id)                                  { this.id = id; }
+    @Ignore @NotNull
+    public Movie( Movie movie)  {
+        this.id = movie.id;
+        this.oneOfMyFavorites = movie.oneOfMyFavorites;
+        this.popularity = movie.popularity;
+        this.voteAverage = movie.voteAverage;
+        this.voteCount = movie.voteCount;
+        this.title = movie.title;
+        this.posterUrl = movie.posterUrl;
+
+        this.originalTitle = movie.originalTitle;
+        this.originalLanguage = movie.originalLanguage;
+        this.releaseDate = movie.releaseDate;
+        this.runtime = movie.runtime;
+        this.tagline = movie.tagline;
+        this.overview = movie.overview;
+        this.genres = movie.genres;
+        this.budget = movie.budget;
+        this.revenue = movie.revenue;
+        this.trailerTitles = movie.trailerTitles;
+        this.trailerUrls = movie.trailerUrls;
+        this.reviewAuthors = movie.reviewAuthors;
+        this.reviewUrls = movie.reviewUrls;
+    }
+
+
+
+    public int              getId()                 { return this.id; }
+    public boolean          isOneOfMyFavorites()    { return this.oneOfMyFavorites; }
+    public double           getPopularity()         { return this.popularity; }
+    public double           getVoteAverage()        { return this.voteAverage; }
+    public int              getVoteCount()          { return this.voteCount; }
+    public String           getTitle()              { return this.title; }
+    public String           getPosterUrl()          { return this.posterUrl; }
+
+
+    public String           getOriginalTitle()      { return this.originalTitle; }
+    public String           getOriginalLanguage()   { return this.originalLanguage; }
+    public String           getReleaseDate()        { return this.releaseDate; }
+    public String           getRuntime()            { return this.runtime; }
+    public String           getTagline()            { return this.tagline; }
+    public String           getOverview()           { return this.overview; }
+    public String           getGenres()             { return this.genres; }
+    public String           getBudget()             { return this.budget; }
+    public String           getRevenue()            { return this.revenue; }
+    public String           getTrailerTitles()      { return this.trailerTitles; }
+    public String           getTrailerUrls()        { return this.trailerUrls; }
+    public String           getReviewAuthors()      { return this.reviewAuthors; }
+    public String           getReviewUrls()         { return this.reviewUrls; }
+
+
+
+    public void setId(int id)                                   { this.id = id; }
+    public void setOneOfMyFavorites(boolean oneOfMyFavorites)   {  this.oneOfMyFavorites = oneOfMyFavorites; }
     public void setPopularity(double popularity)                { this.popularity = popularity; }
-    public void setVoteCount(int voteCount)                    { this.voteCount = voteCount; }
-    public void setVideo(boolean video)                         { this.video = video; }
-    public void setPosterPath(String posterPath)                { this.posterPath = posterPath; }
-    public void setAdlult(boolean adlult)                       { this.adlult = adlult; }
-    public void setBackdropPath(String backdropPath)            { this.backdropPath = backdropPath; }
-    public void setOriginalLanguage(String originalLanguage)    { this.originalLanguage = originalLanguage; }
-    public void setOriginalTitle(String originalTitle)          { this.originalTitle = originalTitle; }
-    public void setGenreIds(String genreIds)                    { this.genreIds = genreIds; }
-    public void setTitle(String title)                          { this.title = title; }
     public void setVoteAverage(double voteAverage)              { this.voteAverage = voteAverage; }
-    public void setOverview(String overview)                    { this.overview = overview; }
+    public void setVoteCount(int voteCount)                     { this.voteCount = voteCount; }
+    public void setPosterUrl(String posterUrl)                  { this.posterUrl = posterUrl; }
+
+    public void setTitle(String title)                          { this.title = title; }
+    public void setOriginalTitle(String originalTitle)          { this.originalTitle = originalTitle; }
+    public void setOriginalLanguage(String originalLanguage)    { this.originalLanguage = originalLanguage; }
     public void setReleaseDate(String releaseDate)              { this.releaseDate = releaseDate; }
+    public void setRuntime( String runtime)                     { this.runtime = runtime; }
+    public void setTagline( String tagline)                     { this.tagline = tagline; }
+    public void setOverview(String overview)                    { this.overview = overview; }
+    public void setGenres(String genres)                        { this.genres = genres; }
+    public void setBudget(String budget)                        { this.budget = budget; }
+    public void setRevenue(String revenue)                      { this.revenue = revenue; }
+    public void setTrailerTitles(String trailerTitles)          { this.trailerTitles = trailerTitles; }
+    public void setTrailerUrls(String trailerUrls)              { this.trailerUrls = trailerUrls; }
+    public void setReviewAuthors( String reviewAuthors)         { this.reviewAuthors = reviewAuthors; }
+    public void setReviewUrls( String reviewUrls)               { this.reviewUrls = reviewUrls; }
 
-    @Ignore
-    public List< Integer> getGenreIdList() {
 
-        List< String> stringList = new ArrayList< String>(Arrays.asList(
-                getGenreIds()
-                .substring(1, getGenreIds().length() - 2)
-                .split(",")
-        ));
-        List< Integer> integerList = new ArrayList< Integer>();
-        stringList.forEach((String string) -> { integerList .add( Integer .valueOf( string)); });
-        return integerList;
-    }
+
+
+
 
     @Ignore
     @NonNull
     @Override
     public String toString() {
-        return  "\n" +
-                "Movie( " +
-                "id:"               +   this.id             + ", " +
-                "popularity:"       +   this.popularity     + ", " +
-                "vote_count:"       +   this.voteCount      + ", " +
-                "video:"            +   this.video          + ", " +
-                "poster_path:"      +   this.posterPath     + ", " +
-                "adlult:"           +   this.adlult         + ", " +
-                "backdrop_path:"    +   this.backdropPath   + ", " +
-                "original_language:"+   this.originalLanguage +  ", " +
-                "original_title:"   +   this.originalTitle  + ", " +
-                "genre_ids:"        +   this.genreIds       + ", " +
-                "title:"            +   this.title          + ", " +
-                "vote_average:"     +   this.voteAverage    + ", " +
-                "overview:"         +   this.overview       + ", " +
-                "release_date"      +   this.releaseDate    +
-                ")";
+        return  "\t Movie(  " +
+                "[id]:"           +   this.id                 + ",  " +
+                "[popular]:"      +   this.popularity         + ",  " +
+                "[vote_avg]:"     +   this.voteAverage        + ",  " +
+                "[vote_count]:"   +   this.voteCount          + ",  " +
+                "[title]:"        +   this.title              + ",  " +
+                "[poster_url]:"   +   this.posterUrl          + ",  " +
+
+
+                "[orig_title]:"   +   this.originalTitle      + ",  " +
+                "[orig_lang]:"    +   this.originalLanguage   + ",  " +
+                "[released]:"      +   this.releaseDate        + ",  " +
+                "[runtime]:"      +   this.runtime            + ",  " +
+                "[tagline]:"       +   this.tagline            + ",  " +
+                "[overview]:"     +   this.overview           + ",  " +
+                "[genres]:"       +   this.genres             + ",  " +
+                "[budget]:"       +   this.budget             + ",  " +
+                "[revenue]:"      +   this.revenue            +
+                ") \t \t ";
     }
 }

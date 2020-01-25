@@ -1,9 +1,6 @@
 package com.roblebob.ud801_popular_movies;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +20,6 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
     private Context mContext;
     private ItemClickListener itemClickListener;
     private AppDatabase mAppDatabase;
-    private int _POS = 0;
     private int whatPage(final int position) { return (int) (Math.floor( position / 20) + 1); }
 
 
@@ -57,8 +53,7 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
 
     @Override
     public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
-        _POS = position;
-        final String path = NetworkUtils.buildUrlForMoviePosterImage( mMovieList.get( position) .getPosterPath() , "w185").toString();
+        final String path = mMovieList.get( position) .getPosterUrl();
         Log.e(TAG + "::onBindViewHolder() ", "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + path);
         Picasso .get().load( path).into( holder.imageView);
     }
@@ -66,7 +61,7 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
     @Override public int getItemCount() { return  (mMovieList != null)  ?  mMovieList .size()  :  0; }
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public interface ItemClickListener { void onItemClickListener( int id); }
+    public interface ItemClickListener { void onItemClickListener(int id); }
 
     public class MainRVViewHolder extends RecyclerView .ViewHolder implements View .OnClickListener {
 
@@ -83,7 +78,7 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
             int pos = getAdapterPosition();
             int id = mMovieList .get( pos). getId();
             Log .e( this .getClass() .getSimpleName(), "POS:" + pos + "  " + "ID:" + id);
-            itemClickListener .onItemClickListener( id);
+            itemClickListener.onItemClickListener( id);
         }
     }
 }

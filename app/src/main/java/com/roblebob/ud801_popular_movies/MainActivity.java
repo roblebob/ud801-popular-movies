@@ -6,20 +6,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements MainRVAdapter.ItemClickListener  {
+public class MainActivity extends AppCompatActivity implements MainRVAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private AppDatabase mAppDatabase;
-    private RecyclerView mRecyclerView;
+    private RecyclerView mMainRV;
     private MainRVAdapter mMainRVAdapter;
     private RecyclerView.LayoutManager mRVLayoutManager;
     private Bundle mPresentState;
@@ -32,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         mPresentState = (savedInstanceState == null) ? new Bundle() : savedInstanceState;
         if (mPresentState.getString("orderType") == null) mPresentState.putString("orderType", "popular");
         setContentView( R.layout.activity_main);
-
         ////////////////////////////////////////////////////////////////////////////////////////////
         mAppDatabase = AppDatabase .getInstance( getApplicationContext());
         MainViewModelFactory mainViewModelFactory = new MainViewModelFactory( mAppDatabase );
@@ -47,24 +43,25 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
             }
         }) ;
         ////////////////////////////////////////////////////////////////////////////////////////////
-        mRecyclerView = (RecyclerView) this.findViewById( R.id.activity_main_RECYCLER_VIEW);
+        mMainRV = (RecyclerView) this.findViewById( R.id.activity_main_RECYCLER_VIEW);
         mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
-        mRecyclerView .setLayoutManager( mRVLayoutManager);
+        mMainRV.setLayoutManager( mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this, this);
-        mRecyclerView .setAdapter( mMainRVAdapter);
-        mRecyclerView .setHasFixedSize( false);
+        mMainRV.setAdapter( mMainRVAdapter);
+        mMainRV.setHasFixedSize( false);
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        mRecyclerView .addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mMainRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (( ! recyclerView .canScrollVertically(1) && dy != 0)  )
                 {
+                    Log.e(TAG, "---------------->  reached end");
                     int position = mRVLayoutManager.getItemCount() - 1;
-                    int page = whatPage(position);
-                    NetworkUtils.integratePageOfMovies(mAppDatabase, "popular", page + 1);
+                    NetworkUtils.integratePageOfMovies(mAppDatabase, "popular", whatPage( position) + 1);
                 }
             }
         });

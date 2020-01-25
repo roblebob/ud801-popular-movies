@@ -1,7 +1,7 @@
 package com.roblebob.ud801_popular_movies;
 
 import android.text.Html;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -28,17 +28,22 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     @NonNull
     @Override
     public DetailsRVViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        View view = LayoutInflater
+                .from( parent .getContext())
+                .inflate( R.layout.details_recycler_view_single_item, parent, false);
+        DetailsRVAdapter.DetailsRVViewholder detailsRVViewHolder = new DetailsRVAdapter.DetailsRVViewholder( view);
+
+        return detailsRVViewHolder;
     }
 
 
 
 
 
-    private boolean isMovieTrailerPosition( int position) {
+    private boolean isTrailer(int position) {
         return ( 0 <= position  &&  position < mTrailerUrlStringList.size()  &&
                 mTrailerUrlStringList.size() == mTrailerNameStringList.size()); }
-    private boolean isMovieReviewPosition( int position) {
+    private boolean isReview( int position) {
         return ( mTrailerUrlStringList.size() <= position  &&  position < getItemCount()  &&
                 mTrailerUrlStringList.size() == mTrailerNameStringList.size()); }
 
@@ -46,21 +51,23 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     public void onBindViewHolder(@NonNull DetailsRVViewholder holder, int position) {
 
 
-        if (isMovieTrailerPosition( position) ) { final int i = position;
+        final int i = position -    ( (isReview( position))  ?  - getMovieTrailerItemCount()        : 0) ;
+        holder .textView .setText(  ( (isTrailer( position)) ?  mTrailerNameStringList .get( i)     : mReviewAuthorStringList .get( i)));
 
-            holder .textView .setText( mTrailerNameStringList .get( i));
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Start Youtube Trailer
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if ( isTrailer( position)) {
+
+
+                } else if ( isReview( position)) {
+
 
                 }
-            });
+            }
+        });
 
-        } else if (isMovieReviewPosition( position)) { final int i = position - getMovieTrailerItemCount();
 
-
-        }
     }
 
 
@@ -81,10 +88,12 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
 
     @Override public int getItemCount() { return getMovieTrailerItemCount() + getMovieReviewItemCount(); }
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    public interface ItemClickListener { void onItemClickListener( int pos); }
 
-    class DetailsRVViewholder extends RecyclerView.ViewHolder {
+    class DetailsRVViewholder extends RecyclerView.ViewHolder  {
 
         TextView textView;
+
 
         public DetailsRVViewholder(View itemView) {
             super( itemView);
