@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +29,6 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
         mContext = context;
         this.itemClickListener = itemClickListener;
         mMovieList = new ArrayList<>();
-        NetworkUtils. integratePageOfMovies( mAppDatabase, "popular", 1);
     }
 
 
@@ -53,9 +53,10 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
 
     @Override
     public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
-        final String path = mMovieList.get( position) .getPosterUrl();
-        Log.e(TAG + "::onBindViewHolder() ", "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + path);
-        Picasso .get().load( path).into( holder.imageView);
+        final String posterKEY = mMovieList.get( position) .getPosterID();
+        holder .textView.setText(String.valueOf(position));
+        Log.e(TAG + "::onBindViewHolder() ", "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + posterKEY);
+        Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + posterKEY) .into( holder.imageView);
     }
 
     @Override public int getItemCount() { return  (mMovieList != null)  ?  mMovieList .size()  :  0; }
@@ -66,18 +67,20 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
     public class MainRVViewHolder extends RecyclerView .ViewHolder implements View .OnClickListener {
 
         ImageView imageView;
+        TextView textView;
 
         public MainRVViewHolder( @NonNull View itemView) {
             super( itemView);
             imageView = itemView .findViewById( R.id.main_recycler_view_single_item_IMAGE_VIEW);
+            textView = itemView .findViewById( R.id.main_recycler_view_single_item_TEXT_VIEW);
             itemView .setOnClickListener( this);
         }
 
         @Override
         public void onClick( View v) {
             int pos = getAdapterPosition();
-            int id = mMovieList .get( pos). getId();
-            Log .e( this .getClass() .getSimpleName(), "POS:" + pos + "  " + "ID:" + id);
+            int id = mMovieList .get( pos).getMovieID();
+            Log .d( this .getClass() .getSimpleName(), "POS:" + pos + "  " + "ID:" + id);
             itemClickListener.onItemClickListener( id);
         }
     }

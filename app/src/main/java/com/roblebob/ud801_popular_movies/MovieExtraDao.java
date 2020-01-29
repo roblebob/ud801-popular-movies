@@ -12,22 +12,16 @@ import java.util.List;
 
 
 @Dao
-public interface MovieDao {
+public interface MovieExtraDao {
 
-    @Query("SELECT * FROM Movie ORDER BY popularVAL DESC")
-    LiveData<List< Movie>> loadPopularMovies();
-
-    @Query("SELECT * FROM Movie ORDER BY voteAVG DESC")
-    LiveData<List< Movie>> loadTopRatedMovies();
-
-    @Query("SELECT * FROM Movie WHERE movieID = :MID")
-    LiveData< Movie> loadMovieByMID( int MID);
+    @Query("SELECT * FROM MovieExtra WHERE MID = :MID")
+    LiveData< List< MovieExtra>> loadExtrasByMID( int MID);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMovie(Movie movie);
+    void insertMovie(MovieExtra movieExtra);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(Movie movie);
+    void updateMovie(MovieExtra movieExtra);
 
     @Delete
     void deleteMovie(Movie movie);

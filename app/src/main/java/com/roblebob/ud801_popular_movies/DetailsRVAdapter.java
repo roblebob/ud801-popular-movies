@@ -1,7 +1,6 @@
 package com.roblebob.ud801_popular_movies;
 
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,18 +17,37 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
 
     private static final String ARROW_right = Html.fromHtml("&blacktriangleright;").toString();
 
-    private List< String> mTrailerUrlStringList;
-    private List< String> mTrailerNameStringList;
-    private List< String> mReviewAuthorStringList;
-    private List< String> mReviewContentStringList;
-    public void setTrailerUrls(     String trailerUrls)     { if (trailerUrls != null)      mTrailerUrlStringList     = splitter( trailerUrls);   notifyDataSetChanged(); }
-    public void setTrailerNames(    String trailerNames)    { if (trailerNames != null)     mTrailerNameStringList    = splitter( trailerNames);  notifyDataSetChanged(); }
-    public void setReviewAuthors(   String reviewAuthors)   { if (reviewAuthors != null)    mReviewAuthorStringList   = splitter( reviewAuthors); notifyDataSetChanged(); }
-    public void setReviewUrls(      String reviewUrls)      { if (reviewUrls != null)       mReviewContentStringList  = splitter( reviewUrls);    notifyDataSetChanged(); }
+    private String mHomepageUrl;
+    private String mImdbUrl;
+    private List< String> mTrailerNameList;
+    private List< String> mTrailerUrlList;
+    private List< String> mReviewNameList;
+    private List< String> mReviewUrlList;
+    private List< String> mReviewContentList;
 
-    public List< String> splitter(String listString) {
-        return new ArrayList< String>(Arrays.asList( listString .substring(1, listString.length()-1) .split(",")));
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    public void setHomepageUrl( String homeUrl) { mHomepageUrl = homeUrl; notifyDataSetChanged(); }
+    public void setImdbUrl( String imdbUrl)     { mImdbUrl = imdbUrl; notifyDataSetChanged(); }
+
+    public void setExtras( List< MovieExtra> extraList) {
+        mTrailerNameList = new ArrayList< String>();
+        mTrailerUrlList  = new ArrayList< String>();
+        mReviewNameList  = new ArrayList< String>();
+        mReviewUrlList   = new ArrayList< String>();
+        mReviewContentList = new ArrayList< String>();
+
+        extraList.forEach( (MovieExtra extra) -> {
+            if ( extra .getType() .equals("trailer")) {
+                mTrailerNameList .add( extra .getName());
+                mTrailerUrlList .add( extra .getUrl());
+            } else if ( extra .getType() .equals("review")) {
+                mReviewNameList .add( extra .getName());
+                mReviewNameList .add( extra .getUrl());
+            }
+        });
+        notifyDataSetChanged();
     }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @NonNull
@@ -44,73 +62,79 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     }
 
 
-
-
-
-    private boolean isTrailer(int position) {
-        return ( 0 <= position  &&  position < mTrailerUrlStringList.size()  &&
-                mTrailerUrlStringList.size() == mTrailerNameStringList.size()); }
-    private boolean isReview( int position) {
-        return ( mTrailerUrlStringList.size() <= position  &&  position < getItemCount()  &&
-                mTrailerUrlStringList.size() == mTrailerNameStringList.size()); }
-
     @Override
     public void onBindViewHolder(@NonNull DetailsRVViewholder holder, int position) {
 
+        if ( isHomePage( position)) {
 
-        final int i = position +    ( (isReview( position))  ?  - getMovieTrailerItemCount()        : 0) ;
+            holder .cardviewTextView    .setText( "home");
+            holder .nameTextView        .setText( "Official Homepage");
+            holder .urlString           = mHomepageUrl;
 
-        Log.e(this.getClass().getSimpleName() + "::onBindViewHolder() \t",
-                " [pos]:" + position +
-                        " --- [isTrailer]:" + isTrailer( position) + " [#]:" + getMovieTrailerItemCount() +
-                        " --- [isReview]:" + isReview( position) + " [#]:" + getMovieReviewItemCount() +
-                        " ---[i]:" + i) ;
-        holder .textView .setText(  ( (isTrailer( position)) ?  mTrailerNameStringList .get( i)     : mReviewAuthorStringList .get( i)));
+        } else if ( isImdbPage(position)) {
+            holder .cardviewTextView    .setText( "imdb");
+            holder .nameTextView        .setText( "IMDB's page");
+            holder.itemView.setOnClickListener( (View v) -> { /* start IMDB's page within a webview/browser */ });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ( isTrailer( position)) {
+        } else if ( isTrailer( position)) {
+            holder .cardviewTextView    .setText( "trailer");
+            holder .nameTextView        .setText( mTrailerNameList.get( position - getHomePageItemCount() - getImdbUrlItemCount()));
+            holder .itemView .setOnClickListener( ( View v) -> { /* start trailer on youtube */ });
 
+        } else if ( isReview( position)) {
+            ((TextView) holder .itemView. findViewById( R.id.details_recycler_view_single_item_CARDVIEW_textview)) .setText("review");
 
-                } else if ( isReview( position)) {
-
-
-                }
-            }
-        });
-
+        }
 
     }
-
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private int getMovieTrailerItemCount() {
-        if ( mTrailerUrlStringList != null && mTrailerNameStringList != null)
-            if ( mTrailerUrlStringList.size() == mTrailerNameStringList.size())
-                return mTrailerUrlStringList.size();
-        return 0;
-    }
-    private int getMovieReviewItemCount() {
-        if ( mReviewContentStringList != null && mReviewAuthorStringList != null)
-            if ( mReviewContentStringList.size() == mReviewAuthorStringList.size())
-                return mReviewContentStringList.size();
-        return 0;
-    }
 
-    @Override public int getItemCount() { return getMovieTrailerItemCount() + getMovieReviewItemCount(); }
+    private boolean isHomePage( int position)   {
+        return      position >= 0   &&
+                    position < getHomePageItemCount(); }
+    private boolean isImdbPage(int position)  {
+        return      position >= getHomePageItemCount()   &&
+                    position < getHomePageItemCount() + getImdbUrlItemCount(); }
+    private boolean isTrailer(int position) {
+        return      position >= getHomePageItemCount() + getImdbUrlItemCount()   &&
+                    position < getHomePageItemCount() + getImdbUrlItemCount() + getMovieTrailerItemCount(); }
+    private boolean isReview( int position) {
+        return      position >= getHomePageItemCount() + getImdbUrlItemCount() + getMovieTrailerItemCount()   &&
+                    position < getHomePageItemCount() + getImdbUrlItemCount() + getMovieTrailerItemCount() + getMovieReviewItemCount(); }
+
+    //----------------------------------------------------------------------------------------------
+
+    private int getHomePageItemCount()      { return ( mHomepageUrl     != null) ? 1                        : 0; }
+    private int getImdbUrlItemCount()       { return ( mImdbUrl         != null) ? 1                        : 0; }
+    private int getMovieTrailerItemCount()  { return ( mTrailerNameList != null) ? mTrailerNameList.size()  : 0; }
+    private int getMovieReviewItemCount()   { return ( mReviewNameList  != null) ? mReviewNameList.size()   : 0; }
+    //----------------------------------------------------------------------------------------------
+
+    @Override public int getItemCount() {
+        return getHomePageItemCount() + getImdbUrlItemCount() + getMovieTrailerItemCount() + getMovieReviewItemCount(); }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public interface ItemClickListener { void onItemClickListener( int pos); }
 
-    class DetailsRVViewholder extends RecyclerView.ViewHolder  {
+    class DetailsRVViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textView;
-
+        TextView cardviewTextView;
+        TextView triangleTextView;
+        TextView nameTextView;
+        String urlString;
 
         public DetailsRVViewholder(View itemView) {
             super( itemView);
-            textView = ( TextView) itemView.findViewById( R.id.details_trailers_recycler_view_single_item_NAME_textview);
+            cardviewTextView    = ( TextView) itemView .findViewById( R.id.details_recycler_view_single_item_CARDVIEW_textview);
+            triangleTextView    = ( TextView) itemView .findViewById( R.id.details_recycler_view_single_item_TRIANGLE_textview);
+            nameTextView        = ( TextView) itemView .findViewById( R.id.details_recycler_view_single_item_NAME_textview);
+            itemView .setOnClickListener( this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 }

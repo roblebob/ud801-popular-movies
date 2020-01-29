@@ -1,7 +1,6 @@
 package com.roblebob.ud801_popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,14 +14,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdapter.ItemClickListener  {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     // Extra for the task ID to be received in the intent
-    public static final String EXTRA_ID = "EXTRA_ID";
+    public static final String EXTRA_MID = "EXTRA_ID";
     // Extra for the task ID to be received after rotation
-    public static final String INSTANCE_ID = "INSTANCE_ID";
+    public static final String INSTANCE_MID = "INSTANCE_ID";
 
-    private int ID;
+    private int MID;
 
     private AppDatabase mAppDatabase;
 
@@ -49,14 +51,13 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         Intent intent = getIntent();
-        if ( intent != null && intent.hasExtra(EXTRA_ID))
-            ID = intent .getIntExtra( EXTRA_ID, -1);
+        if ( intent != null && intent.hasExtra( EXTRA_MID))
+            MID = intent .getIntExtra( EXTRA_MID, -1);
 
 
-        if (ID > 0) {
-            NetworkUtils.integrateDetails( mAppDatabase, ID);
+        if (MID > 0) {
 
-            DetailsViewModelFactory detailsViewModelFactory = new DetailsViewModelFactory( mAppDatabase, ID);
+            DetailsViewModelFactory detailsViewModelFactory = new DetailsViewModelFactory( mAppDatabase, MID);
             final DetailsViewModel detailsViewModel = ViewModelProviders.of(this, detailsViewModelFactory) .get( DetailsViewModel.class);
 
             detailsViewModel .getMovieLive() .observe(this, new Observer< Movie>() {
@@ -68,6 +69,18 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                     populateUI( new Movie( movie));
                 }
             });
+
+            detailsViewModel .getExtraListLive() .observe(this, new Observer< List< MovieExtra>>() {
+                @Override
+                public void onChanged( List< MovieExtra> movieExtraList) {
+
+                    detailsViewModel .getExtraListLive() .removeObserver( this);
+                    Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database update from LiveData  " + movieExtraList.toString());
+                    mDetailsRVAdapter .setExtras( new ArrayList<>( movieExtraList));
+                }
+            });
+
+
         } else Log .e(this.getClass().getSimpleName(), "ERROR");
     }
 
@@ -75,38 +88,49 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private void  populateUI( Movie movie) {
 
-        Log .e(TAG + "::populateUI() \t", movie.toString() );
-
-        mDetailsRVAdapter .setTrailerNames(  movie .getTrailerNames());
-        mDetailsRVAdapter .setTrailerUrls(   movie .getTrailerUrls());
-        mDetailsRVAdapter .setReviewAuthors( movie .getReviewAuthors());
-        mDetailsRVAdapter .setReviewUrls(    movie .getReviewUrls());
-
-
-        if (movie.getTitle() != null)                   ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview))    .setText( movie .getTitle());
-        if (movie.getOriginalTitle() != null &&
-                movie.getOriginalLanguage() != null)
-            if (movie.getOriginalTitle()
-                    .equals(movie.getTitle()))          ((View)     findViewById( R.id.activity_details_HEADING_ORG_TITLE_group))   .setVisibility( View.GONE);
+        if (movie.getTitle() != null)                       ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview))            .setText( movie .getTitle());
+        if (movie.getTitleORIG() != null &&
+                movie.getLangORIG() != null)
+            if (movie.getTitleORIG()
+                    .equals(movie.getTitle())) {
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))                 .setVisibility( View.GONE);
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))                  .setVisibility( View.GONE);
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_left_bracket))    .setVisibility( View.GONE);
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_right_bracket))   .setVisibility( View.GONE);
+            }
         else {
-                                                        ((View)     findViewById( R.id.activity_details_HEADING_ORG_TITLE_group))   .setVisibility( View.VISIBLE);
-                                                        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))         .setText( movie .getOriginalTitle());
-            if (movie.getOriginalLanguage() != null)    ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))          .setText( movie .getOriginalLanguage());
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))                 .setVisibility( View.VISIBLE);
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))                  .setVisibility( View.VISIBLE);
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_left_bracket))    .setVisibility( View.VISIBLE);
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_right_bracket))   .setVisibility( View.VISIBLE);
+
+                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))                 .setText( movie .getTitleORIG());
+            if (movie.getLangORIG() != null)        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))                  .setText( movie .getLangORIG());
         }
-        if (movie.getPosterUrl() != null)               Picasso .get() .load( movie .getPosterUrl()) .into( (ImageView) findViewById( R.id.imageView));
-        if (movie.getReleaseDate() != null)             ((TextView) findViewById( R.id.release_date))                               .setText( movie .getReleaseDate().split("-")[0]);
+        if (movie.getPosterID() != null)                   Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + movie .getPosterID()) .into( (ImageView) findViewById( R.id.imageView));
+        if (movie.getReleasePIT() != null)                 ((TextView) findViewById( R.id.release_date))                                       .setText( movie .getReleasePIT().split("-")[0]);
 
-        if (movie.getRuntime() != null)                 ((TextView) findViewById( R.id.activity_details_RUNTIME))                   .setText( movie .getRuntime());
-        if (movie.getVoteAverage() > 0)                 ((TextView) findViewById( R.id.rating))                                     .setText( String.valueOf(movie.getVoteAverage()));
-        if (movie.getTagline() != null)                 ((TextView) findViewById( R.id.activity_details_TAGLINE))                   .setText( movie .getTagline());
-        if (movie.getOverview() != null)                ((TextView) findViewById( R.id.activity_details_OVERVIEW))                  .setText( movie .getOverview());
-        if (movie.getGenres() != null)                  ((TextView) findViewById( R.id.activity_details_GENRES))                    .setText( movie .getGenres() .substring(1, movie .getGenres().length()-1) .replace(",", "\n"));
-        if (movie .getBudget() != null) if (Integer.parseInt( movie.getBudget()) > 0)    ((TextView) findViewById( R.id.activity_Details_BUDGET))                    .setText( movie .getBudget());
-        if (movie .getRevenue() != null) if (Integer.parseInt( movie.getRevenue()) > 0)   ((TextView) findViewById( R.id.activity_Details_REVENUE))                   .setText( movie .getRevenue());
+        if (movie.getRuntimeVAL() != null)                     ((TextView) findViewById( R.id.activity_details_RUNTIME))                           .setText( movie .getRuntimeVAL());
+        if (movie.getVoteAVG() > 0)                     ((TextView) findViewById( R.id.rating))                                             .setText( String.valueOf(movie.getVoteAVG()));
+        if (movie.getTagline() != null)                     ((TextView) findViewById( R.id.activity_details_TAGLINE))                           .setText( movie .getTagline());
+        if (movie.getOverview() != null)                    ((TextView) findViewById( R.id.activity_details_OVERVIEW))                          .setText( movie .getOverview());
+        if (movie.getGenres() != null)                      ((TextView) findViewById( R.id.activity_details_GENRES))                            .setText( movie .getGenres() .substring(1, movie .getGenres().length()-1) .replace(",", "\n"));
+        if (movie .getBudgetVAL() != null)
+            if (Integer.parseInt( movie.getBudgetVAL()) > 0)   ((TextView) findViewById( R.id.activity_Details_BUDGET))                            .setText( movie .getBudgetVAL());
+        if (movie .getRevenueVAL() != null)
+            if (Integer.parseInt( movie.getRevenueVAL()) > 0)  ((TextView) findViewById( R.id.activity_Details_REVENUE))                           .setText( movie .getRevenueVAL());
 
+        if (movie.getHomepageURL() != null)
+            if (movie.getHomepageURL().length() != 0)       mDetailsRVAdapter .setHomepageUrl(  movie .getImdbURL());
 
+        if (movie.getImdbURL() != null)
+            if (movie.getImdbURL().length() != 0)           mDetailsRVAdapter .setImdbUrl(      movie .getImdbURL());
 
+        Log .e(TAG + "::populateUI() \t", movie.toString() );
     }
+
+
+
 
 
     @Override

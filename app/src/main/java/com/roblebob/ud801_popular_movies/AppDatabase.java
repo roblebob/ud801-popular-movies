@@ -7,11 +7,11 @@ import android.content.Context;
 import android.util.Log;
 
 
-@Database(entities = {Movie.class}, version = 1, exportSchema = false)
+@Database(entities = {Movie.class, MovieExtra.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final String DATABASE_NAME = "MovieDB52";
+    private static final String DATABASE_NAME = "MovieDB63";
 
     /* singleton-pattern */
     private static AppDatabase sInstance;
@@ -33,4 +33,5 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract MovieDao movieDao();
+    public abstract MovieExtraDao movieExtraDao();
 }
