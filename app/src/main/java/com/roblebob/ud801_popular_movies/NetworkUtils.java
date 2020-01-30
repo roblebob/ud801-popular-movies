@@ -59,7 +59,7 @@ public class NetworkUtils {
             }
 
             uriBuilder .appendQueryParameter("api_key", API_KEY)
-                    .appendQueryParameter("language", "en-US");
+                       .appendQueryParameter("language", "en-US");
 
             if ( requestKey.equals("popular") || requestKey.equals("top_rated"))
                 uriBuilder .appendQueryParameter("page", String .valueOf( requestValue));
@@ -76,7 +76,6 @@ public class NetworkUtils {
      * @throws IOException Related to network and stream reading
      */
     private static String getResponseFromHttpUrl(String urlString) throws IOException {
-        // Log.d( TAG, " === URL-REQUEST ==> " + urlString );
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -108,7 +107,6 @@ public class NetworkUtils {
             String posterID     = jsonObject .getString("poster_path");
             mBasic = new Movie( movieID, false, popularVAL, voteAVG, voteCNT, posterID, null, null, null, null, null, null, null, null, null, null, null, null);
         } catch (JSONException e) { e.printStackTrace(); }
-        // Log.e(TAG + "\t::parseJsonIntoMovieBasics()\t", (mBasic != null) ? mBasic .toString() : "Movie.Basics = NULL");
         return mBasic;
     }
 
@@ -138,8 +136,6 @@ public class NetworkUtils {
 
             mDetails = new Movie( movieID, false, popularVAL, voteAVG, voteCNT, posterID, title, titleORIG, langORIG, releasePIT, runtimeVAL, tagline, overview, genreList.toString(), budgetVAL, revenueVAL, homepageURL, imdbID);
         } catch (JSONException e) { e.printStackTrace(); Log .e(TAG + "\t::parseJsonIntoMovieDetails()\t", "ERROR");  }
-
-        Log.d(TAG + "\t::parseJsonIntoMovieDetails()\t", mDetails .toString());
         return mDetails;
     }
 
@@ -167,75 +163,67 @@ public class NetworkUtils {
 
 
     public static void integrateAllBasics( final AppDatabase appDatabase) {
-        for (String orderBy : ORDER_BY_array) { boolean condition = true; int page = 0;
-            do { try { try {
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            for (String orderBy : ORDER_BY_array) {
+                boolean condition = true;
+                int page = 0;
+                do { try { try {
+                            String response = getResponseFromHttpUrl(buildUrl(orderBy, ++page));
+                            JSONObject jsonObject = new JSONObject(response);
 
-                        String response = getResponseFromHttpUrl( buildUrl( orderBy, ++page));
-                        JSONObject jsonObject = new JSONObject(response);
+                            condition = page == jsonObject.getInt("page") &&
+                                    page < jsonObject.getInt("total_pages");
 
-                        condition = page == jsonObject.getInt("page") &&
-                                    page <  jsonObject.getInt("total_pages");
-
-                        JSONArray jsonArray = jsonObject.getJSONArray("results");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            Movie movie = parseJsonIntoMovieBasics(jsonArray.getJSONObject(i));
-                            if (movie != null) {
-                                AppExecutors.getInstance().diskIO().execute(() ->{
-                                    appDatabase.movieDao().insertMovie(movie);
-                                    // Log.d(TAG + "::integrateAllBasics()", MOVIE.toString());
-                                });
+                            JSONArray jsonArray = jsonObject.getJSONArray("results");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Movie movie = parseJsonIntoMovieBasics(jsonArray.getJSONObject(i));
+                                if (movie != null) {
+                                    AppExecutors.getInstance().diskIO().execute(
+                                            () -> appDatabase.movieDao().insertMovie(movie));
+                                }
                             }
-                        }
-                    } catch (JSONException e) { e.printStackTrace(); /* Log.e(TAG + "::integrateAllBasics()", "!!! JSONException !!!"); */ return; }
-                } catch (IOException e) { e.printStackTrace(); /* Log.e(TAG + "::integrateAllBasics()  @(" + orderBy + ", " + page + ")", "!!! IOException !!!");  */ return; }
-            } while (condition);
-
-        }
-
+                        } catch (JSONException e) { e.printStackTrace(); return; }
+                    } catch (IOException e) { e.printStackTrace(); return; }
+                } while (condition);
+            }
+        });
     }
-
-
-
-
-
-
 
 
 
     public static void integrateDetails( AppDatabase appDatabase, int movieID)  {
-        try {
-            String response = getResponseFromHttpUrl((buildUrl("movie", movieID)));
-            if (response != null)
-                try {
-                    Movie movie = parseJsonIntoMovieDetails(new JSONObject(response));
-                    if (movie != null)
-                        AppExecutors.getInstance().diskIO().execute(
-                                () ->  appDatabase.movieDao().updateMovie(movie));
+        AppExecutors .getInstance() .networkIO() .execute( () -> {
+            try {
+                String response = getResponseFromHttpUrl((buildUrl("movie", movieID)));
+                if (response != null)
+                    try {
+                        Movie movie = parseJsonIntoMovieDetails(new JSONObject(response));
+                        if (movie != null)
+                            AppExecutors.getInstance().diskIO().execute(
+                                    () -> appDatabase.movieDao().updateMovie(movie));
 
-                } catch (JSONException e) { e.printStackTrace(); }
-        } catch (IOException e) { e.printStackTrace(); }
-
+                    } catch (JSONException e) { e.printStackTrace(); }
+            } catch (IOException e) { e.printStackTrace(); }
+        });
     }
 
 
 
-    public static void integrateExtras( AppDatabase appDatabase, int movieID)  {
-
-        for (String requestKey : new String[]{"videos", "reviews"}) {
-            AppExecutors .getInstance() .networkIO() .execute( () -> {
+    public static void integrateExtras( AppDatabase appDatabase, int movieID) {
+        AppExecutors.getInstance().networkIO().execute(() -> {
+            for (String requestKey : new String[]{"videos", "reviews"}) {
                 try {
                     String response = getResponseFromHttpUrl((buildUrl(requestKey, movieID)));
                     if (response != null)
                         try {
-                            MovieExtra movieExtra= parseJsonIntoMovieExtra(new JSONObject(response), movieID);
-                            if (movieExtra!= null) {
+                            MovieExtra movieExtra = parseJsonIntoMovieExtra(new JSONObject(response), movieID);
+                            if (movieExtra != null) {
                                 Log.d(TAG + "::integrateExtras()", "------>" + movieExtra.toString());
                                 AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieExtraDao().insertExtra(movieExtra));
                             }
                         } catch (JSONException e) { e.printStackTrace(); }
-                } catch (IOException e) { e.printStackTrace();  }
-            });
-        }
+                } catch (IOException e) { e.printStackTrace(); }
+            }
+        });
     }
-
 }

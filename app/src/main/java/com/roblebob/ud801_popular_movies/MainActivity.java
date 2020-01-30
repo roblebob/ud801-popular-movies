@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        AppExecutors.getInstance().networkIO().execute(() -> NetworkUtils.integrateAllBasics( mAppDatabase));
+        NetworkUtils.integrateAllBasics( mAppDatabase);
 
 
 //        mMainRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
