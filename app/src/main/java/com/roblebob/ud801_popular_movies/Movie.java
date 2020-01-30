@@ -11,26 +11,26 @@ import org.jetbrains.annotations.NotNull;
 @Entity(tableName = "Movie")
 public class Movie {
 
-    @PrimaryKey(autoGenerate = false)       private int movieID;
+    @PrimaryKey(autoGenerate = false)       private int     movieID;
     @ColumnInfo(name = "fav")               private boolean fav;
     @ColumnInfo(name = "popularVAL")        private double  popularVAL;
     @ColumnInfo(name = "voteAVG")           private double  voteAVG;
     @ColumnInfo(name = "voteCNT")           private int     voteCNT;
     @ColumnInfo(name = "posterID")          private String  posterID;
 
-    @ColumnInfo(name = "title")             private String title;
-    @ColumnInfo(name = "titleORIG")         private String titleORIG;
-    @ColumnInfo(name = "langORIG")          private String langORIG;
-    @ColumnInfo(name = "releasePIT")        private String releasePIT;
-    @ColumnInfo(name = "runtimeVAL")        private String runtimeVAL;
-    @ColumnInfo(name = "tagline")           private String tagline;
-    @ColumnInfo(name = "overview")          private String overview;
-    @ColumnInfo(name = "genres")            private String genres;
+    @ColumnInfo(name = "title")             private String  title;
+    @ColumnInfo(name = "titleORIG")         private String  titleORIG;
+    @ColumnInfo(name = "langORIG")          private String  langORIG;
+    @ColumnInfo(name = "releasePIT")        private String  releasePIT;
+    @ColumnInfo(name = "runtimeVAL")        private String  runtimeVAL;
+    @ColumnInfo(name = "tagline")           private String  tagline;
+    @ColumnInfo(name = "overview")          private String  overview;
+    @ColumnInfo(name = "genres")            private String  genres;
 
-    @ColumnInfo(name = "budgetVAL")         private String budgetVAL;
-    @ColumnInfo(name = "revenueVAL")        private String revenueVAL;
-    @ColumnInfo(name = "homepageURL")       private String homepageURL;
-    @ColumnInfo(name = "imdbID")            private String imdbID;
+    @ColumnInfo(name = "budgetVAL")         private String  budgetVAL;
+    @ColumnInfo(name = "revenueVAL")        private String  revenueVAL;
+    @ColumnInfo(name = "homepageURL")       private String  homepageURL;
+    @ColumnInfo(name = "imdbID")            private String  imdbID;
 
 
     public Movie(int movieID,
@@ -75,7 +75,7 @@ public class Movie {
     }
 
 
-    @Ignore @NotNull
+    @Ignore
     public Movie( Movie movie)  {
         this.movieID    = movie.getMovieID();
         this.fav        = movie.isFav();

@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////
-        AppExecutors.getInstance().networkIO().execute(() -> NetworkUtils.integrateAllBasics(mAppDatabase));
+        AppExecutors.getInstance().networkIO().execute(() -> NetworkUtils.integrateAllBasics( mAppDatabase));
 
 
 //        mMainRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
     @Override
     public void onItemClickListener( int MID) {
         Log .d( this.getClass().getSimpleName(),  "MID:" + MID);
+
         Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
         intent .putExtra( DetailsActivity.EXTRA_MID, MID);
         startActivity( intent);

@@ -55,6 +55,9 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
     public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
         final String posterKEY = mMovieList.get( position) .getPosterID();
         holder .textView.setText(String.valueOf(position));
+        AppExecutors .getInstance() .networkIO() .execute( () -> NetworkUtils.integrateDetails(mAppDatabase, mMovieList.get( position) .getMovieID()));
+        AppExecutors .getInstance() .networkIO() .execute( () -> NetworkUtils.integrateExtras(mAppDatabase, mMovieList.get( position) .getMovieID()));
+
         Log.e(TAG + "::onBindViewHolder() ", "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + posterKEY);
         Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + posterKEY) .into( holder.imageView);
     }

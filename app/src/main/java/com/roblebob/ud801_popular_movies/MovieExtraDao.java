@@ -18,11 +18,11 @@ public interface MovieExtraDao {
     LiveData< List< MovieExtra>> loadExtrasByMID( int MID);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMovie(MovieExtra movieExtra);
+    void insertExtra(MovieExtra movieExtra);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(MovieExtra movieExtra);
+    void updateExtra(MovieExtra movieExtra);
 
     @Delete
-    void deleteMovie(Movie movie);
+    void deleteExtra(MovieExtra movieExtra);
 }

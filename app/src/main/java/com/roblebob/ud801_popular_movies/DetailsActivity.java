@@ -40,6 +40,13 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         setContentView(R.layout.activity_details);
         mAppDatabase = AppDatabase .getInstance( getApplicationContext());
 
+        Intent intent = getIntent();
+        if ( intent != null && intent.hasExtra( EXTRA_MID))
+            MID = intent .getIntExtra( EXTRA_MID, -1);
+
+
+
+
         // if (savedInstanceState != null && savedInstanceState.containsKey( INSTANCE_ID))  ID = savedInstanceState .getInt( INSTANCE_ID, -1);
 
         mDetailsRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
@@ -50,9 +57,6 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         mDetailsRV .setHasFixedSize( false);
         ////////////////////////////////////////////////////////////////////////////////////////////
 
-        Intent intent = getIntent();
-        if ( intent != null && intent.hasExtra( EXTRA_MID))
-            MID = intent .getIntExtra( EXTRA_MID, -1);
 
 
         if (MID > 0) {
@@ -65,8 +69,9 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                 public void onChanged( Movie movie) {
 
                     detailsViewModel .getMovieLive() .removeObserver( this);
-                    Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database update from LiveData  " + movie.toString());
-                    populateUI( new Movie( movie));
+                    mMovie = new Movie( movie);
+                    Log.d( TAG + "\t::onChanged( movie)\t", "Receiving database update from LiveData\t>>>>>>>>\t" + "\n" + mMovie.toString() + "\n" + movie.toString() );
+                    populateUI();
                 }
             });
 
@@ -86,47 +91,37 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void  populateUI( Movie movie) {
+    private void  populateUI() {
 
-        if (movie.getTitle() != null)                       ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview))            .setText( movie .getTitle());
-        if (movie.getTitleORIG() != null &&
-                movie.getLangORIG() != null)
-            if (movie.getTitleORIG()
-                    .equals(movie.getTitle())) {
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))                 .setVisibility( View.GONE);
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))                  .setVisibility( View.GONE);
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_left_bracket))    .setVisibility( View.GONE);
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_right_bracket))   .setVisibility( View.GONE);
-            }
-        else {
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))                 .setVisibility( View.VISIBLE);
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))                  .setVisibility( View.VISIBLE);
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_left_bracket))    .setVisibility( View.VISIBLE);
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE_right_bracket))   .setVisibility( View.VISIBLE);
+        // assigning values to the UI's equivalents
+        Log .e(TAG + "::populateUI() \t", mMovie.toString() );
+        if (mMovie.getPosterID() != null)                   Picasso .get() .load( mMovie .getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
+        ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview)) .setText(  (mMovie .getTitle() != null)    ?    mMovie .getTitle()        : "");
+        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .setText(   (mMovie.getTitleORIG()  != null)    ?    mMovie .getTitleORIG()    : "" );
+        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))  .setText(   (mMovie.getLangORIG()   != null)    ?    mMovie .getLangORIG()     : "" );
+        ((TextView) findViewById( R.id.release_date)            )           .setText(   (mMovie.getReleasePIT() != null)    ?    mMovie .getReleasePIT() .split("-")[0]    : "" );
+        ((TextView) findViewById( R.id.activity_details_RUNTIME))           .setText(   (mMovie.getRuntimeVAL() != null)    ?    mMovie .getRuntimeVAL()   : "" );
+        ((TextView) findViewById( R.id.rating)                  )           .setText(   (mMovie.getVoteAVG()     >  0  )    ?    String.valueOf(mMovie.getVoteAVG())    : "" );
+        ((TextView) findViewById( R.id.activity_details_TAGLINE))           .setText(   (mMovie.getTagline()    != null)    ?    mMovie .getTagline()      : "" );
+        ((TextView) findViewById( R.id.activity_details_OVERVIEW))          .setText(   (mMovie.getOverview()   != null)    ?    mMovie .getOverview()     : "" );
+        ((TextView) findViewById( R.id.activity_details_GENRES) )           .setText(   (mMovie.getGenres()     != null)    ?    mMovie .getGenres() .substring(1, mMovie .getGenres().length()-1) .replace(",", "\n")  : "");
+        ((TextView) findViewById( R.id.activity_Details_BUDGET) )           .setText(   (mMovie.getBudgetVAL()  != null)    ?    (Integer.parseInt( mMovie .getBudgetVAL()) > 0)   ?   mMovie .getBudgetVAL()   : "" : "" );
+        ((TextView) findViewById( R.id.activity_Details_REVENUE))           .setText(   (mMovie.getRevenueVAL() != null)    ?    (Integer.parseInt( mMovie .getRevenueVAL()) > 0)  ?   mMovie .getRevenueVAL()  : "" : "" );
+        mDetailsRVAdapter   .setHomepageUrl(  (mMovie.getHomepageURL() != null)    ?    (mMovie.getHomepageURL().length() != 0)    ?    mMovie .getImdbURL()    : "" : "" );
+        mDetailsRVAdapter   .setImdbUrl(      (mMovie.getImdbURL() != null)        ?    (mMovie.getImdbURL().length() != 0)        ?    mMovie .getImdbURL()    : "" : "" );
 
-                                                            ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE))                 .setText( movie .getTitleORIG());
-            if (movie.getLangORIG() != null)        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))                  .setText( movie .getLangORIG());
+
+;
+
+        // TODO: hide all empties
+        if (    ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .getText() ==
+                ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview)) .getText())   {
+
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_LANG)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_left_bracket)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_right_bracket)).setVisibility(View.VISIBLE);
         }
-        if (movie.getPosterID() != null)                   Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + movie .getPosterID()) .into( (ImageView) findViewById( R.id.imageView));
-        if (movie.getReleasePIT() != null)                 ((TextView) findViewById( R.id.release_date))                                       .setText( movie .getReleasePIT().split("-")[0]);
-
-        if (movie.getRuntimeVAL() != null)                     ((TextView) findViewById( R.id.activity_details_RUNTIME))                           .setText( movie .getRuntimeVAL());
-        if (movie.getVoteAVG() > 0)                     ((TextView) findViewById( R.id.rating))                                             .setText( String.valueOf(movie.getVoteAVG()));
-        if (movie.getTagline() != null)                     ((TextView) findViewById( R.id.activity_details_TAGLINE))                           .setText( movie .getTagline());
-        if (movie.getOverview() != null)                    ((TextView) findViewById( R.id.activity_details_OVERVIEW))                          .setText( movie .getOverview());
-        if (movie.getGenres() != null)                      ((TextView) findViewById( R.id.activity_details_GENRES))                            .setText( movie .getGenres() .substring(1, movie .getGenres().length()-1) .replace(",", "\n"));
-        if (movie .getBudgetVAL() != null)
-            if (Integer.parseInt( movie.getBudgetVAL()) > 0)   ((TextView) findViewById( R.id.activity_Details_BUDGET))                            .setText( movie .getBudgetVAL());
-        if (movie .getRevenueVAL() != null)
-            if (Integer.parseInt( movie.getRevenueVAL()) > 0)  ((TextView) findViewById( R.id.activity_Details_REVENUE))                           .setText( movie .getRevenueVAL());
-
-        if (movie.getHomepageURL() != null)
-            if (movie.getHomepageURL().length() != 0)       mDetailsRVAdapter .setHomepageUrl(  movie .getImdbURL());
-
-        if (movie.getImdbURL() != null)
-            if (movie.getImdbURL().length() != 0)           mDetailsRVAdapter .setImdbUrl(      movie .getImdbURL());
-
-        Log .e(TAG + "::populateUI() \t", movie.toString() );
     }
 
 

@@ -40,20 +40,19 @@ public class NetworkUtils {
      * @return url as a String, not as a URL !!!
      */
     private static String buildUrl(String requestKey, int requestValue) {
-        Log.d( TAG + "::buildUrl( " + requestKey +  ", " + requestValue + ")" , "... started");
+        // Log.d( TAG + "::buildUrl( " + requestKey +  ", " + requestValue + ")" , "... started");
         try {
             Uri.Builder uriBuilder = Uri.parse( "https://api.themoviedb.org/3/movie") .buildUpon();
-
             switch (requestKey) {
-                case "popular":
-                case "top_rated":
+                case "popular":     /* request for a list of the most popular movies  */
+                case "top_rated":   /* request for a list of the best rated movies  */
                     uriBuilder.appendPath(requestKey);
                     break;
-                case "movie":
+                case "movie":       /* request for detailed info of a single specific movie  */
                     uriBuilder.appendPath(String.valueOf(requestValue));
                     break;
-                case "videos":
-                case "reviews":
+                case "videos":      /* SUBCLASS(movie) : request for a list of YouTube trailers of a single specific movie */
+                case "reviews":     /* SUBCLASS(movie) : request for a list of reviews dedicated to a single specific movie */
                     uriBuilder .appendPath( String.valueOf( requestValue));
                     uriBuilder .appendPath( requestKey);
                     break;
@@ -69,7 +68,6 @@ public class NetworkUtils {
         } catch ( MalformedURLException e) { e.printStackTrace(); return null; }
     }
 
-
     /**
      * This method returns the entire result from the HTTP response.
      *
@@ -78,7 +76,7 @@ public class NetworkUtils {
      * @throws IOException Related to network and stream reading
      */
     private static String getResponseFromHttpUrl(String urlString) throws IOException {
-        Log.d( TAG, " === URL-REQUEST ==> " + urlString );
+        // Log.d( TAG, " === URL-REQUEST ==> " + urlString );
         URL url = new URL(urlString);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         try {
@@ -98,49 +96,54 @@ public class NetworkUtils {
     }
 
 
-    private static Movie parseJsonIntoMovie( JSONObject jsonObject) {
 
-        Movie mBasic;
 
+    private static Movie parseJsonIntoMovieBasics( JSONObject jsonObject) {
+        Movie mBasic = null;
         try {
             int movieID         = jsonObject .getInt("id");
             double popularVAL   = jsonObject .getDouble("popularity");
             double voteAVG      = jsonObject .getDouble("vote_average");
             int voteCNT         = jsonObject .getInt("vote_count");
             String posterID     = jsonObject .getString("poster_path");
-            mBasic = new Movie(movieID, false, popularVAL, voteAVG, voteCNT, posterID, null, null, null, null, null, null, null, null, null, null, null, null);
-        } catch (JSONException e) { e.printStackTrace(); return null; }
+            mBasic = new Movie( movieID, false, popularVAL, voteAVG, voteCNT, posterID, null, null, null, null, null, null, null, null, null, null, null, null);
+        } catch (JSONException e) { e.printStackTrace(); }
+        // Log.e(TAG + "\t::parseJsonIntoMovieBasics()\t", (mBasic != null) ? mBasic .toString() : "Movie.Basics = NULL");
+        return mBasic;
+    }
 
-
-        Movie mDetails = new Movie( mBasic);
-
+    private static Movie parseJsonIntoMovieDetails( JSONObject jsonObject) {
+        Movie mDetails = null;
         try {
-            mDetails .setTitle(     jsonObject  .getString("title"));
-            mDetails .setTitleORIG( jsonObject  .getString("original_title"));
-            mDetails .setLangORIG(  jsonObject  .getString("original_language"));
-            mDetails .setReleasePIT( jsonObject .getString("release_date"));
-            mDetails .setRuntimeVAL( jsonObject .getString("runtime"));
-            mDetails .setTagline(   jsonObject  .getString("tagline"));
-            mDetails .setOverview(  jsonObject  .getString("overview"));
-            mDetails .setBudgetVAL( jsonObject  .getString("budget"));
-            mDetails .setRevenueVAL( jsonObject .getString("revenue"));
-            mDetails .setHomepageURL( jsonObject.getString("homepage"));
-            mDetails .setImdbID(    jsonObject  .getString("imdb_key"));
+            int movieID         = jsonObject .getInt("id");
+            double popularVAL   = jsonObject .getDouble("popularity");
+            double voteAVG      = jsonObject .getDouble("vote_average");
+            int voteCNT         = jsonObject .getInt("vote_count");
+            String posterID     = jsonObject .getString("poster_path");
+            String budgetVAL    = jsonObject .getString("budget");
+            String title        = jsonObject .getString("title");
+            String titleORIG    = jsonObject .getString("original_title");
+            String langORIG     = jsonObject .getString("original_language");
+            String releasePIT   = jsonObject .getString("release_date");
+            String runtimeVAL   = jsonObject .getString("runtime");
+            String tagline      = jsonObject .getString("tagline");
+            String overview     = jsonObject .getString("overview");
+            String revenueVAL   = jsonObject .getString("revenue");
+            String homepageURL  = jsonObject .getString("homepage");
+            String imdbID       = jsonObject  .getString("imdb_id");
 
             List< String> genreList = new ArrayList< String>();
             JSONArray jsonArray = jsonObject .getJSONArray("genres");
-            for ( int i = 0; i < jsonArray.length(); i++)
-                genreList.add( jsonArray .getJSONObject( i) .getString("name"));
-            mDetails .setGenres( genreList.toString());
+            for ( int i = 0; i < jsonArray.length(); i++)   genreList.add( jsonArray .getJSONObject( i) .getString("name"));
 
-        } catch (JSONException e) { e.printStackTrace(); return mBasic; }
+            mDetails = new Movie( movieID, false, popularVAL, voteAVG, voteCNT, posterID, title, titleORIG, langORIG, releasePIT, runtimeVAL, tagline, overview, genreList.toString(), budgetVAL, revenueVAL, homepageURL, imdbID);
+        } catch (JSONException e) { e.printStackTrace(); Log .e(TAG + "\t::parseJsonIntoMovieDetails()\t", "ERROR");  }
 
-
+        Log.d(TAG + "\t::parseJsonIntoMovieDetails()\t", mDetails .toString());
         return mDetails;
-}
+    }
 
-
-    private static MovieExtra parseJsonIntoMovieExtra( int movieID, JSONObject jsonObject) {
+    private static MovieExtra parseJsonIntoMovieExtra( JSONObject jsonObject, int movieID) {
         try{
             String type =       jsonObject.getString("type").toLowerCase();
             type =              (type.equals("trailer") || type.equals("review"))  ? type  : null ;
@@ -154,58 +157,39 @@ public class NetworkUtils {
             String additions =  (type.equals("trailer")) ? null  :
                                 (type.equals("review"))  ? jsonObject.getString("content")  : null ;
 
-            return new MovieExtra(movieID, type, name, url, additions);
-
+            MovieExtra movieExtra = new MovieExtra(movieID, type, name, url, additions);
+            Log .e(TAG + "\t::parseJsonIntoMovieExtra()\t", movieExtra.toString());
+            return movieExtra;
         } catch (JSONException e) { e.printStackTrace(); return null; }
     }
 
 
 
 
-
     public static void integrateAllBasics( final AppDatabase appDatabase) {
+        for (String orderBy : ORDER_BY_array) { boolean condition = true; int page = 0;
+            do { try { try {
 
+                        String response = getResponseFromHttpUrl( buildUrl( orderBy, ++page));
+                        JSONObject jsonObject = new JSONObject(response);
 
-        for (String orderBy : ORDER_BY_array) {
+                        condition = page == jsonObject.getInt("page") &&
+                                    page <  jsonObject.getInt("total_pages");
 
-            AppExecutors.getInstance().networkIO().execute(() -> {
-
-                boolean condition = true;
-                int page = 0;
-
-                do {
-                    try {
-                        try {
-
-                            String response = getResponseFromHttpUrl(buildUrl(orderBy, ++page));
-                            JSONObject jsonObject = new JSONObject(response);
-
-                            condition = page == jsonObject.getInt("page") &&
-                                        page < jsonObject.getInt("total_pages");
-
-                            JSONArray jsonArray = jsonObject.getJSONArray("results");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-
-                                Movie movie = parseJsonIntoMovie(jsonArray.getJSONObject(i));
-                                if (movie != null) {
-                                    final Movie MOVIE = movie;
-                                    Log.e(TAG + "::integrateAllBasics()", MOVIE.toString());
-                                    AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieDao().insertMovie(MOVIE));
-                                }
+                        JSONArray jsonArray = jsonObject.getJSONArray("results");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            Movie movie = parseJsonIntoMovieBasics(jsonArray.getJSONObject(i));
+                            if (movie != null) {
+                                AppExecutors.getInstance().diskIO().execute(() ->{
+                                    appDatabase.movieDao().insertMovie(movie);
+                                    // Log.d(TAG + "::integrateAllBasics()", MOVIE.toString());
+                                });
                             }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e(TAG + "::integrateAllBasics()", "!!! JSONException !!!");
-                            return;
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e(TAG + "::integrateAllBasics()  @(" + orderBy + ", " + page + ")", "!!! IOException !!!");
-                        return;
-                    }
-                } while (condition);
-            });
+                    } catch (JSONException e) { e.printStackTrace(); /* Log.e(TAG + "::integrateAllBasics()", "!!! JSONException !!!"); */ return; }
+                } catch (IOException e) { e.printStackTrace(); /* Log.e(TAG + "::integrateAllBasics()  @(" + orderBy + ", " + page + ")", "!!! IOException !!!");  */ return; }
+            } while (condition);
+
         }
 
     }
@@ -215,67 +199,43 @@ public class NetworkUtils {
 
 
 
-//
-//
-//
-//        public static void integrateDetails( AppDatabase appDatabase, int movieID)  {
-//
-//        AppExecutors .getInstance() .networkIO() .execute( () -> {
-//            Log.d( TAG + "::integratePageOfMovies( " + page + ")", "\t B E G I N >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " );
-//            try {
-//                final String JSON = getResponseFromHttpUrl( (buildUrl( orderBy, page)));
-//
-//                if (JSON != null) try {
-//
-//                    JSONArray results = new JSONObject( JSON) .getJSONArray("results");
-//                    for (int i = 0; i < results.length(); i++) {
-//
-//                        final int MID = results .getJSONObject( i). getInt("id");
-//
-//
-//                        AppExecutors .getInstance() .networkIO() .execute( () -> {
-//                            try{
-//                                final String JSONdetails = getResponseFromHttpUrl( buildUrl("movie",   MID));
-//                                try {
-//                                    final Movie MOVIE = parseJsonIntoMovie( new JSONObject( JSONdetails));
-//                                    if (MOVIE != null) {
-//                                        Log.d(TAG + "::integratePageOfMovies()", "------>" + MOVIE.toString());
-//                                        AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieDao().insertMovie(MOVIE));
-//                                    }
-//                                } catch (JSONException e) { Log.e( TAG + "::integratePageOfMovies()", "!!! JSONException !!!" ); e.printStackTrace(); }
-//                            } catch (IOException e) { Log.e( TAG + "::integratePageOfMovies()", "!!! IOException !!!" ); e.printStackTrace(); }
-//                        });
-//
-//
-//
-//
-//                        AppExecutors .getInstance() .networkIO() .execute( () -> {
-//                            try{
-//                                String JSONtrailers = getResponseFromHttpUrl( buildUrl("videos",   MID));
-//                                try {
-//                                    JSONArray jsonArray = ( new JSONObject( JSONtrailers)) .getJSONArray("results");
-//                                    for (int index = 0; index < jsonArray.length(); index++ )
-//                                    {
-//                                        JSONObject jO = (JSONObject) jsonArray.get( index);
-//                                        final MovieExtra MOVIE_EXTRA = parseJsonIntoMovieExtra( MID, jO);
-//                                        if (MOVIE_EXTRA != null) {
-//                                            Log.d(TAG + "::integratePageOfMovies()", "------>" + MOVIE_EXTRA.toString());
-//                                            AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieExtraDao() .insertMovie(MOVIE_EXTRA));
-//                                        }
-//                                    }
-//
-//                                } catch (JSONException e) { Log.e( TAG + "::integratePageOfMovies()", "!!! JSONException !!!" ); e.printStackTrace(); }
-//                            } catch (IOException e) { Log.e( TAG + "::integratePageOfMovies()", "!!! IOException !!!" ); e.printStackTrace(); }
-//                        });
-//
-//                    }
-//                } catch (JSONException e) { Log.e( TAG + "::integratePageOfMovies()", "!!! JSONException !!!" ); e.printStackTrace(); }
-//            } catch (IOException e) { Log.e( TAG + "::integratePageOfMovies()", "!!! IOException !!!" ); e.printStackTrace(); }
-//            Log.d( TAG + "::integratePageOfMovies()", "\tE N D <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< " );
-//        });
-//    }
-//
-//
 
+
+
+    public static void integrateDetails( AppDatabase appDatabase, int movieID)  {
+        try {
+            String response = getResponseFromHttpUrl((buildUrl("movie", movieID)));
+            if (response != null)
+                try {
+                    Movie movie = parseJsonIntoMovieDetails(new JSONObject(response));
+                    if (movie != null)
+                        AppExecutors.getInstance().diskIO().execute(
+                                () ->  appDatabase.movieDao().updateMovie(movie));
+
+                } catch (JSONException e) { e.printStackTrace(); }
+        } catch (IOException e) { e.printStackTrace(); }
+
+    }
+
+
+
+    public static void integrateExtras( AppDatabase appDatabase, int movieID)  {
+
+        for (String requestKey : new String[]{"videos", "reviews"}) {
+            AppExecutors .getInstance() .networkIO() .execute( () -> {
+                try {
+                    String response = getResponseFromHttpUrl((buildUrl(requestKey, movieID)));
+                    if (response != null)
+                        try {
+                            MovieExtra movieExtra= parseJsonIntoMovieExtra(new JSONObject(response), movieID);
+                            if (movieExtra!= null) {
+                                Log.d(TAG + "::integrateExtras()", "------>" + movieExtra.toString());
+                                AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieExtraDao().insertExtra(movieExtra));
+                            }
+                        } catch (JSONException e) { e.printStackTrace(); }
+                } catch (IOException e) { e.printStackTrace();  }
+            });
+        }
+    }
 
 }

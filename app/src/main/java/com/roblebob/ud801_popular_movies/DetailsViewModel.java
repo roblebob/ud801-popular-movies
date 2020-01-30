@@ -9,22 +9,15 @@ import java.util.List;
 
 public class DetailsViewModel extends ViewModel {
 
-
     private AppDatabase appDatabase;
     private int MID;
-    private LiveData< Movie> mMovieLive;
-    private LiveData< List< MovieExtra>> mMovieExtraLive;
-
-
 
     public DetailsViewModel(@NonNull AppDatabase appDatabase, int MID) {
 
         this.appDatabase = appDatabase;
         this.MID = MID;
-        mMovieLive = appDatabase .movieDao() .loadMovieByMID( MID);
-        mMovieExtraLive = appDatabase .movieExtraDao() .loadExtrasByMID( MID);
     }
 
-    public LiveData< Movie> getMovieLive() { return mMovieLive; }
+    public LiveData< Movie> getMovieLive() { return appDatabase .movieDao() .loadMovieByMID( MID); }
     public LiveData< List< MovieExtra>> getExtraListLive() { return appDatabase .movieExtraDao(). loadExtrasByMID( MID); }
 }
