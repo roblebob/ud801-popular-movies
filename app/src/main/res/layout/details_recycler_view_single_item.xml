@@ -11,12 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/details_recycler_view_single_item_TRIANGLE_textview"
+        app:layout_constraintBottom_toBottomOf="@+id/details_recycler_view_single_item_NAME_textview"
+        app:layout_constraintEnd_toStartOf="@+id/details_recycler_view_single_item_TRIANGLE_textview"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintRight_toLeftOf="@+id/details_recycler_view_single_item_TRIANGLE_textview"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/details_recycler_view_single_item_TRIANGLE_textview"
-        app:layout_constraintVertical_bias="0.58">
+        app:layout_constraintTop_toTopOf="@+id/details_recycler_view_single_item_NAME_textview">
 
         <TextView
             android:id="@+id/details_recycler_view_single_item_CARDVIEW_textview"
@@ -33,26 +32,35 @@
         android:id="@+id/details_recycler_view_single_item_TRIANGLE_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="fill_vertical"
         android:text="&#x25B8;"
-        android:textSize="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/details_recycler_view_single_item_NAME_textview"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="@+id/details_recycler_view_single_item_NAME_textview"
+        app:layout_constraintEnd_toStartOf="@+id/details_recycler_view_single_item_NAME_textview"
         app:layout_constraintStart_toEndOf="@+id/details_recycler_view_single_item_CARDVIEW"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.58" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/details_recycler_view_single_item_NAME_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Offizial Trailer #2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="start|center_vertical"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:text="fwegfwergewrv"
         android:textAlignment="viewStart"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/details_recycler_view_single_item_CARDVIEW"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/details_recycler_view_single_item_TRIANGLE_textview"
-        app:layout_constraintTop_toTopOf="@+id/details_recycler_view_single_item_CARDVIEW"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

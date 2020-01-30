@@ -99,14 +99,8 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         // assigning values to the UI's equivalents
         if (mMovie.getPosterID() != null)   Picasso .get() .load( mMovie .getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
 
-
-
-        if (mMovie .isFav())  {
-            favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
-        }
-        else {
-            favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorGray)));
-        }
+        if (mMovie .isFav())    favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
+        else                    favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorGray)));
 
         ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview)) .setText(  (mMovie .getTitle() != null)    ?    mMovie .getTitle()        : "");
         ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .setText(   (mMovie.getTitleORIG()  != null)    ?    mMovie .getTitleORIG()    : "" );
@@ -119,18 +113,18 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         ((TextView) findViewById( R.id.activity_details_GENRES) )           .setText(   (mMovie.getGenres()     != null)    ?    mMovie .getGenres() .substring(1, mMovie .getGenres().length()-1) .replace(",", "\n")  : "");
         ((TextView) findViewById( R.id.activity_Details_BUDGET) )           .setText(   (mMovie.getBudgetVAL()  != null)    ?    (Integer.parseInt( mMovie .getBudgetVAL()) > 0)   ?   mMovie .getBudgetVAL()   : "" : "" );
         ((TextView) findViewById( R.id.activity_Details_REVENUE))           .setText(   (mMovie.getRevenueVAL() != null)    ?    (Integer.parseInt( mMovie .getRevenueVAL()) > 0)  ?   mMovie .getRevenueVAL()  : "" : "" );
+
         mDetailsRVAdapter   .setHomepageUrl(  (mMovie.getHomepageURL() != null)    ?    (mMovie.getHomepageURL().length() != 0)    ?    mMovie .getImdbURL()    : "" : "" );
         mDetailsRVAdapter   .setImdbUrl(      (mMovie.getImdbURL() != null)        ?    (mMovie.getImdbURL().length() != 0)        ?    mMovie .getImdbURL()    : "" : "" );
 
 
         // TODO: hide all empties
-        if (    ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .getText() ==
-                ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview)) .getText())   {
+        if ( mMovie.getTitleORIG().equals( mMovie.getTitle()))  {
 
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE)).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_LANG)).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_left_bracket)).setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_right_bracket)).setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_LANG)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_left_bracket)).setVisibility(View.GONE);
+            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_right_bracket)).setVisibility(View.GONE);
         }
     }
 

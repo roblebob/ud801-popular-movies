@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "MovieExtra")
 public class MovieExtra {
 
-    @PrimaryKey(autoGenerate = true)        private int _ID;
+    @PrimaryKey(autoGenerate = false)        private int _ID;
     @ColumnInfo(name = "MID")               private int MID;
     @ColumnInfo(name = "type")              private String type;
     @ColumnInfo(name = "name")              private String name;
@@ -18,8 +18,6 @@ public class MovieExtra {
 
 
     public MovieExtra(int _ID, int MID, String type, String name, String url, String additions) { this._ID = _ID; this.MID = MID; this.type = type; this.name = name; this.url = url; this.additions = additions; }
-    @Ignore
-    public MovieExtra(         int MID, String type, String name, String url, String additions) {                 this.MID = MID; this.type = type; this.name = name; this.url = url; this.additions = additions; }
 
 
     public int get_ID()             { return this._ID; }

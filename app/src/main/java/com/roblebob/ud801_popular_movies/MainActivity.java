@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
             @Override
             public void onChanged(@NonNull List< Movie> movieList) {
                 mainViewModel.getPopularMovieListLive() .removeObserver( this);
-                Log.d( TAG, "-------->   " + "Receiving database update for Movies from LiveData:  " + movieList.toString());
+                // Log.d( TAG, "-------->   " + "Receiving database update for Movies from LiveData:  " + movieList.toString());
                 mMainRVAdapter .setMovieList( new ArrayList< Movie>( movieList));
             }
         }) ;

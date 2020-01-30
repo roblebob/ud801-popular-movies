@@ -55,8 +55,8 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
         holder .textView.setText(String.valueOf( position + 1));
 
         if (mMovieList.get( position) .getTitle() == null) {
-            NetworkUtils.integrateDetails(mAppDatabase, mMovieList.get(position).getMovieID());
-            // NetworkUtils.integrateExtras(mAppDatabase, mMovieList.get( position) .getMovieID());
+            NetworkUtils .integrateDetails( mAppDatabase, mMovieList .get( position) .getMovieID());
+            NetworkUtils .integrateExtras( mAppDatabase, mMovieList .get( position) .getMovieID());
         }
 
         Log.e(TAG + "::onBindViewHolder() ", "----[POS:" + position + "]---[PAGE:" + whatPage(position) + "]---[SIZE:" + mMovieList.size() + "]--->  " + posterKEY);

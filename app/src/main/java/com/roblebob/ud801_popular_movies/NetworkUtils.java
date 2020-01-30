@@ -139,25 +139,60 @@ public class NetworkUtils {
         return mDetails;
     }
 
-    private static MovieExtra parseJsonIntoMovieExtra( JSONObject jsonObject, int movieID) {
-        try{
-            String type =       jsonObject.getString("type").toLowerCase();
-            type =              (type.equals("trailer") || type.equals("review"))  ? type  : null ;
 
-            String name =       (type.equals("trailer")) ?  jsonObject.getString("name")  :
-                                (type.equals("review"))  ? jsonObject.getString("author") : null ;
 
-            String url =        (type.equals("trailer")) ? "https://www.youtube.com/watch?v=" + jsonObject.getString("key")  :
-                                (type.equals("review"))  ? jsonObject.getString("url")  : null ;
 
-            String additions =  (type.equals("trailer")) ? null  :
-                                (type.equals("review"))  ? jsonObject.getString("content")  : null ;
 
-            MovieExtra movieExtra = new MovieExtra(movieID, type, name, url, additions);
-            Log .e(TAG + "\t::parseJsonIntoMovieExtra()\t", movieExtra.toString());
-            return movieExtra;
-        } catch (JSONException e) { e.printStackTrace(); return null; }
+    private static int genMovieExtraID(int movieID, String type, int i) {
+        String s =  String.valueOf(movieID) +
+                    (type.equals("trailer") ? "0" : "1") +
+                    String.valueOf(i);
+        return Integer.parseInt(s);
     }
+
+
+
+
+    private static MovieExtra parseVideosJsonIntoMovieExtra( JSONObject jsonSubObject, int movieID, int i) {
+        if (jsonSubObject != null) {
+            try {
+                String type = jsonSubObject.getString("type").toLowerCase();
+                if (type.equals("trailer"))
+                    return new MovieExtra(  genMovieExtraID(movieID, type, i),
+                                            movieID,
+                                            type,
+                                            jsonSubObject.getString("name"),
+                                            "https://www.youtube.com/watch?v=" + jsonSubObject.getString("key"),
+                                            null  );
+            } catch (JSONException ee) {
+                    Log.e(TAG + "\t::parseVideosJsonIntoMovieExtra()\t", "-E-R-R-o-R---->  [movieID]:" + movieID);
+                    return null;
+            }
+        }
+        return null;
+    }
+
+
+
+
+    private static MovieExtra parseReviewsJsonIntoMovieExtra( JSONObject jsonSubObject, int movieID, int i) {
+        final String TYPE = "review";
+        if (jsonSubObject != null) {
+            try {
+                return new MovieExtra(   genMovieExtraID(movieID, TYPE, i),
+                                         movieID,
+                                         TYPE,
+                                         jsonSubObject.getString("author"),
+                                         jsonSubObject.getString("url"),
+                                         jsonSubObject.getString("content")  );
+            } catch (JSONException e) {
+                    Log.e(TAG + "\t::parseReviewsJsonIntoMovieExtra()\t", "-E-R-R-o-R---->  [movieID]:" + movieID);
+                    return null;
+            }
+        }
+        return null;
+    }
+
 
 
 
@@ -216,11 +251,21 @@ public class NetworkUtils {
                     String response = getResponseFromHttpUrl((buildUrl(requestKey, movieID)));
                     if (response != null)
                         try {
-                            MovieExtra movieExtra = parseJsonIntoMovieExtra(new JSONObject(response), movieID);
-                            if (movieExtra != null) {
-                                Log.d(TAG + "::integrateExtras()", "------>" + movieExtra.toString());
-                                AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieExtraDao().insertExtra(movieExtra));
-                            }
+                            JSONObject jsonSupObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonSupObject.getJSONArray("results");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonSubObject = jsonArray.getJSONObject( i);
+
+                                MovieExtra movieExtra = null;
+                                if (requestKey.equals("videos")) movieExtra = parseVideosJsonIntoMovieExtra( jsonSubObject, movieID, i);
+                                else                             movieExtra = parseReviewsJsonIntoMovieExtra( jsonSubObject, movieID, i);
+
+                                if (movieExtra != null) {
+                                    final MovieExtra EXTRA = movieExtra;
+                                    Log.e(TAG + "::integrateExtras()", "------>" + EXTRA.toString());
+                                    AppExecutors.getInstance().diskIO().execute(() -> appDatabase.movieExtraDao().insertExtra(EXTRA));
+                            }}
                         } catch (JSONException e) { e.printStackTrace(); }
                 } catch (IOException e) { e.printStackTrace(); }
             }
