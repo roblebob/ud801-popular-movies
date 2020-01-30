@@ -5,7 +5,9 @@
     android:height="24dp"
     android:autoMirrored="true"
     android:viewportWidth="512"
-    android:viewportHeight="512">
+    android:viewportHeight="512"
+
+    >
     <path
         android:fillColor="#505050"
         android:pathData="L

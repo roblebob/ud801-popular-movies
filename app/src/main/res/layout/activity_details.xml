@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="8.4"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/button"
+                app:layout_constraintBottom_toTopOf="@+id/activity_details_BUTTON_fav"
                 app:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME"
                 app:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME"
                 tools:layout_editor_absoluteY="282dp" />
@@ -120,12 +120,12 @@
                 app:layout_constraintBaseline_toBaselineOf="@+id/rating"
                 app:layout_constraintStart_toEndOf="@+id/rating" />
 
-            <Button android:id="@+id/button"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+            <Button android:id="@+id/activity_details_BUTTON_fav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:drawableStart="@drawable/favorite_star_on"
-                android:drawableTint="@color/colorGrey"
+                android:drawableTint="@color/colorGray"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
                 app:layout_constraintStart_toStartOf="@+id/rating" />

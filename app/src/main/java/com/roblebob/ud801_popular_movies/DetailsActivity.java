@@ -1,15 +1,19 @@
 package com.roblebob.ud801_popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -32,6 +36,7 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
     private DetailsRVAdapter mDetailsRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
     private Movie mMovie;
+    private Button favButton;
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -44,9 +49,6 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         if ( intent != null && intent.hasExtra( EXTRA_MID))
             MID = intent .getIntExtra( EXTRA_MID, -1);
 
-
-
-
         // if (savedInstanceState != null && savedInstanceState.containsKey( INSTANCE_ID))  ID = savedInstanceState .getInt( INSTANCE_ID, -1);
 
         mDetailsRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
@@ -55,12 +57,17 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         mDetailsRVAdapter = new DetailsRVAdapter();
         mDetailsRV .setAdapter(mDetailsRVAdapter);
         mDetailsRV .setHasFixedSize( false);
+
+        favButton = (Button) findViewById(R.id.activity_details_BUTTON_fav);
+        favButton.setOnClickListener(v -> {
+
+            mMovie.inverseFav();
+            AppExecutors.getInstance().diskIO().execute(
+                    () -> mAppDatabase.movieDao().updateMovie( mMovie));
+            Log .e(TAG, "CLICKED!!   " + mMovie.isFav());
+        });
         ////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
         if (MID > 0) {
-
             DetailsViewModelFactory detailsViewModelFactory = new DetailsViewModelFactory( mAppDatabase, MID);
             final DetailsViewModel detailsViewModel = ViewModelProviders.of(this, detailsViewModelFactory) .get( DetailsViewModel.class);
 
@@ -70,7 +77,6 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
 
                     detailsViewModel .getMovieLive() .removeObserver( this);
                     mMovie = new Movie( movie);
-                    Log.d( TAG + "\t::onChanged( movie)\t", "Receiving database update from LiveData\t>>>>>>>>\t" + "\n" + mMovie.toString() + "\n" + movie.toString() );
                     populateUI();
                 }
             });
@@ -85,17 +91,23 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                 }
             });
 
-
         } else Log .e(this.getClass().getSimpleName(), "ERROR");
     }
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private void  populateUI() {
-
+        Log.e(TAG, "change has occured -->  populateUI()");
         // assigning values to the UI's equivalents
-        Log .e(TAG + "::populateUI() \t", mMovie.toString() );
-        if (mMovie.getPosterID() != null)                   Picasso .get() .load( mMovie .getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
+        if (mMovie.getPosterID() != null)   Picasso .get() .load( mMovie .getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
+
+
+
+        if (mMovie .isFav())  {
+            favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
+        }
+        else {
+            favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorGray)));
+        }
+
         ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview)) .setText(  (mMovie .getTitle() != null)    ?    mMovie .getTitle()        : "");
         ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .setText(   (mMovie.getTitleORIG()  != null)    ?    mMovie .getTitleORIG()    : "" );
         ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))  .setText(   (mMovie.getLangORIG()   != null)    ?    mMovie .getLangORIG()     : "" );
@@ -110,8 +122,6 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         mDetailsRVAdapter   .setHomepageUrl(  (mMovie.getHomepageURL() != null)    ?    (mMovie.getHomepageURL().length() != 0)    ?    mMovie .getImdbURL()    : "" : "" );
         mDetailsRVAdapter   .setImdbUrl(      (mMovie.getImdbURL() != null)        ?    (mMovie.getImdbURL().length() != 0)        ?    mMovie .getImdbURL()    : "" : "" );
 
-
-;
 
         // TODO: hide all empties
         if (    ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .getText() ==
@@ -130,7 +140,7 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
 
     @Override
     public void onItemClickListener(int pos) {
-
+        Log .e(TAG, "CLICKED !!!");
 
 
 
