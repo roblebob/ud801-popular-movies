@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +57,7 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         mDetailsRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
         mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         mDetailsRV.setLayoutManager(mDetailsRVLayoutManager);
-        mDetailsRVAdapter = new DetailsRVAdapter();
+        mDetailsRVAdapter = new DetailsRVAdapter(this);
         mDetailsRV .setAdapter(mDetailsRVAdapter);
         mDetailsRV .setHasFixedSize( false);
 
@@ -114,8 +117,8 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         ((TextView) findViewById( R.id.activity_Details_BUDGET) )           .setText(   (mMovie.getBudgetVAL()  != null)    ?    (Integer.parseInt( mMovie .getBudgetVAL()) > 0)   ?   mMovie .getBudgetVAL()   : "" : "" );
         ((TextView) findViewById( R.id.activity_Details_REVENUE))           .setText(   (mMovie.getRevenueVAL() != null)    ?    (Integer.parseInt( mMovie .getRevenueVAL()) > 0)  ?   mMovie .getRevenueVAL()  : "" : "" );
 
-        mDetailsRVAdapter   .setHomepageUrl(  (mMovie.getHomepageURL() != null)    ?    (mMovie.getHomepageURL().length() != 0)    ?    mMovie .getImdbURL()    : "" : "" );
-        mDetailsRVAdapter   .setImdbUrl(      (mMovie.getImdbURL() != null)        ?    (mMovie.getImdbURL().length() != 0)        ?    mMovie .getImdbURL()    : "" : "" );
+        if (mMovie.getHomepageURL() != null) if (mMovie.getHomepageURL().length() != 0)   mDetailsRVAdapter   .setHomepageUrl(  mMovie .getHomepageURL());
+        if (mMovie.getImdbURL() != null)     if (mMovie.getImdbURL().length()     != 0)   mDetailsRVAdapter   .setImdbUrl(      mMovie .getImdbURL());
 
 
         // TODO: hide all empties
@@ -133,9 +136,12 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
 
 
     @Override
-    public void onItemClickListener(int pos) {
-        Log .e(TAG, "CLICKED !!!");
-
+    public void onItemClickListener(String type, String url) {
+        Log .e(TAG, "CLICKED !!!   [type]:" + type + "   [url]:" + url);
+        try {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( (new URL(url).toString())));
+            startActivity(browserIntent);
+        } catch (MalformedURLException e) { e.printStackTrace(); }
 
 
     }

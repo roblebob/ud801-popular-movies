@@ -1,7 +1,9 @@
 package com.roblebob.ud801_popular_movies;
 
+import android.telecom.Call;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +17,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.DetailsRVViewholder> {
-
+    private static final String TAG = DetailsRVAdapter.class.getSimpleName();
     private static final String ARROW_right = Html.fromHtml("&blacktriangleright;").toString();
 
     private String mHomepageUrl;
     private String mImdbUrl;
     private List< MovieExtra> mMovieExtraList;
+    private DetailsRVAdapter.ItemClickListener itemClickListener;
 
+    DetailsRVAdapter(DetailsRVAdapter.ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public void setHomepageUrl( String homeUrl) { mHomepageUrl = homeUrl; notifyDataSetChanged(); }
     public void setImdbUrl( String imdbUrl)     { mImdbUrl = imdbUrl; notifyDataSetChanged(); }
@@ -57,13 +63,13 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
         } else if ( isImdbPage(position)) {
             holder .cardviewTextView    .setText( "imdb");
             holder .nameTextView        .setText( "IMDB's page");
-            holder.itemView.setOnClickListener( (View v) -> { /* start IMDB's page within a webview/browser */ });
+            holder .urlString =  mImdbUrl;
 
         } else if ( isExtra( position)) {
             int index = position - getHomePageItemCount() - getImdbUrlItemCount();
             holder.cardviewTextView.setText(mMovieExtraList.get( index).getType());
             holder.nameTextView.setText( mMovieExtraList.get( index).getName());
-            holder.itemView.setOnClickListener((View v) -> { /* start trailer on youtube */ });
+            holder.urlString = mMovieExtraList.get( index). getUrl();
         }
 
     }
@@ -87,10 +93,10 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     //----------------------------------------------------------------------------------------------
 
     @Override public int getItemCount() {
-        return getHomePageItemCount() + getImdbUrlItemCount() + mMovieExtraList.size(); }
+        return (mMovieExtraList != null)  ?  getHomePageItemCount() + getImdbUrlItemCount() + mMovieExtraList.size()   : 0; }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public interface ItemClickListener { void onItemClickListener( int pos); }
+    public interface ItemClickListener { void onItemClickListener( String type, String url); }
 
     class DetailsRVViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -112,6 +118,8 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
         @Override
         public void onClick(View v) {
 
+            Log .e(TAG, "---------_>  "  + urlString);
+            itemClickListener.onItemClickListener(cardviewTextView.getText().toString(), urlString);
         }
     }
 }
