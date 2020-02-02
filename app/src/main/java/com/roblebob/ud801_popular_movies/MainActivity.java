@@ -2,6 +2,7 @@ package com.roblebob.ud801_popular_movies;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,12 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         mPresentState = (savedInstanceState == null) ? new Bundle() : savedInstanceState;
         if (mPresentState.getString("orderType") == null) mPresentState.putString("orderType", "popular");
         setContentView( R.layout.activity_main);
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_TOOLBAR);
+        //if (toolbar != null)  setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null)  getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setFitsSystemWindows(true);
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.activity_main_TOOLBAR_textview);
         ////////////////////////////////////////////////////////////////////////////////////////////
         mAppDatabase = AppDatabase .getInstance( getApplicationContext());
         MainViewModelFactory mainViewModelFactory = new MainViewModelFactory( mAppDatabase );
