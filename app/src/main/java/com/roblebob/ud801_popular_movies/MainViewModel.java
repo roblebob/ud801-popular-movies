@@ -17,6 +17,10 @@ public class MainViewModel extends ViewModel {
         mAppDatabase = appDatabase;
     }
 
+    public LiveData< List< Movie>> getMovieListLive(String orderType) {
+        if (orderType.equals("top_rated")) return mAppDatabase .movieDao() .loadTopRatedMovies();
+        else  return mAppDatabase .movieDao() .loadPopularMovies();
+    }
     public LiveData< List< Movie>> getPopularMovieListLive() { return mAppDatabase .movieDao() .loadPopularMovies(); }
     public LiveData< List< Movie>> getTopRatedMovieListLive() { return mAppDatabase .movieDao() .loadTopRatedMovies(); }
 }

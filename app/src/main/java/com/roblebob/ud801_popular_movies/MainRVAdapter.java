@@ -14,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVViewHolder> {
@@ -34,23 +37,50 @@ public class MainRVAdapter extends RecyclerView.Adapter<MainRVAdapter.MainRVView
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     private List< Movie> mMovieList;
+    private String mOrderedBy = "popular";
 
-    public void setMovieList( List< Movie> movieList) {
+    public void setMovieList( List< Movie> movieList, String orderedBy) {
         mMovieList = movieList;
+        mOrderedBy = orderedBy;
         notifyDataSetChanged();
     }
+    public void changeOrderedBy(String orderedBy) {
+
+        Comparator< Movie> compareByPopular = (Movie m1, Movie m2) ->
+                (Double.compare( m1.getPopularVAL(), m2.getPopularVAL()) != 0)
+                        ? Double.compare( m1.getPopularVAL(), m2.getPopularVAL())
+                        : (Double.compare( m1.getFav(), m2.getFav()) != 0)
+                            ? Double.compare( m1.getFav(), m2.getFav())
+                            : Double.compare( m1.getVoteAVG(), m2.getVoteAVG());
+
+        Comparator< Movie> compareByTopRated = (Movie m1, Movie m2) ->
+                (Double.compare( m1.getVoteAVG(), m2.getVoteAVG()) != 0)
+                        ? Double.compare( m1.getVoteAVG(), m2.getVoteAVG())
+                        : (Double.compare( m1.getFav(), m2.getFav()) != 0)
+                            ? Double.compare( m1.getFav(), m2.getFav())
+                            : Double.compare( m1.getPopularVAL(), m2.getPopularVAL()) ;
+
+        switch (orderedBy) {
+            case "popular" :
+                mOrderedBy = "top_rated";
+                Collections .sort( mMovieList, compareByTopRated.reversed());
+                break;
+            case "top_rated":
+                mOrderedBy = "popular";
+                Collections .sort( mMovieList, compareByPopular.reversed());
+                break;
+        }
+        mOrderedBy = orderedBy;
+        notifyDataSetChanged();
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    @NonNull
-    @Override
-    public MainRVViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from( parent .getContext())
-                .inflate( R.layout.main_recycler_view_single_item, parent, false);
+    @NonNull @Override public MainRVViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater .from( parent .getContext()) .inflate( R.layout.main_recycler_view_single_item, parent, false);
         return new MainRVViewHolder( view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
+    @Override public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
         final String posterKEY = mMovieList.get( position) .getPosterID();
         holder .textView.setText(String.valueOf( position + 1));
 

@@ -6,6 +6,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Collections;
+
+import java.util.List;
+
 import org.jetbrains.annotations.NotNull;
 
 @Entity(tableName = "Movie")
@@ -105,6 +109,7 @@ public class Movie {
     public double getVoteAVG()     { return this.voteAVG; }
     public int getVoteCNT()        { return this.voteCNT; }
     public String getPosterID()    { return this.posterID; }
+    @Ignore public double getFav() { return (isFav()) ? 1.0 : 0.0;}
     @Ignore public String getPosterURL() { return ( getPosterID() != null)  ?   "http://image.tmdb.org/t/p/w185/" + getPosterID()   :   null; }
 
     public String getTitle()        { return this.title; }
@@ -146,4 +151,6 @@ public class Movie {
     @Ignore public void inverseFav() { setFav( !isFav());}
 
     @Ignore @NonNull @Override public String toString() { return  "Movie( " + "[movieID]:" + getMovieID() + ", " + "[popularVAL]:" + getPopularVAL() + ", " + "[voteAVG]:" + getVoteAVG() + ", " + "[voteCNT]:" + getVoteCNT() + ", " + "[posterURL]:" + getPosterURL() + ", " + "\t" +  "[title]:" + getTitle() + ", " + "[orig_title]:" + getTitleORIG() + ", " + "[orig_lang]:" + getLangORIG() + ", " + "[released]:" + getReleasePIT() + ", " + "[runtimeVAL]:" + getRuntimeVAL() + ", " + "[tagline]:" + getTagline() + ", " + "[overview]:" + getOverview() + ", " + "[genres]:" + getGenres() + ", " + "[budgetVAL]:" + getBudgetVAL() + ", " + "[revenueVAL]:" + getRevenueVAL() + ", " + "[homepageURL]:" + getHomepageURL() + ", " + "[imdbURL]:" + getImdbURL() + ") \t\t"; }
+
+    //@Ignore @Override public int compareTo(Movie o) { return Double .compare( getPopularVAL(), o.getPopularVAL()); }
 }

@@ -14,6 +14,8 @@ import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,11 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
     private RecyclerView.LayoutManager mRVLayoutManager;
     private Bundle mPresentState;
     private int whatPage(final int position) { return (int) ( Math .floor( position / 20) + 1); }
+    TextView movieCNTtv;
+    TabLayout tabLayout;
+    String mOrderedBy = "popular";
+    int mDetailedCNT = 0;
+
 
 
     @Override
@@ -35,12 +42,14 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         if (mPresentState.getString("orderType") == null) mPresentState.putString("orderType", "popular");
         setContentView( R.layout.activity_main);
         ////////////////////////////////////////////////////////////////////////////////////////////
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_TOOLBAR);
+        Toolbar toolbar = (Toolbar) findViewById( R.id.activity_main_TOOLBAR);
         //if (toolbar != null)  setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)  getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setFitsSystemWindows(true);
-        TextView mTitle = (TextView) toolbar.findViewById(R.id.activity_main_TOOLBAR_textview);
+        if (getSupportActionBar() != null)  getSupportActionBar().setDisplayShowTitleEnabled( false);
+        toolbar.setFitsSystemWindows( true);
+
         ////////////////////////////////////////////////////////////////////////////////////////////
+        movieCNTtv = findViewById( R.id.activitity_main_BASIC_COUNT_tv);
+
         mAppDatabase = AppDatabase .getInstance( getApplicationContext());
         MainViewModelFactory mainViewModelFactory = new MainViewModelFactory( mAppDatabase );
         MainViewModel mainViewModel = ViewModelProviders.of(this, mainViewModelFactory) .get( MainViewModel.class);
@@ -48,39 +57,37 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         mainViewModel .getPopularMovieListLive() .observe(this, new Observer< List< Movie>>() {
             @Override
             public void onChanged(@NonNull List< Movie> movieList) {
-                mainViewModel.getPopularMovieListLive() .removeObserver( this);
+                mainViewModel.getMovieListLive(mOrderedBy) .removeObserver( this);
                 // Log.d( TAG, "-------->   " + "Receiving database update for Movies from LiveData:  " + movieList.toString());
-                mMainRVAdapter .setMovieList( new ArrayList< Movie>( movieList));
+                mMainRVAdapter .setMovieList( new ArrayList< Movie>( movieList), mOrderedBy);
+                movieCNTtv .setText( String.valueOf(movieList.size()));
             }
         }) ;
         ////////////////////////////////////////////////////////////////////////////////////////////
         mMainRV = (RecyclerView) this.findViewById( R.id.activity_main_RECYCLER_VIEW);
         mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
-        ((LinearLayoutManager) mRVLayoutManager).setInitialPrefetchItemCount(100);
+        ((LinearLayoutManager) mRVLayoutManager) .setInitialPrefetchItemCount( 100);
         mMainRV.setLayoutManager( mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this, this);
         mMainRV.setAdapter( mMainRVAdapter);
         mMainRV.setHasFixedSize( true);
 
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        tabLayout = (TabLayout) findViewById(R.id.activity_main_TAB);
+        tabLayout.addOnTabSelectedListener( new TabLayout.OnTabSelectedListener() {
+            @Override public void onTabSelected( TabLayout.Tab tab) {
+                int position = tab .getPosition();
+                String orderedBy =  NetworkUtils.ORDER_BY_list .get( position);
+                mOrderedBy = orderedBy;
+                mMainRVAdapter .changeOrderedBy( orderedBy);
+                Log .e( TAG, mOrderedBy);
+            }
+            @Override public void onTabUnselected( TabLayout.Tab tab) { }
+            @Override public void onTabReselected( TabLayout.Tab tab) { }
+        });
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         NetworkUtils.integrateAllBasics( mAppDatabase);
-
-
-//        mMainRV.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//
-//                if (( ! recyclerView .canScrollVertically(1) && dy != 0)  )
-//                {
-//                    Log.d(TAG, "---------------->  reached end");
-//                    int position = mRVLayoutManager.getItemCount() - 1;
-//                    //NetworkUtils.integratePageOfMovies(mAppDatabase, "popular", whatPage( position) + 1);
-//                }
-//            }
-//        });
-
     }
 
     @Override

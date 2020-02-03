@@ -11,7 +11,7 @@ import android.util.Log;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String LOG_TAG = AppDatabase.class.getSimpleName();
-    private static final String DATABASE_NAME = "MovieDB99";
+    private static final String DATABASE_NAME = "MovieDB104";
 
     /* singleton-pattern */
     private static AppDatabase sInstance;

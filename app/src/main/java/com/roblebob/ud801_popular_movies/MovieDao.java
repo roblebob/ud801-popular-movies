@@ -14,10 +14,10 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM Movie ORDER BY popularVAL DESC")
+    @Query("SELECT * FROM Movie ORDER BY popularVAL DESC, fav DESC, voteAVG DESC")
     LiveData<List< Movie>> loadPopularMovies();
 
-    @Query("SELECT * FROM Movie ORDER BY voteAVG DESC")
+    @Query("SELECT * FROM Movie ORDER BY voteAVG DESC, fav DESC, popularVAL DESC")
     LiveData<List< Movie>> loadTopRatedMovies();
 
     @Query("SELECT * FROM Movie WHERE movieID = :MID")
