@@ -1,6 +1,5 @@
 package com.roblebob.ud801_popular_movies;
 
-import android.telecom.Call;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.DetailsRVViewholder> {
@@ -22,20 +19,18 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
 
     private String mHomepageUrl;
     private String mImdbUrl;
-    private List< MovieExtra> mMovieExtraList;
+    private List<Xtra> linksXtraList;
     private DetailsRVAdapter.ItemClickListener itemClickListener;
 
     DetailsRVAdapter(DetailsRVAdapter.ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void setHomepageUrl( String homeUrl) { mHomepageUrl = homeUrl; notifyDataSetChanged(); }
-    public void setImdbUrl( String imdbUrl)     { mImdbUrl = imdbUrl; notifyDataSetChanged(); }
-
-    public void setExtras( List< MovieExtra> extraList) {
-        mMovieExtraList = extraList;
+    public void setLinksXtraList( List<Xtra>  linksXtraList) {
+        this.linksXtraList = linksXtraList;
         notifyDataSetChanged();
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -54,46 +49,36 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     @Override
     public void onBindViewHolder(@NonNull DetailsRVViewholder holder, int position) {
 
-        if ( isHomePage( position)) {
+        Xtra xtra = this.linksXtraList.get(position);
+        int subID = xtra.getID() % 100;
+        String value = xtra.getValue();
+
+        if /* homepage */ (subID == 18) {
 
             holder .cardviewTextView    .setText( "home");
             holder .nameTextView        .setText( "Official Homepage");
-            holder .urlString           = mHomepageUrl;
+            holder .urlString           = value;
 
-        } else if ( isImdbPage(position)) {
+        } else if ( /* imdbpage */ (subID == 19)) {
             holder .cardviewTextView    .setText( "imdb");
             holder .nameTextView        .setText( "IMDB's page");
-            holder .urlString =  mImdbUrl;
+            holder .urlString =  value;
 
-        } else if ( isExtra( position)) {
-            int index = position - getHomePageItemCount() - getImdbUrlItemCount();
-            holder.cardviewTextView.setText(mMovieExtraList.get( index).getType());
-            holder.nameTextView.setText( mMovieExtraList.get( index).getName());
-            holder.urlString = mMovieExtraList.get( index). getUrl();
+        } else if ( /* trailer */ 20 <= subID && subID < 40) {
+            String[] S = value.split(",", 2);
+            holder.cardviewTextView.setText("trailer");
+            holder.nameTextView.setText( S[1]);
+            holder.urlString = S[0];
         }
 
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private boolean isHomePage( int position)   {
-        return      position >= 0   &&
-                    position < getHomePageItemCount(); }
-    private boolean isImdbPage(int position)  {
-        return      position >= getHomePageItemCount()   &&
-                    position < getHomePageItemCount() + getImdbUrlItemCount(); }
-    private boolean isExtra(int position) {
-        return      position >= getHomePageItemCount() + getImdbUrlItemCount()   &&
-                    position < getItemCount(); }
-
-    //----------------------------------------------------------------------------------------------
-
-    private int getHomePageItemCount()  { return ( mHomepageUrl != null) ? 1 : 0; }
-    private int getImdbUrlItemCount()   { return ( mImdbUrl     != null) ? 1 : 0; }
     //----------------------------------------------------------------------------------------------
 
     @Override public int getItemCount() {
-        return (mMovieExtraList != null)  ?  getHomePageItemCount() + getImdbUrlItemCount() + mMovieExtraList.size()   : 0; }
+        return (this.linksXtraList != null)  ?  this.linksXtraList.size()   : 0; }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public interface ItemClickListener { void onItemClickListener( String type, String url); }

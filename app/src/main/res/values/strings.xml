@@ -3,4 +3,17 @@
     <string name="TAB_popular_label">p o p u l a r</string>
     <string name="TAB_top_rated_label">t o p - r a t e d</string>
     <string name="TOOLBAR_font"></string>
+
+
+    <string-array name="Orderedbys">
+        <item>popular</item>
+        <item>top_rated</item>
+    </string-array>
+
+
+
 </resources>
+
+
+
+

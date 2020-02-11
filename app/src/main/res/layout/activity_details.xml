@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/test" />
 
-            <TextView android:id="@+id/release_date"
+            <TextView android:id="@+id/activity_details_RELEASE_DATE_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="36dp"
@@ -76,49 +76,50 @@
                 android:textSize="30sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/guideline_center"
-                app:layout_constraintTop_toTopOf="@+id/imageView" />
+                app:layout_constraintTop_toTopOf="@+id/imageView"
+                />
 
-            <TextView android:id="@+id/activity_details_RUNTIME"
+            <TextView android:id="@+id/activity_details_RUNTIME_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="38dp"
                 android:text=""
                 android:textSize="18sp"
                 android:textStyle="italic"
-                app:layout_constraintBottom_toTopOf="@+id/release_date"
-                app:layout_constraintStart_toStartOf="@+id/release_date"
-                app:layout_constraintTop_toBottomOf="@+id/release_date"
+                app:layout_constraintBottom_toTopOf="@+id/activity_details_RELEASE_DATE_tv"
+                app:layout_constraintStart_toStartOf="@+id/activity_details_RELEASE_DATE_tv"
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_RELEASE_DATE_tv"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/activity_details_RUNTIME_min"
+                android:id="@+id/activity_details_RUNTIME_unit_minutes_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="min"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 android:layout_marginStart="2dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME"
-                app:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME_tv"
+                app:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME_tv" />
 
 
-            <TextView android:id="@+id/rating"
+            <TextView android:id="@+id/activity_details_RATING_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="8.4"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/activity_details_BUTTON_fav"
-                app:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME"
+                app:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME_tv"
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME_tv"
                 tools:layout_editor_absoluteY="282dp" />
 
-            <TextView android:id="@+id/rating_max"
+            <TextView android:id="@+id/activity_details_RATING_MAX_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="/10"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/rating"
-                app:layout_constraintStart_toEndOf="@+id/rating" />
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RATING_tv"
+                app:layout_constraintStart_toEndOf="@+id/activity_details_RATING_tv" />
 
             <Button android:id="@+id/activity_details_BUTTON_fav"
                 android:layout_width="wrap_content"
@@ -128,10 +129,10 @@
                 android:drawableTint="@color/colorGray"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="@+id/rating" />
+                app:layout_constraintStart_toStartOf="@+id/activity_details_RATING_tv" />
 
             <TextView
-                android:id="@+id/activity_details_TAGLINE"
+                android:id="@+id/activity_details_TAGLINE_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="41dp"
@@ -147,7 +148,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <TextView
-                android:id="@+id/activity_details_OVERVIEW"
+                android:id="@+id/activity_details_OVERVIEW_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="41dp"
@@ -158,22 +159,22 @@
                 app:layout_constraintEnd_toStartOf="@+id/guideline_right"
                 app:layout_constraintRight_toLeftOf="@+id/guideline_right"
                 app:layout_constraintStart_toEndOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE" />
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE_tv" />
 
 
             <TextView
-                android:id="@+id/genre_label"
+                android:id="@+id/activity_details_GENRES_LABEL_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
                 android:text="Genres: "
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES_tv"
                 app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
             <TextView
-                android:id="@+id/activity_details_GENRES"
+                android:id="@+id/activity_details_GENRES_tv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="35dp"
@@ -183,22 +184,22 @@
                 android:textSize="12sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW" />
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW_tv" />
 
 
             <TextView
-                android:id="@+id/budget_label"
+                android:id="@+id/activity_details_BUDGET_LABEL_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
                 android:text="Budget: "
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
                 app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
             <TextView
-                android:id="@+id/activity_Details_BUDGET"
+                android:id="@+id/activity_Details_BUDGET_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -207,33 +208,33 @@
                 android:text=""
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                app:layout_constraintLeft_toRightOf="@+id/budget_label"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES" />
+                app:layout_constraintLeft_toRightOf="@+id/activity_details_BUDGET_LABEL_tv"
+                app:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES_tv" />
 
             <TextView
-                android:id="@+id/budget_value_DollarSign"
+                android:id="@+id/activity_details_BUDGET_UNIT_dollarsign_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
                 android:text="$"
                 android:textSize="14sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
                 app:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
 
 
             <TextView
-                android:id="@+id/revenue_label"
+                android:id="@+id/activity_details_REVENUE_LABEL_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
                 android:text="Revenue: "
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
                 app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
             <TextView
-                android:id="@+id/activity_Details_REVENUE"
+                android:id="@+id/activity_Details_REVENUE_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -242,16 +243,16 @@
                 android:text=""
                 android:textSize="14sp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                app:layout_constraintLeft_toRightOf="@+id/revenue_label"
-                app:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET" />
+                app:layout_constraintLeft_toRightOf="@+id/activity_details_REVENUE_LABEL_tv"
+                app:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET_tv" />
             <TextView
-                android:id="@+id/revenue_DollarSign"
+                android:id="@+id/activity_details_REVENUE_UNIT_dollarsign_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingMultiplier="1.3"
                 android:text="$"
                 android:textSize="14sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE"
+                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
                 app:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
 
 
@@ -269,7 +270,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE"
+                app:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE_tv"
                 app:layout_constraintBottom_toTopOf="@+id/activity_details_RECYCLER_VIEW"
                 />
 
@@ -354,12 +355,12 @@
             app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
             app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
             app:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_GUIDELINE_top"
-            app:layout_constraintBottom_toTopOf="@+id/activity_details_HEADING_TITLE_textview"
+            app:layout_constraintBottom_toTopOf="@+id/activity_details_TITLE_tv"
             />
 
 
         <TextView
-            android:id="@+id/activity_details_HEADING_TITLE_textview"
+            android:id="@+id/activity_details_TITLE_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="start|center_vertical"
@@ -369,11 +370,11 @@
             app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
             app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
             app:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_top_barrier_textview"
-            app:layout_constraintBottom_toTopOf="@id/activity_details_HEADING_ORG_TITLE"
+            app:layout_constraintBottom_toTopOf="@id/activity_details_ORIGINAL_TITLE"
             />
 
         <TextView
-            android:id="@+id/activity_details_HEADING_ORG_TITLE"
+            android:id="@+id/activity_details_ORIGINAL_TITLE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
@@ -381,30 +382,38 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"
             app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            app:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_textview" />
-        <TextView android:id="@+id/activity_details_HEADING_ORG_TITLE_left_bracket"
+            app:layout_constraintTop_toBottomOf="@+id/activity_details_TITLE_tv"
+            android:visibility="gone"
+            />
+        <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_left_bracket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="("
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_HEADING_ORG_TITLE"
-            app:layout_constraintEnd_toStartOf="@+id/activity_details_HEADING_ORG_TITLE" />
-        <TextView android:id="@+id/activity_details_HEADING_ORG_TITLE_right_bracket"
+            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
+            app:layout_constraintEnd_toStartOf="@+id/activity_details_ORIGINAL_TITLE"
+            android:visibility="gone"
+            />
+        <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=")"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_HEADING_ORG_TITLE"
-            app:layout_constraintStart_toEndOf="@+id/activity_details_HEADING_ORG_TITLE" />
-        <TextView android:id="@+id/activity_details_HEADING_ORG_LANG"
+            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
+            app:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE"
+            android:visibility="gone"
+            />
+        <TextView android:id="@+id/activity_details_ORIGINAL_LANGUAGE_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="en"
             android:textSize="10sp"
-            app:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_ORG_TITLE"
-            app:layout_constraintStart_toEndOf="@+id/activity_details_HEADING_ORG_TITLE_right_bracket" />
+            app:layout_constraintTop_toTopOf="@+id/activity_details_ORIGINAL_TITLE"
+            app:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"
@@ -416,7 +425,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
             app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            app:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_ORG_TITLE"
+            app:layout_constraintTop_toBottomOf="@+id/activity_details_ORIGINAL_TITLE"
             app:layout_constraintBottom_toBottomOf="@+id/activity_details_HEADING_GUIDELINE_bottom"
             />
 

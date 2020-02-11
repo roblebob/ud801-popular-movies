@@ -1,26 +1,51 @@
 package com.roblebob.ud801_popular_movies;
+import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
 import java.util.List;
 
-public class MainViewModel extends ViewModel {
 
-    private LiveData< List< Movie>> mPopularMovieListLive;
-    private LiveData< List< Movie>> mTopRatedMovieListLive;
-    private AppDatabase mAppDatabase;
+public class MainViewModel extends AndroidViewModel{
+    private MovieRepository movieRepository;
+    private XtraRepository xtraRepository;
+    private Application application;
 
-    public MainViewModel(@NonNull AppDatabase appDatabase) {
-
-        mAppDatabase = appDatabase;
+    public MainViewModel(@NonNull Application application) {
+        super(application);
+        this.application = application;
+        this.movieRepository = new MovieRepository( AppDatabase.getInstance( application));
+        this.xtraRepository  = new XtraRepository(  AppDatabase.getInstance( application));
     }
 
-    public LiveData< List< Movie>> getMovieListLive(String orderType) {
-        if (orderType.equals("top_rated")) return mAppDatabase .movieDao() .loadTopRatedMovies();
-        else  return mAppDatabase .movieDao() .loadPopularMovies();
-    }
-    public LiveData< List< Movie>> getPopularMovieListLive() { return mAppDatabase .movieDao() .loadPopularMovies(); }
-    public LiveData< List< Movie>> getTopRatedMovieListLive() { return mAppDatabase .movieDao() .loadTopRatedMovies(); }
+
+    // I N I T I A L I N G   -  E N T R Y    -    P O I N T
+    public void start( String apiKey) { apiKeyLiveInput .setValue( apiKey); }
+    private final MutableLiveData< String> apiKeyLiveInput = new MutableLiveData< String>();
+    public  final LiveData< String>  apiKeyLive = Transformations.switchMap(  apiKeyLiveInput,  (apiKey) -> {
+        movieRepository.start( apiKey);
+        xtraRepository .start( apiKey);
+        return xtraRepository .getApikeyLive();
+    });
+
+
+
+
+
+    public void integrateMovies() { movieRepository.integrate(apiKeyLive.getValue());}
+    public void integrateXtras( int movieID) { xtraRepository.integrate(movieID);}
+
+
+
+    public void setOrderedbyLiveInput( String orderedby) { orderedbyLiveInput.setValue( orderedby);}
+    private final MutableLiveData< String> orderedbyLiveInput = new MutableLiveData< String>();
+    public  final LiveData< List< Movie>> movieListLive  =  Transformations.switchMap( orderedbyLiveInput,  (orderedby) -> movieRepository .getMovieListLive( orderedby));
+
+
+    public final LiveData< Integer> countDetailedMovies() { return xtraRepository.countDetailedMovies();}
+
 }

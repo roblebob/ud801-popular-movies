@@ -14,21 +14,25 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
+    //@Query(value = "SELECT value FROM Xtra WHERE ID = 1")
+    @Query(value = "SELECT posterID FROM Movie WHERE movieID = 1")
+    LiveData< String> loadApikey();
+
     @Query("SELECT * FROM Movie ORDER BY popularVAL DESC, fav DESC, voteAVG DESC")
-    LiveData<List< Movie>> loadPopularMovies();
+    LiveData< List<Movie>> loadPopularMoviesLive();
 
     @Query("SELECT * FROM Movie ORDER BY voteAVG DESC, fav DESC, popularVAL DESC")
-    LiveData<List< Movie>> loadTopRatedMovies();
+    LiveData< List<Movie>> loadTopRatedMoviesLive();
 
-    @Query("SELECT * FROM Movie WHERE movieID = :MID")
-    LiveData< Movie> loadMovieByMID( int MID);
+    @Query("SELECT * FROM Movie WHERE movieID = :movieID")
+    LiveData<Movie> loadMovieByMovieIDLive(int movieID);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMovie(Movie movie);
+    void insert(Movie movie);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateMovie(Movie movie);
+    void update(Movie movie);
 
     @Delete
-    void deleteMovie(Movie movie);
+    void delete(Movie movie);
 }

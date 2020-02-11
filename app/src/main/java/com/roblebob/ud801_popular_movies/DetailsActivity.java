@@ -1,7 +1,6 @@
 package com.roblebob.ud801_popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,24 +19,22 @@ import com.squareup.picasso.Picasso;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdapter.ItemClickListener  {
     private static final String TAG = DetailsActivity.class.getSimpleName();
     // Extra for the task ID to be received in the intent
-    public static final String EXTRA_MID = "EXTRA_ID";
+    public static final String EXTRA_movieID = "EXTRA_movieID";
     // Extra for the task ID to be received after rotation
-    public static final String INSTANCE_MID = "INSTANCE_ID";
+    public static final String INSTANCE_movieID = "INSTANCE_ID";
 
-    private int MID;
+    private int movieID;
 
     private AppDatabase mAppDatabase;
 
     private RecyclerView mDetailsRV;
     private DetailsRVAdapter mDetailsRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
-    private Movie mMovie;
     private Button favButton;
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,93 +42,134 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
-        mAppDatabase = AppDatabase .getInstance( getApplicationContext());
 
         Intent intent = getIntent();
-        if ( intent != null && intent.hasExtra( EXTRA_MID))
-            MID = intent .getIntExtra( EXTRA_MID, -1);
-
+        if ( intent != null && intent.hasExtra(EXTRA_movieID))
+            movieID = intent .getIntExtra(EXTRA_movieID, -1);
         // if (savedInstanceState != null && savedInstanceState.containsKey( INSTANCE_ID))  ID = savedInstanceState .getInt( INSTANCE_ID, -1);
+        if (movieID > 0) {
 
-        mDetailsRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
-        mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        mDetailsRV.setLayoutManager(mDetailsRVLayoutManager);
-        mDetailsRVAdapter = new DetailsRVAdapter(this);
-        mDetailsRV .setAdapter(mDetailsRVAdapter);
-        mDetailsRV .setHasFixedSize( false);
 
-        favButton = (Button) findViewById(R.id.activity_details_BUTTON_fav);
-        favButton.setOnClickListener(v -> {
+            DetailsViewModelFactory detailsViewModelFactory = new DetailsViewModelFactory(this.getApplication(), movieID);
+            final DetailsViewModel detailsViewModel = ViewModelProviders.of(this, detailsViewModelFactory).get(DetailsViewModel.class);
 
-            mMovie.inverseFav();
-            AppExecutors.getInstance().diskIO().execute(
-                    () -> mAppDatabase.movieDao().updateMovie( mMovie));
-            Log .e(TAG, "CLICKED!!   " + mMovie.isFav());
-        });
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        if (MID > 0) {
-            DetailsViewModelFactory detailsViewModelFactory = new DetailsViewModelFactory( mAppDatabase, MID);
-            final DetailsViewModel detailsViewModel = ViewModelProviders.of(this, detailsViewModelFactory) .get( DetailsViewModel.class);
+            mDetailsRV = (RecyclerView) this.findViewById(R.id.activity_details_RECYCLER_VIEW);
+            mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+            mDetailsRV.setLayoutManager(mDetailsRVLayoutManager);
+            mDetailsRVAdapter = new DetailsRVAdapter(this);
+            mDetailsRV.setAdapter(mDetailsRVAdapter);
+            mDetailsRV.setHasFixedSize(false);
 
-            detailsViewModel .getMovieLive() .observe(this, new Observer< Movie>() {
-                @Override
-                public void onChanged( Movie movie) {
+            favButton = (Button) findViewById(R.id.activity_details_BUTTON_fav);
+            favButton.setOnClickListener(v -> detailsViewModel.getMovieLive(movieID).observe(this,
+                    (movie) -> { AppExecutors.getInstance().diskIO().execute(  () -> mAppDatabase.movieDao().update((movie.inverseFav())));          Log.e(TAG, "CLICKED!!" + movie.isFav());
+                                }));
 
-                    detailsViewModel .getMovieLive() .removeObserver( this);
-                    mMovie = new Movie( movie);
-                    populateUI();
-                }
-            });
 
-            detailsViewModel .getExtraListLive() .observe(this, new Observer< List< MovieExtra>>() {
-                @Override
-                public void onChanged( List< MovieExtra> movieExtraList) {
+            detailsViewModel .getMovieLive(  movieID) .observe(this,
+                    new Observer<Movie>() { @Override public void onChanged( Movie movie) {
+                        detailsViewModel .getMovieLive( movieID) .removeObserver( this);
+                        populateMovieIntoUI(movie);
+                    }});
 
-                    detailsViewModel .getExtraListLive() .removeObserver( this);
-                    Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database update from LiveData  " + movieExtraList.toString());
-                    mDetailsRVAdapter .setExtras( new ArrayList<>( movieExtraList));
-                }
-            });
-
-        } else Log .e(this.getClass().getSimpleName(), "ERROR");
+            detailsViewModel .getNonlinksXtraListLive(  movieID) .observe(this,
+                    new Observer< List<Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
+                        detailsViewModel .getNonlinksXtraListLive(movieID) .removeObserver( this);
+                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (xtraNonlinks)update from LiveData  " + xtraList.toString());
+                        populateNonlinksXtraIntoUI(xtraList);
+                    }});
+            detailsViewModel .getLinksXtraListLive(  movieID) .observe(this,
+                    new Observer< List<Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
+                        detailsViewModel .getLinksXtraListLive(movieID) .removeObserver( this);
+                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (xtraLinks) update from LiveData  " + xtraList.toString());
+                        populateLinksXtraIntoUI(xtraList);
+                    }});
+        } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID= " + movieID);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    private void  populateUI() {
-        Log.e(TAG, "change has occured -->  populateUI()");
-        // assigning values to the UI's equivalents
-        if (mMovie.getPosterID() != null)   Picasso .get() .load( mMovie .getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
-
-        if (mMovie .isFav())    favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorYellow)));
-        else                    favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(R.color.colorGray)));
-
-        ((TextView) findViewById( R.id.activity_details_HEADING_TITLE_textview)) .setText(  (mMovie .getTitle() != null)    ?    mMovie .getTitle()        : "");
-        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_TITLE)) .setText(   (mMovie.getTitleORIG()  != null)    ?    mMovie .getTitleORIG()    : "" );
-        ((TextView) findViewById( R.id.activity_details_HEADING_ORG_LANG))  .setText(   (mMovie.getLangORIG()   != null)    ?    mMovie .getLangORIG()     : "" );
-        ((TextView) findViewById( R.id.release_date)            )           .setText(   (mMovie.getReleasePIT() != null)    ?    mMovie .getReleasePIT() .split("-")[0]    : "" );
-        ((TextView) findViewById( R.id.activity_details_RUNTIME))           .setText(   (mMovie.getRuntimeVAL() != null)    ?    mMovie .getRuntimeVAL()   : "" );
-        ((TextView) findViewById( R.id.rating)                  )           .setText(   (mMovie.getVoteAVG()     >  0  )    ?    String.valueOf(mMovie.getVoteAVG())    : "" );
-        ((TextView) findViewById( R.id.activity_details_TAGLINE))           .setText(   (mMovie.getTagline()    != null)    ?    mMovie .getTagline()      : "" );
-        ((TextView) findViewById( R.id.activity_details_OVERVIEW))          .setText(   (mMovie.getOverview()   != null)    ?    mMovie .getOverview()     : "" );
-        ((TextView) findViewById( R.id.activity_details_GENRES) )           .setText(   (mMovie.getGenres()     != null)    ?    mMovie .getGenres() .substring(1, mMovie .getGenres().length()-1) .replace(",", "\n")  : "");
-        ((TextView) findViewById( R.id.activity_Details_BUDGET) )           .setText(   (mMovie.getBudgetVAL()  != null)    ?    (Integer.parseInt( mMovie .getBudgetVAL()) > 0)   ?   mMovie .getBudgetVAL()   : "" : "" );
-        ((TextView) findViewById( R.id.activity_Details_REVENUE))           .setText(   (mMovie.getRevenueVAL() != null)    ?    (Integer.parseInt( mMovie .getRevenueVAL()) > 0)  ?   mMovie .getRevenueVAL()  : "" : "" );
-
-        if (mMovie.getHomepageURL() != null) if (mMovie.getHomepageURL().length() != 0)   mDetailsRVAdapter   .setHomepageUrl(  mMovie .getHomepageURL());
-        if (mMovie.getImdbURL() != null)     if (mMovie.getImdbURL().length()     != 0)   mDetailsRVAdapter   .setImdbUrl(      mMovie .getImdbURL());
 
 
-        // TODO: hide all empties
-        if ( mMovie.getTitleORIG().equals( mMovie.getTitle()))  {
 
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE)).setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_LANG)).setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_left_bracket)).setVisibility(View.GONE);
-            ((TextView) findViewById(R.id.activity_details_HEADING_ORG_TITLE_right_bracket)).setVisibility(View.GONE);
-        }
+
+
+
+
+
+    private void populateMovieIntoUI(Movie movie) {                                                 Log.d(TAG, "change has occured -->  populateMovieIntoUI()");
+        if (movie.getPosterID() != null)
+            Picasso .get() .load( movie.getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
+
+        favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(
+                movie.isFav()  ?  R.color.colorYellow  :  R.color.colorGray
+        )));
+
+        ((TextView) findViewById( R.id.activity_details_RATING_tv)) .setText(  String.valueOf(movie.getVoteAVG()));
     }
 
 
+    private void populateNonlinksXtraIntoUI(List< Xtra> xtraList) {                                  Log.d(TAG, "change has occured -->  populateNonlinksXtraIntoUI()");
+        xtraList.forEach( (Xtra xtra) -> {
 
+            int subID = xtra.getID() % 100;
+            if (0 <= subID && subID < 18) {
+                String attribute = Xtra.ATTRIBUTE_list.get(subID);
+                switch(attribute) {
+
+                    case "title":
+                        ((TextView) findViewById( R.id.activity_details_TITLE_tv)) .setText( xtra.getValue() );
+                        break;
+                    case "original_title":
+                         ((TextView) findViewById( R.id.activity_details_ORIGINAL_TITLE)) .setText( xtra.getValue());
+                         ((TextView) findViewById( R.id.activity_details_ORIGINAL_TITLE)) .setVisibility( View.VISIBLE);
+                        break;
+                    case "original_language":
+                        ((TextView) findViewById( R.id.activity_details_ORIGINAL_LANGUAGE_tv))        .setText( xtra.getValue());
+                        ((TextView) findViewById( R.id.activity_details_ORIGINAL_LANGUAGE_tv))        .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById( R.id.activity_details_ORIGINAL_TITLE_left_bracket)) .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById( R.id.activity_details_ORIGINAL_TITLE_right_bracket)).setVisibility( View.VISIBLE);
+                        break;
+                    case "release_date":
+                        ((TextView) findViewById( R.id.activity_details_RELEASE_DATE_tv))  .setText( xtra.getValue().split("-")[0]);  // take only the year
+                        ((TextView) findViewById( R.id.activity_details_RELEASE_DATE_tv))  .setVisibility(View.VISIBLE);
+                        break;
+                    case "runtime":
+                        ((TextView) findViewById( R.id.activity_details_RUNTIME_tv))              .setText( xtra.getValue());
+                        ((TextView) findViewById( R.id.activity_details_RUNTIME_tv))              .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById( R.id.activity_details_RUNTIME_unit_minutes_tv)) .setVisibility( View.VISIBLE);
+                        break;
+                    case "tagline":
+                        ((TextView) findViewById(R.id.activity_details_TAGLINE_tv))   .setText( xtra.getValue());
+                        ((TextView) findViewById(R.id.activity_details_TAGLINE_tv))   .setVisibility( View.VISIBLE);
+                        break;
+                    case "overview":
+                        ((TextView) findViewById(R.id.activity_details_OVERVIEW_tv))  .setText( xtra.getValue());
+                        ((TextView) findViewById(R.id.activity_details_OVERVIEW_tv))  .setVisibility( View.VISIBLE);
+                        break;
+                    case "genres":
+                        ((TextView) findViewById(R.id.activity_details_GENRES_tv))       .setText( xtra.getValue());
+                        ((TextView) findViewById(R.id.activity_details_GENRES_tv))       .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById(R.id.activity_details_GENRES_LABEL_tv)) .setVisibility( View.VISIBLE);
+                        break;
+                    case "budget":
+                        ((TextView) findViewById(R.id.activity_Details_BUDGET_tv))                  .setText( xtra.getValue());
+                        ((TextView) findViewById(R.id.activity_Details_BUDGET_tv))                  .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById(R.id.activity_details_BUDGET_LABEL_tv))            .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById(R.id.activity_details_BUDGET_UNIT_dollarsign_tv))  .setVisibility( View.VISIBLE);
+                    case "revenue":
+                        ((TextView) findViewById(R.id.activity_Details_REVENUE_tv))                 .setText(xtra.getValue());
+                        ((TextView) findViewById(R.id.activity_Details_REVENUE_tv))                 .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById(R.id.activity_details_REVENUE_LABEL_tv))           .setVisibility( View.VISIBLE);
+                        ((TextView) findViewById(R.id.activity_details_REVENUE_UNIT_dollarsign_tv)) .setVisibility( View.VISIBLE);
+                        break;
+                };
+            }
+        });
+    }
+
+
+    private void populateLinksXtraIntoUI(  List< Xtra> xtraList) {
+        mDetailsRVAdapter .setLinksXtraList( xtraList);
+    }
 
 
     @Override
