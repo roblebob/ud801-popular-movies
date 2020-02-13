@@ -1,5 +1,5 @@
 package com.roblebob.ud801_popular_movies;
-
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         MainViewModel mainViewModel = ViewModelProviders.of(this, mMainViewModelFactory) .get(MainViewModel.class);
 
 
-
         /* * * * * * * * * * * * *
          *  R E C Y C L E R   V I E W
          *
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         ((LinearLayoutManager) mRVLayoutManager).setInitialPrefetchItemCount(100);
         mMainRV.setLayoutManager(mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this);
-        mainViewModel.movieListLive.observe(this, list -> mMainRVAdapter.submitList(list));
+        mainViewModel.mediatorLive.observe(this, list -> mMainRVAdapter.submitList(list));
         mMainRV.setAdapter(mMainRVAdapter);
         mMainRV.setHasFixedSize(true);
 
@@ -92,9 +91,8 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         mTabLayout = (TabLayout) findViewById(R.id.activity_main_TAB);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override public void onTabSelected(TabLayout.Tab tab)   {
-                int position = tab.getPosition();
-                String orderedby = AppUtilities.ORDEREDBY_list.get(position);
-                mainViewModel .setOrderedbyLiveInput( orderedby);     }
+                mainViewModel .setOrderedbyTabPosition( tab.getPosition());
+            }
             @Override public void onTabUnselected(TabLayout.Tab tab) {}
             @Override public void onTabReselected(TabLayout.Tab tab) {}
         });
@@ -107,38 +105,42 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         ////////////////////////////////////////////////////////////////////////////////////////////
         ////
         Log .e(TAG, "----------->");
+        mainViewModel.start("someInvalid");
+
+
+
 
 
         /* * * * * * * * * * * * *
-         *  A P I   K E Y
+         *  C O U N T :
          *
+         *    ( M o v i e s )
          */
-        mainViewModel  .apiKeyLive  .observe(this, new Observer<String>() {
-            @Override public void onChanged( @NonNull String apiKey) {
-                mainViewModel.apiKeyLive .removeObserver(this);
-                Log.e(TAG, "---->   " + "Receiving database update for API KEY from LiveData:  " + apiKey);
+        mainViewModel  .countMovies()  .observe(this, new Observer< Integer>() {
+            @Override public void onChanged( @NonNull Integer movieCount) {
+                mainViewModel.countMovies() .removeObserver(this);
+                //Log.e(TAG, "---->   " + "Receiving database update for MovieCount:  " + movieCount);
+                mMovieBasicsCountTv .setText( String.valueOf( movieCount));
 
-                if ( apiKey == null) {  /* invalid case: */
+                if ( movieCount == 0) {  /* invalid case: */
                     Log .e(TAG, "----------->    invalid case");
-                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP)     ).setVisibility(View.VISIBLE);
-                    ((TabLayout)        findViewById( R.id.activity_main_TAB)               ).setVisibility(View.GONE);
-                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp)).setVisibility(View.GONE);
-                    ((RecyclerView)     findViewById( R.id.activity_main_RECYCLER_VIEW)     ).setVisibility(View.GONE);
-
-                    ((TextInputEditText) findViewById(R.id.activity_main_INITIAL_SETUP_textInputLayout_tv))
-                            .setOnEditorActionListener(  (v, actionId, event) -> {
-                                Log .e(TAG, "----------->    ACTION was called");
-                                mainViewModel.start( v.getText().toString());
-                                return true;
+                    ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )  .setVisibility(View.VISIBLE);
+                    ((TabLayout)         findViewById( R.id.activity_main_TAB)               )  .setVisibility(View.GONE);
+                    ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))  .setVisibility(View.GONE);
+                    ((RecyclerView)      findViewById( R.id.activity_main_RECYCLER_VIEW)     )  .setVisibility(View.GONE);
+                    ((TextInputEditText) findViewById(R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(
+                            (v, actionId, event) -> {
+                                Log .e(TAG, "----------->    ACTION was called:   " + v.getText().toString() );
+                                 mainViewModel.start( v.getText().toString());
+                                 return false;   //  FALSE -> keyboard goes into hiding
                             });
 
                 } else {    /* valid case: */
-                    Log .e(TAG, "----------->    valid case");
-                    mainViewModel .integrateMovies();
-                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP) )     .setVisibility(View.GONE);
-                    ((TabLayout)        findViewById( R.id.activity_main_TAB))                .setVisibility(View.VISIBLE);
-                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp)) .setVisibility(View.VISIBLE);
-                    ((RecyclerView)     findViewById( R.id.activity_main_RECYCLER_VIEW))      .setVisibility(View.VISIBLE);
+                    // Log .e(TAG, "----------->    valid case");
+                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility(View.GONE);
+                    ((TabLayout)        findViewById( R.id.activity_main_TAB)               )   .setVisibility(View.VISIBLE);
+                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility(View.VISIBLE);
+                    ((RecyclerView)     findViewById( R.id.activity_main_RECYCLER_VIEW)     )   .setVisibility(View.VISIBLE);
 
                 }
             }
@@ -150,10 +152,10 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
          *  M O V I E    L I S T
          *
          */
-        mainViewModel  .movieListLive  .observe(this, new Observer<List<Movie>>() {
+        mainViewModel  .mediatorLive .observe(this, new Observer<List<Movie>>() {
             @Override public void onChanged(@NonNull List<Movie> movieList) {
 
-                mainViewModel  .movieListLive  .removeObserver(this);
+                mainViewModel  .mediatorLive  .removeObserver(this);
                 Log.e( TAG, "-------->   " + "Receiving database update for Movies from LiveData:  " + movieList.toString());
                 mMovieBasicsCountTv .setText( String.valueOf( movieList.size()));
             }

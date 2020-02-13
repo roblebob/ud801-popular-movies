@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 
 public class AppUtilities {
-    public static final List< String> ORDEREDBY_list =     new ArrayList< String>( Arrays.asList( "popular", "top_rated"));
+
 
 
 

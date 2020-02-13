@@ -12,7 +12,7 @@ import java.util.List;
 public interface XtraDao {
 
     @Query(value = "SELECT value FROM Xtra WHERE ID = 1")
-    LiveData< String> loadApikey();
+    LiveData< String> loadPrime();
 
     @Query("SELECT * FROM Xtra WHERE (ID / 100) = :movieID")
     LiveData< List<Xtra>> loadXtraList(int movieID);
@@ -32,6 +32,6 @@ public interface XtraDao {
     @Delete
     void delete( Xtra xtra);
 
-    @Query(value = "SELECT COUNT( DISTINCT ( (ID / 100))) FROM Xtra")
-    LiveData< Integer> countDetailedMovies();
+    @Query(value = "SELECT COUNT( DISTINCT ( (ID / 100))) FROM Xtra WHERE ID > 1")
+    LiveData< Integer> countMovies();
 }

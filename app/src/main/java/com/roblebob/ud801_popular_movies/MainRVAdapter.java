@@ -1,6 +1,5 @@
 package com.roblebob.ud801_popular_movies;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVViewHolder> {
@@ -79,10 +76,10 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
 
         public void bindTo(Movie movie) {
 
-            final String posterID = movie .getPosterID();
+            final String posterID = movie .getKey();
             Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + posterID) .into(posterIv);
 
-            if (!movie.isDetailed())  mainViewModel.integrateXtras( mDiffer.getCurrentList().get( getAdapterPosition()) .getMovieID());
+            //if (!movie.isDetailed())  mainViewModel.integrateXtras( mDiffer.getCurrentList().get( getAdapterPosition()) .getMovieID());
 
             Log.d(TAG + "::onBindViewHolder() ", "----[POS:" + getAdapterPosition() + "]-----[SIZE:" + mDiffer.getCurrentList().size() + "]--->  " + posterID);
 

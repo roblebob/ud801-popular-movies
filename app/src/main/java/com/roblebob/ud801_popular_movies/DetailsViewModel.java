@@ -17,8 +17,8 @@ public class DetailsViewModel extends AndroidViewModel {
 
     public DetailsViewModel( Application application, int movieID) {
         super( application);
-        movieRepository = new MovieRepository( AppDatabase.getInstance(application) );
-        xtraRepository =  new XtraRepository(  AppDatabase.getInstance(application) );
+        movieRepository = new MovieRepository( AppDatabase.getInstance(application));
+        xtraRepository =  new XtraRepository(  AppDatabase.getInstance(application));
         this.movieID = movieID;
     }
 

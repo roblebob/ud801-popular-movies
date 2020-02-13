@@ -1,8 +1,10 @@
 package com.roblebob.ud801_popular_movies;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,16 +19,8 @@ import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttp
  *
  */
 public class XtraRepository {
-
-    private MutableLiveData< Integer>  result =  new MutableLiveData<>();
-    public  MutableLiveData< Integer>  getResult()  { return  this.result; }
-    private final AppDatabase appDatabase;
-    private String apiKEY = null;
-
-
-
-    public XtraRepository(@NonNull AppDatabase appDatabase) { this.appDatabase = appDatabase; }
-
+    private AppDatabase appDatabase;
+    public XtraRepository(@NonNull AppDatabase appDatabase) {  this.appDatabase = appDatabase; }
 
     /* **********************************************************************************************
      * Validates the given apiKey by sending an arbitrary dummy request,
@@ -34,41 +28,60 @@ public class XtraRepository {
      *
      * @param apiKey
      */
-    public void start( final String apiKey) {
+
+    public void start(String apiKEY) {
+        Log.e(this.getClass().getSimpleName(), "----->  Xtra Repository started with apikey: " + apiKEY);
         AppExecutors.getInstance().networkIO().execute(() -> {
             try {
-                String response = getResponseFromHttpUrl( buildUrl(apiKey, 2, null));
-                AppExecutors.getInstance().diskIO().execute(  () -> appDatabase.xtraDao() .insert( new Xtra(1,  apiKey)));
+                // dummy request
+                String response = getResponseFromHttpUrl( buildUrl(apiKEY, 2, null));
+
+                // if IOEception is NOT thrown DO:
+
+                AppExecutors.getInstance().diskIO().execute(  () -> {
+                    this.appDatabase .xtraDao() .update( new Xtra(1,  apiKEY));
+                    Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKEY +  " accepted");
+                });
             } catch (IOException e) { e.printStackTrace();
-                AppExecutors.getInstance().diskIO().execute(  () -> appDatabase.xtraDao() .insert( new Xtra(1, null)));
+                AppExecutors.getInstance().diskIO().execute(  () -> {
+                    this.appDatabase .xtraDao() .insert( new Xtra(1, null));
+                    Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKEY + "  rejected");
+                });
             }
         });
+
+        Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  S t a r t e d   w i t h   A P I  K E Y :   " + apiKEY);
     }
 
 
-    public LiveData< String>  getApikeyLive()  { return appDatabase.xtraDao() .loadApikey();}
+    /* *********************************************************************************************
+     *
+     * @param movieID
+     * @return
+     */
+    public LiveData< List<Xtra>>  getXtraListLive( int movieID)  { return this.appDatabase .xtraDao() .loadXtraList( movieID); }
+    public LiveData< List<Xtra>>  getNonlinksXtraListLive( int movieID)  { return this.appDatabase .xtraDao() .loadNonlinksXtraList( movieID); }
+    public LiveData< List<Xtra>>  getLinksXtraListLive( int movieID)  { return this.appDatabase .xtraDao() .loadLinksXtraList( movieID); }
 
-    public LiveData< List<Xtra>>  getXtraListLive( int movieID)  { return appDatabase.xtraDao() .loadXtraList( movieID); }
-    public LiveData< List<Xtra>>  getNonlinksXtraListLive( int movieID)  { return appDatabase.xtraDao() .loadNonlinksXtraList( movieID); }
-    public LiveData< List<Xtra>>  getLinksXtraListLive( int movieID)  { return appDatabase.xtraDao() .loadLinksXtraList( movieID); }
 
 
 
-
-    public LiveData< Integer> countDetailedMovies() { return appDatabase.xtraDao().countDetailedMovies(); }
+    public LiveData< Integer> countDetailedMovies() { return this.appDatabase .xtraDao().countMovies(); }
 
 
     /* **********************************************************************************************
      *
      * @param movieID
      */
-    public  void integrate( final int movieID)  {
+    public  void integrate( int movieID)  {
+        final String apiKEY = this.appDatabase .xtraDao().loadPrime().getValue();
         AppExecutors .getInstance() .networkIO() .execute( () -> {
-            try { try { try {
+            try { try {
 
                         JSONObject  jsonObject = new JSONObject(  Objects .requireNonNull(
                                 getResponseFromHttpUrl( buildUrl ( Objects.requireNonNull(
-                                        getApikeyLive().getValue()),movieID, null))));
+                                        this.appDatabase
+                                                .xtraDao() .loadPrime().getValue()),movieID, null))));
 
                         for (String attribute : Xtra.ATTRIBUTE_list) {
                             switch (attribute) {
@@ -100,7 +113,7 @@ public class XtraRepository {
 
                             JSONArray  jsonArray  = (new JSONObject ( Objects.requireNonNull (
                                                             getResponseFromHttpUrl ( buildUrl (
-                                                                getApikeyLive().getValue(), movieID, attribute))))
+                                                                    apiKEY, movieID, attribute))))
                                                     ).getJSONArray("results");
 
                             for (int i = 0; i < jsonArray.length(); i++) {
@@ -122,11 +135,10 @@ public class XtraRepository {
                                 }
                             }
                         }
-                        result.postValue (1);
 
-            } catch (NullPointerException e) { e.printStackTrace(); result.postValue (0); }
-            } catch (JSONException e)        { e.printStackTrace(); result.postValue (0); }
-            } catch (IOException e)          { e.printStackTrace(); result.postValue (0); }
+
+            } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tJSONException"); }
+            } catch (IOException e)          { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tIOException"); }
         });
     }
 
@@ -137,9 +149,9 @@ public class XtraRepository {
      *
      * @param xtra
      */
-    private  void insert( Xtra xtra) { insertExec(xtra);}
-    private void insertAsync( final Xtra xtra) { new Thread(                                  () ->  appDatabase.xtraDao() .insert(xtra)).start(); }
-    private void insertExec(  final Xtra xtra) { AppExecutors.getInstance().diskIO().execute( () ->  appDatabase.xtraDao() .insert(xtra)); }
+    public  void insert( Xtra xtra) { insertExec(xtra);}
+    private void insertAsync( final Xtra xtra) { new Thread(                                  () -> this.appDatabase .xtraDao() .insert(xtra)).start(); }
+    private void insertExec(  final Xtra xtra) { AppExecutors.getInstance().diskIO().execute( () -> this.appDatabase .xtraDao() .insert(xtra)); }
 
 
 
@@ -152,7 +164,7 @@ public class XtraRepository {
      * @param xtraKEY ∈  { null, "videos", "reviews"}
      * @return url as a String, not as a URL !!!
      */
-    public static String buildUrl( @NonNull String apiKey, int movieID, String xtraKEY) {
+    public String buildUrl( @NonNull String apiKey, int movieID, String xtraKEY) {
         try { return  new URL( Uri
                                 .parse( "https://api.themoviedb.org/3/movie")
                                 .buildUpon()
@@ -163,6 +175,10 @@ public class XtraRepository {
                                 .build()
                                 .toString()
                     ).toString();
-        } catch ( MalformedURLException e) { e.printStackTrace(); return null; }
+        } catch ( MalformedURLException e) {
+            e.printStackTrace();
+            Log.e(this.getClass().getSimpleName(), "E R R O R  in  buildUrl():\tMalformedURLException");
+            return null;
+        }
     }
 }

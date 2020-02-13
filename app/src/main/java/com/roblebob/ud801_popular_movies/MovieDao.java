@@ -15,17 +15,19 @@ import java.util.List;
 public interface MovieDao {
 
     //@Query(value = "SELECT value FROM Xtra WHERE ID = 1")
-    @Query(value = "SELECT posterID FROM Movie WHERE movieID = 1")
-    LiveData< String> loadApikey();
+    @Query(value = "SELECT `key` FROM Movie WHERE movieID = 1")
+    LiveData< String> loadPrime();
 
-    @Query("SELECT * FROM Movie ORDER BY popularVAL DESC, fav DESC, voteAVG DESC")
+    @Query(value = "SELECT * FROM Movie WHERE movieID > 1 ORDER BY fav DESC, popularVAL DESC, voteAVG DESC, voteCNT DESC")
     LiveData< List<Movie>> loadPopularMoviesLive();
 
-    @Query("SELECT * FROM Movie ORDER BY voteAVG DESC, fav DESC, popularVAL DESC")
+    @Query(value = "SELECT * FROM Movie WHERE movieID > 1 ORDER BY fav DESC, voteAVG DESC, popularVAL DESC, voteCNT DESC")
     LiveData< List<Movie>> loadTopRatedMoviesLive();
 
-    @Query("SELECT * FROM Movie WHERE movieID = :movieID")
+    @Query(value = "SELECT * FROM Movie WHERE movieID = :movieID")
     LiveData<Movie> loadMovieByMovieIDLive(int movieID);
+
+
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Movie movie);
@@ -33,6 +35,22 @@ public interface MovieDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void update(Movie movie);
 
+
     @Delete
     void delete(Movie movie);
+
+
+    @Query(value = "SELECT COUNT(*) FROM Movie WHERE movieID > 1 ")
+    LiveData< Integer> countMovies();
+
+
+    // (0)->"popular"  ,  (1)->"top_rated"
+    @Query(value = "SELECT voteCNT FROM Movie WHERE movieID = 1")
+    LiveData<Integer> loadOrderedbyTabPositionLive();
+
+
+    @Query(value = "UPDATE Movie SET voteCNT = :pos WHERE movieID = 1;")
+    void updateOrderedbyTabPosition(int pos);
+
+
 }

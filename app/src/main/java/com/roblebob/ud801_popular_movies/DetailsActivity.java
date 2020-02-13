@@ -76,7 +76,7 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                     new Observer< List<Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
                         detailsViewModel .getNonlinksXtraListLive(movieID) .removeObserver( this);
                         Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (xtraNonlinks)update from LiveData  " + xtraList.toString());
-                        populateNonlinksXtraIntoUI(xtraList);
+                        populateNonlinksFromXtraListIntoUI(xtraList);
                     }});
             detailsViewModel .getLinksXtraListLive(  movieID) .observe(this,
                     new Observer< List<Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
@@ -86,17 +86,22 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                     }});
         } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID= " + movieID);
     }
+
+
+
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /////
 
 
-
-
-
-
-
-
+    /* *********************************************************************************************
+     *
+     * @param movie
+     */
     private void populateMovieIntoUI(Movie movie) {                                                 Log.d(TAG, "change has occured -->  populateMovieIntoUI()");
-        if (movie.getPosterID() != null)
+        if (movie.getKey() != null)
             Picasso .get() .load( movie.getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
 
         favButton .setCompoundDrawableTintList( ColorStateList.valueOf(getResources().getColor(
@@ -107,7 +112,11 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
     }
 
 
-    private void populateNonlinksXtraIntoUI(List< Xtra> xtraList) {                                  Log.d(TAG, "change has occured -->  populateNonlinksXtraIntoUI()");
+    /**
+     *
+     * @param xtraList
+     */
+    private void populateNonlinksFromXtraListIntoUI(List< Xtra> xtraList) {                                  Log.d(TAG, "change has occured -->  populateNonlinksFromXtraListIntoUI()");
         xtraList.forEach( (Xtra xtra) -> {
 
             int subID = xtra.getID() % 100;
@@ -166,12 +175,20 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
         });
     }
 
-
+    /**
+     *
+     * @param xtraList
+     */
     private void populateLinksXtraIntoUI(  List< Xtra> xtraList) {
         mDetailsRVAdapter .setLinksXtraList( xtraList);
     }
 
 
+    /**
+     *
+     * @param type
+     * @param url
+     */
     @Override
     public void onItemClickListener(String type, String url) {
         Log .e(TAG, "CLICKED !!!   [type]:" + type + "   [url]:" + url);
