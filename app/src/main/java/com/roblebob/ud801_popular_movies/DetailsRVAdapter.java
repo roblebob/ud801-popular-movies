@@ -50,7 +50,7 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     public void onBindViewHolder(@NonNull DetailsRVViewholder holder, int position) {
 
         Xtra xtra = this.linksXtraList.get(position);
-        int subID = xtra.getID() % 100;
+        int subID = xtra.getExtraID() % 100;
         String value = xtra.getValue();
 
         if /* homepage */ (subID == 18) {

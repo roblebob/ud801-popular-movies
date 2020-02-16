@@ -6,66 +6,78 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.Observer;
 
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel{
+    private AppDatabase mAppDatabase;
     private MovieRepository movieRepository;
     private XtraRepository  xtraRepository;
-    private final LiveData< List< Movie>> popularMovieListLive;
-    private final LiveData< List< Movie>> topRatedMovieListLive;
-    private final LiveData< String> orderedbyLive;
-    public final MediatorLiveData< List< Movie>> mediatorLive;
+
+    public  LiveData< List< Movie>> movieListLive;
+    private LiveData< List< Movie>> popularMovieListLive;
+    private LiveData< List< Movie>> topRatedMovieListLive;
+    private LiveData< Integer> orderedbyTabPositionLive;
+    private MediatorLiveData movieListLiveMediated;
 
 
-    public MainViewModel(@NonNull Application application) {
-        super(application);
-        this.movieRepository = new MovieRepository( AppDatabase.getInstance( application));
-        this.xtraRepository  = new XtraRepository(  AppDatabase.getInstance( application));
-        this.popularMovieListLive  = this.movieRepository .getPopularMovieListLive();
-        this.topRatedMovieListLive = this.movieRepository .getTopRatedMovieListLive();
-        this.orderedbyLive = movieRepository.orderedbyLive;
-
-        mediatorLive = new MediatorLiveData<>();
-        mediatorLive .addSource( orderedbyLive,
-            new Observer< String>() {
-                @Override
-                public void onChanged(String s) {
-                    if (s.equals("popular")) {
-                        mediatorLive.removeSource(topRatedMovieListLive);
-                        mediatorLive.addSource(popularMovieListLive, value -> mediatorLive.setValue(value));
-                    } else if (s.equals("top_rated")) {
-                        mediatorLive.removeSource(popularMovieListLive);
-                        mediatorLive.addSource(topRatedMovieListLive, value -> mediatorLive.setValue(value));
-                    } else Log.e(this.getClass().getSimpleName(), "E R R O R !:   invalid  'orderedby':  " + s);
-                }
-            }
-        );
+    public LiveData<List<Movie>> getPopularMovieListLive() {
+        return popularMovieListLive;
     }
+    public LiveData<List<Movie>> getTopRatedMovieListLive() {
+        return topRatedMovieListLive;
+    }
+    public LiveData<Integer> getOrderedbyTabPositionLive() {
+        return orderedbyTabPositionLive;
+    }
+    public MediatorLiveData< List< Movie>> getMovieListLiveMediated() { return movieListLiveMediated; }
+
+
+
+
+
+    public MainViewModel( @NonNull Application application) {
+        super( application);
+        mAppDatabase = AppDatabase.getInstance( application);
+        movieRepository = new MovieRepository( mAppDatabase);
+        xtraRepository  = new XtraRepository(  mAppDatabase);
+
+        popularMovieListLive  = movieRepository.getPopularMovieListLive();
+        topRatedMovieListLive = movieRepository.getTopRatedMovieListLive();
+        orderedbyTabPositionLive = movieRepository.getOrderedbyTabPositionLive();
+
+        movieListLiveMediated = new MediatorLiveData< List< Movie>>() ;
+        movieListLiveMediated.addSource(orderedbyTabPositionLive, value -> movieListLiveMediated.setValue(combine( orderedbyTabPositionLive, popularMovieListLive, topRatedMovieListLive )));
+        movieListLiveMediated.addSource(popularMovieListLive,     value -> movieListLiveMediated.setValue(combine( orderedbyTabPositionLive, popularMovieListLive, topRatedMovieListLive )));
+        movieListLiveMediated.addSource(topRatedMovieListLive,    value -> movieListLiveMediated.setValue(combine( orderedbyTabPositionLive, popularMovieListLive, topRatedMovieListLive )));
+
+    }
+
+    public List< Movie> combine(
+            LiveData< Integer> orderedbyTabPositionLive,
+            LiveData< List< Movie>> popularMovieListLive,
+            LiveData< List< Movie>> topRatedMovieListLive) {
+
+        if (orderedbyTabPositionLive.getValue() != null) if (orderedbyTabPositionLive.getValue() == 1)
+            return topRatedMovieListLive.getValue();
+
+        return popularMovieListLive.getValue();
+    }
+
 
 
     public void start( String apiKey) {
-        movieRepository.start( apiKey);
-        xtraRepository.start( apiKey);
+        movieRepository .start( apiKey);
+        xtraRepository  .start( apiKey);
+
     }
 
-
-
-
-    public void setOrderedbyTabPosition(int position) {
-        movieRepository.insertOrderedbyTabPosition(position);
+    public void setOrderedbyTabPosition( int position) {                                Log.e(this.getClass().getSimpleName(), " ----> setOrderedbyTabPosition( " + position + " )");
+        movieRepository .insertOrderedbyTabPosition( position);
     }
-
 
     public final LiveData< Integer> countMovies() {         return movieRepository .countMovies();}
-    public final LiveData< Integer> countDetailedMovies() { return xtraRepository  .countDetailedMovies();}
+    public final LiveData< Integer> countDetailedMovies() { return xtraRepository  .countMovies();}
 
-
-
-
-
-    public void integrateXtras(int movieID) { xtraRepository.integrate( movieID);}
-
-
+    public void integrateXtras( Integer movieID) { xtraRepository .integrate(movieID.toString());}
 }

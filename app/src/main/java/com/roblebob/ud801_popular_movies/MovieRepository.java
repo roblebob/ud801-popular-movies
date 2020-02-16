@@ -3,8 +3,8 @@ import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.WorkerThread;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,20 +23,19 @@ import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttp
 /* **************************************************************************************************
  *
  */
-public class MovieRepository  {
-    public static final List< String> ORDEREDBY_list =     new ArrayList< String>( Arrays.asList( "popular", "top_rated"));
+public class MovieRepository extends AppRepository<Movie> {
+
+
+    public List< String> ORDER() { return new ArrayList< String>( Arrays.asList( "popular", "top_rated")); }
     private AppDatabase appDatabase;
-
     private LiveData< Integer> orderedbyTabPositionLive;
-    public LiveData< String> orderedbyLive;
+    public  LiveData< String> orderedbyLive;
 
 
-
-
-    public MovieRepository(@NonNull AppDatabase appDatabase) {
+    public MovieRepository( AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
-        orderedbyTabPositionLive = this.appDatabase .movieDao().loadOrderedbyTabPositionLive();
-        orderedbyLive = Transformations.map(orderedbyTabPositionLive, pos ->  ORDEREDBY_list.get(pos));
+        AppExecutors.getInstance().diskIO().execute(  () -> this.appDatabase .movieDao() .insert(
+                new Movie(1, false, false, 0, 0, 0, null)));
 
     }
 
@@ -47,18 +46,20 @@ public class MovieRepository  {
      *
      * @param apiKey
      */
-    public void start( String apiKEY) {
-        //Log.e(this.getClass().getSimpleName(), "----->  MovieRepository started with apikey: " + apiKEY);
+    public void start( String apiKey) {
+
+        orderedbyTabPositionLive = this.appDatabase .movieDao() .loadOrderedbyTabPositionLive();
+
+        //Log.e(this.getClass().getSimpleName(), "----->  MovieRepository started with apikey: " + apiKey);
         AppExecutors.getInstance().networkIO().execute(() -> {
             try {
-                String response = getResponseFromHttpUrl( buildUrl ( apiKEY, "popular", 1));
-
-                AppExecutors.getInstance().diskIO().execute(  () -> this.appDatabase .movieDao() .update( new Movie(1, false, false, 1, 0, 0, apiKEY)));
-                //Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKEY +  " accepted");
-                integrate(apiKEY);
+                String response = getResponseFromHttpUrl( buildUrl ( apiKey, "popular", 1));
+                AppExecutors .getInstance() .diskIO() .execute( () -> appDatabase .movieDao() .updateApiKey( apiKey));
+                Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKey +  " accepted");
+                integrate(apiKey);
             } catch (IOException e) { e.printStackTrace();
-                AppExecutors.getInstance().diskIO().execute(  () -> this.appDatabase .movieDao() .insert( new Movie(1, false, false, 1, 0, 0, null)));
-                //Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKEY +  " rejected");
+                AppExecutors .getInstance() .diskIO() .execute( () -> appDatabase .movieDao() .updateApiKey( null));
+                Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKey +  " rejected");
             }
         });
     }
@@ -68,19 +69,35 @@ public class MovieRepository  {
      *
      *
      */
-    public LiveData< Integer> countMovies() { return this.appDatabase.movieDao().countMovies(); }
-
-    public  LiveData< Movie>  getMovieLive( int movieID)  { return  this.appDatabase .movieDao() .loadMovieByMovieIDLive( movieID); }
 
 
-    public  LiveData< List< Movie>>  getMovieListLive( String orderedby)  {
-        if (      orderedby.equals("popular"  ))   return this.appDatabase .movieDao() .loadPopularMoviesLive();
-        else if ( orderedby.equals("top_rated"))   return this.appDatabase .movieDao() .loadTopRatedMoviesLive();
-        else { Log .e(this.getClass().getSimpleName(), "invalid argument ORDERBY: " + orderedby);  return null; }
+    public LiveData< List< Movie>> getListLive(String s)  { return this.appDatabase .movieDao() .loadMovieListLive(); }
+
+    public LiveData<  Integer>  getOrderedbyTabPositionLive()  { return this.appDatabase .movieDao() .loadOrderedbyTabPositionLive(); }
+
+    public  LiveData< List< Movie>> getListLive(int orderedbyTabPosition)  {
+        Log .e(this.getClass().getSimpleName(), " ---------->> " + orderedbyTabPosition);
+        if ( orderedbyTabPosition == 1)       return this.appDatabase .movieDao() .loadTopRatedMovieListLive();
+        else /* orderedbyTabPosition == 0 */  return this.appDatabase .movieDao() .loadPopularMovieListLive();
     }
+    public LiveData< List< Movie>>  getPopularMovieListLive()  { return this.appDatabase .movieDao() .loadPopularMovieListLive(); }
+    public LiveData< List< Movie>>  getTopRatedMovieListLive()  { return this.appDatabase .movieDao() .loadTopRatedMovieListLive(); }
 
-    public LiveData< List< Movie>>  getPopularMovieListLive()  { return this.appDatabase .movieDao() .loadPopularMoviesLive(); }
-    public LiveData< List< Movie>>  getTopRatedMovieListLive()  { return this.appDatabase .movieDao() .loadTopRatedMoviesLive(); }
+
+
+
+
+
+
+    public void insertOrderedbyTabPosition(int position) {
+        AppExecutors .getInstance() .diskIO() .execute(
+                () -> appDatabase .movieDao() .updateOrderedbyTabPosition( position)); }
+
+
+
+
+    public LiveData< Integer> countMovies() { return this.appDatabase.movieDao().countMovies(); }
+    public  LiveData< Movie>  getMovieLive( int movieID)  { return  this.appDatabase .movieDao() .loadMovieLive( movieID); }
 
 
 
@@ -89,15 +106,17 @@ public class MovieRepository  {
      *
      * @param apiKey
      */
+    @WorkerThread
     public void integrate(String apiKey) {  AppExecutors.getInstance().networkIO().execute(() -> {
+
             boolean condition = true;
             int page;
-            for (String orderby : ORDEREDBY_list) {         page = 0;
+            for (String order : ORDER()) {         page = 0;
                 do { try { try {                            page++;
 
                     JSONObject jsonObject = new JSONObject( Objects.requireNonNull(
                                                     AppUtilities .getResponseFromHttpUrl(
-                                                        buildUrl(apiKey,orderby,page))));
+                                                        buildUrl(apiKey,order,page))));
 
                     condition = page == jsonObject.getInt("page")   &&   page < jsonObject.getInt("total_pages");
 
@@ -124,9 +143,10 @@ public class MovieRepository  {
      *
      * @param movie
      */
-    private void insert(           Movie movie) { insertExec(movie);}
-    private void insertAsync(final Movie movie) { new Thread(                                    () -> this.appDatabase  .movieDao() .insert(movie)) .start(); }
-    private void insertExec( final Movie movie) { AppExecutors.getInstance().diskIO() .execute(  () -> this.appDatabase  .movieDao() .insert(movie))         ; }
+    //private void insert(           Movie movie) { insertExec(movie);}
+    //private void insertAsync(final Movie movie) { new Thread(                                    () -> this.appDatabase  .movieDao() .insert(movie)) .start(); }
+    @WorkerThread
+    public void insert( Movie movie) { AppExecutors.getInstance().diskIO() .execute(  () -> this.appDatabase  .movieDao() .insert(movie))         ; }
 
 
 
@@ -138,7 +158,7 @@ public class MovieRepository  {
      * @param page
      * @return url as a String, not as a URL !!!
      */
-    public static String buildUrl( @NonNull String apiKey, @NonNull String orderedby, @NonNull int page) {
+    public static String buildUrl( @NonNull String apiKey, @NonNull String orderedby,  int page) {
 
         try { return    new URL( Uri
                                     .parse( "https://api.themoviedb.org/3/movie")
@@ -155,8 +175,8 @@ public class MovieRepository  {
     }
 
 
-    public void insertOrderedbyTabPosition(int position) {
-        AppExecutors.getInstance().diskIO().execute(
-                () -> appDatabase.movieDao().updateOrderedbyTabPosition(position));
-    }
+
+
+
+
 }

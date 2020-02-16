@@ -53,16 +53,16 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
             DetailsViewModelFactory detailsViewModelFactory = new DetailsViewModelFactory(this.getApplication(), movieID);
             final DetailsViewModel detailsViewModel = ViewModelProviders.of(this, detailsViewModelFactory).get(DetailsViewModel.class);
 
-            mDetailsRV = (RecyclerView) this.findViewById(R.id.activity_details_RECYCLER_VIEW);
+            mDetailsRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
             mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-            mDetailsRV.setLayoutManager(mDetailsRVLayoutManager);
+            mDetailsRV .setLayoutManager( mDetailsRVLayoutManager);
             mDetailsRVAdapter = new DetailsRVAdapter(this);
-            mDetailsRV.setAdapter(mDetailsRVAdapter);
-            mDetailsRV.setHasFixedSize(false);
+            mDetailsRV .setAdapter( mDetailsRVAdapter);
+            mDetailsRV .setHasFixedSize(false);
 
-            favButton = (Button) findViewById(R.id.activity_details_BUTTON_fav);
-            favButton.setOnClickListener(v -> detailsViewModel.getMovieLive(movieID).observe(this,
-                    (movie) -> { AppExecutors.getInstance().diskIO().execute(  () -> mAppDatabase.movieDao().update((movie.inverseFav())));          Log.e(TAG, "CLICKED!!" + movie.isFav());
+            favButton = (Button) findViewById( R.id.activity_details_BUTTON_fav);
+            favButton .setOnClickListener( v -> detailsViewModel .getMovieLive( movieID) .observe(this,
+                    (movie) -> { AppExecutors.getInstance().diskIO().execute(  () -> mAppDatabase .movieDao() .update((movie.inverseFav())));          Log.e(TAG, "CLICKED!!" + movie.isFav());
                                 }));
 
 
@@ -73,13 +73,13 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
                     }});
 
             detailsViewModel .getNonlinksXtraListLive(  movieID) .observe(this,
-                    new Observer< List<Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
+                    new Observer< List< Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
                         detailsViewModel .getNonlinksXtraListLive(movieID) .removeObserver( this);
                         Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (xtraNonlinks)update from LiveData  " + xtraList.toString());
                         populateNonlinksFromXtraListIntoUI(xtraList);
                     }});
             detailsViewModel .getLinksXtraListLive(  movieID) .observe(this,
-                    new Observer< List<Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
+                    new Observer< List< Xtra>>() { @Override public void onChanged( List<Xtra> xtraList) {
                         detailsViewModel .getLinksXtraListLive(movieID) .removeObserver( this);
                         Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (xtraLinks) update from LiveData  " + xtraList.toString());
                         populateLinksXtraIntoUI(xtraList);
@@ -119,7 +119,7 @@ public class DetailsActivity extends AppCompatActivity  implements DetailsRVAdap
     private void populateNonlinksFromXtraListIntoUI(List< Xtra> xtraList) {                                  Log.d(TAG, "change has occured -->  populateNonlinksFromXtraListIntoUI()");
         xtraList.forEach( (Xtra xtra) -> {
 
-            int subID = xtra.getID() % 100;
+            int subID = xtra.getExtraID() % 100;
             if (0 <= subID && subID < 18) {
                 String attribute = Xtra.ATTRIBUTE_list.get(subID);
                 switch(attribute) {

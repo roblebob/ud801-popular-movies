@@ -11,17 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVViewHolder> {
-
+    public static final List< String> ORDEREDBY = new ArrayList< String>( Arrays.asList( "popular", "top_rated"));
     private final static String TAG =   MainRVAdapter.class .getSimpleName();
     private final AsyncListDiffer< Movie> mDiffer = new AsyncListDiffer(this, DIFF_CALLBACK);
     private ItemClickListener mItemClickListener;
-    private MainViewModel mainViewModel;
+
 
 
 

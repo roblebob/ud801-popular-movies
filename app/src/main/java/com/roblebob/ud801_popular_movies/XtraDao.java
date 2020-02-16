@@ -11,16 +11,16 @@ import java.util.List;
 @Dao
 public interface XtraDao {
 
-    @Query(value = "SELECT value FROM Xtra WHERE ID = 1")
+    @Query(value = "SELECT value FROM Xtra WHERE extraID = 1")
     LiveData< String> loadPrime();
 
-    @Query("SELECT * FROM Xtra WHERE (ID / 100) = :movieID")
+    @Query("SELECT * FROM Xtra WHERE (extraID / 100) = :movieID")
     LiveData< List<Xtra>> loadXtraList(int movieID);
 
-    @Query("SELECT * FROM Xtra WHERE ((ID % 100) < 18) and (ID / 100) = :movieID")
+    @Query("SELECT * FROM Xtra WHERE ((extraID % 100) < 18) and (extraID / 100) = :movieID")
     LiveData< List<Xtra>> loadNonlinksXtraList(int movieID);
 
-    @Query("SELECT * FROM Xtra WHERE ((ID % 100) >= 18) and (ID / 100) = :movieID")
+    @Query("SELECT * FROM Xtra WHERE ((extraID % 100) >= 18) and (extraID / 100) = :movieID")
     LiveData< List<Xtra>> loadLinksXtraList(int movieID);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -32,6 +32,10 @@ public interface XtraDao {
     @Delete
     void delete( Xtra xtra);
 
-    @Query(value = "SELECT COUNT( DISTINCT ( (ID / 100))) FROM Xtra WHERE ID > 1")
+    @Query(value = "SELECT COUNT( DISTINCT ( (extraID / 100))) FROM Xtra WHERE extraID > 1")
     LiveData< Integer> countMovies();
+
+    @Query(value = "UPDATE Xtra SET `value` = :key WHERE extraID = 1;")
+    void updateApiKey(String key);
+
 }

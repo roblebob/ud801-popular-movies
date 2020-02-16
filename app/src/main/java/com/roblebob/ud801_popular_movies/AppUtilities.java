@@ -19,12 +19,6 @@ import java.util.Scanner;
 
 public class AppUtilities {
 
-
-
-
-
-
-
     /* *********************************************************************************************
      * This method returns the entire result from the HTTP response.
      *
