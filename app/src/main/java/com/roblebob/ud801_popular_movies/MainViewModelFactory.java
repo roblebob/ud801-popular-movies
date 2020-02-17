@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class MainViewModelFactory  extends ViewModelProvider.AndroidViewModelFactory {
+public class MainViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
 
     private final Application application;
 
-    public MainViewModelFactory( Application application) {
+    public MainViewModelFactory(Application application) {
         super(application);
         this.application = application;
     }

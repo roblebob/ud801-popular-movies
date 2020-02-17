@@ -2,7 +2,7 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:appState="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,46 +15,46 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".DetailsActivity"
+            tools:context=".DetailActivity"
             >
 
             <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.5"
-                app:layout_constraintStart_toStartOf="parent" />
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintGuide_percent="0.5"
+                appState:layout_constraintStart_toStartOf="parent" />
             <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.25"
-                app:layout_constraintStart_toStartOf="parent" />
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintGuide_percent="0.25"
+                appState:layout_constraintStart_toStartOf="parent" />
             <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.75"
-                app:layout_constraintStart_toStartOf="parent" />
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintGuide_percent="0.75"
+                appState:layout_constraintStart_toStartOf="parent" />
             <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.07"
-                app:layout_constraintStart_toStartOf="parent" />
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintGuide_percent="0.07"
+                appState:layout_constraintStart_toStartOf="parent" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintGuide_percent="0.93"
-                app:layout_constraintStart_toStartOf="parent" />
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintGuide_percent="0.93"
+                appState:layout_constraintStart_toStartOf="parent" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -62,11 +62,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="240dp"
                 android:adjustViewBounds="true"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_center"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/test" />
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_center"
+                appState:layout_constraintHorizontal_bias="0.0"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_left"
+                appState:layout_constraintTop_toTopOf="parent"
+                appState:srcCompat="@drawable/test" />
 
             <TextView android:id="@+id/activity_details_RELEASE_DATE_tv"
                 android:layout_width="wrap_content"
@@ -74,9 +74,9 @@
                 android:layout_marginStart="36dp"
                 android:text=""
                 android:textSize="30sp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline_center"
-                app:layout_constraintTop_toTopOf="@+id/imageView"
+                appState:layout_constraintRight_toRightOf="parent"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_center"
+                appState:layout_constraintTop_toTopOf="@+id/imageView"
                 />
 
             <TextView android:id="@+id/activity_details_RUNTIME_tv"
@@ -86,10 +86,10 @@
                 android:text=""
                 android:textSize="18sp"
                 android:textStyle="italic"
-                app:layout_constraintBottom_toTopOf="@+id/activity_details_RELEASE_DATE_tv"
-                app:layout_constraintStart_toStartOf="@+id/activity_details_RELEASE_DATE_tv"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_RELEASE_DATE_tv"
-                app:layout_constraintVertical_bias="0.0" />
+                appState:layout_constraintBottom_toTopOf="@+id/activity_details_RELEASE_DATE_tv"
+                appState:layout_constraintStart_toStartOf="@+id/activity_details_RELEASE_DATE_tv"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RELEASE_DATE_tv"
+                appState:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/activity_details_RUNTIME_unit_minutes_tv"
@@ -99,8 +99,8 @@
                 android:textSize="18sp"
                 android:textStyle="italic"
                 android:layout_marginStart="2dp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME_tv"
-                app:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME_tv" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME_tv"
+                appState:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME_tv" />
 
 
             <TextView android:id="@+id/activity_details_RATING_tv"
@@ -108,9 +108,9 @@
                 android:layout_height="wrap_content"
                 android:text="8.4"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/activity_details_BUTTON_fav"
-                app:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME_tv"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME_tv"
+                appState:layout_constraintBottom_toTopOf="@+id/activity_details_BUTTON_favorite"
+                appState:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME_tv"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME_tv"
                 tools:layout_editor_absoluteY="282dp" />
 
             <TextView android:id="@+id/activity_details_RATING_MAX_tv"
@@ -118,18 +118,18 @@
                 android:layout_height="wrap_content"
                 android:text="/10"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RATING_tv"
-                app:layout_constraintStart_toEndOf="@+id/activity_details_RATING_tv" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RATING_tv"
+                appState:layout_constraintStart_toEndOf="@+id/activity_details_RATING_tv" />
 
-            <Button android:id="@+id/activity_details_BUTTON_fav"
+            <Button android:id="@+id/activity_details_BUTTON_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
                 android:drawableStart="@drawable/favorite_star_on"
                 android:drawableTint="@color/colorGray"
                 android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="@+id/activity_details_RATING_tv" />
+                appState:layout_constraintBottom_toBottomOf="@+id/imageView"
+                appState:layout_constraintStart_toStartOf="@+id/activity_details_RATING_tv" />
 
             <TextView
                 android:id="@+id/activity_details_TAGLINE_tv"
@@ -142,10 +142,10 @@
                 android:textAlignment="viewEnd"
                 android:textSize="20sp"
                 android:textStyle="italic"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                app:layout_constraintRight_toLeftOf="@+id/guideline_right"
-                app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                appState:layout_constraintRight_toLeftOf="@+id/guideline_right"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_left"
+                appState:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <TextView
                 android:id="@+id/activity_details_OVERVIEW_tv"
@@ -156,10 +156,10 @@
                 android:singleLine="false"
                 android:text=""
                 android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                app:layout_constraintRight_toLeftOf="@+id/guideline_right"
-                app:layout_constraintStart_toEndOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE_tv" />
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                appState:layout_constraintRight_toLeftOf="@+id/guideline_right"
+                appState:layout_constraintStart_toEndOf="@+id/guideline_left"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE_tv" />
 
 
             <TextView
@@ -170,8 +170,8 @@
                 android:text="Genres: "
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES_tv"
-                app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES_tv"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
             <TextView
                 android:id="@+id/activity_details_GENRES_tv"
@@ -183,8 +183,8 @@
                 android:textAlignment="viewEnd"
                 android:textSize="12sp"
                 android:textStyle="italic"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW_tv" />
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW_tv" />
 
 
             <TextView
@@ -195,8 +195,8 @@
                 android:text="Budget: "
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
-                app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
             <TextView
                 android:id="@+id/activity_Details_BUDGET_tv"
@@ -207,9 +207,9 @@
                 android:lineSpacingMultiplier="1.3"
                 android:text=""
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                app:layout_constraintLeft_toRightOf="@+id/activity_details_BUDGET_LABEL_tv"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES_tv" />
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
+                appState:layout_constraintLeft_toRightOf="@+id/activity_details_BUDGET_LABEL_tv"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES_tv" />
 
             <TextView
                 android:id="@+id/activity_details_BUDGET_UNIT_dollarsign_tv"
@@ -218,8 +218,8 @@
                 android:lineSpacingMultiplier="1.3"
                 android:text="$"
                 android:textSize="14sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
-                app:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
 
 
             <TextView
@@ -230,8 +230,8 @@
                 android:text="Revenue: "
                 android:textSize="10sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
-                app:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
 
             <TextView
                 android:id="@+id/activity_Details_REVENUE_tv"
@@ -242,9 +242,9 @@
                 android:lineSpacingMultiplier="1.3"
                 android:text=""
                 android:textSize="14sp"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                app:layout_constraintLeft_toRightOf="@+id/activity_details_REVENUE_LABEL_tv"
-                app:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET_tv" />
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
+                appState:layout_constraintLeft_toRightOf="@+id/activity_details_REVENUE_LABEL_tv"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET_tv" />
             <TextView
                 android:id="@+id/activity_details_REVENUE_UNIT_dollarsign_tv"
                 android:layout_width="wrap_content"
@@ -252,8 +252,8 @@
                 android:lineSpacingMultiplier="1.3"
                 android:text="$"
                 android:textSize="14sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
-                app:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
+                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
 
 
 
@@ -267,11 +267,11 @@
                 android:layout_marginTop="45dp"
                 android:layout_marginBottom="45dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE_tv"
-                app:layout_constraintBottom_toTopOf="@+id/activity_details_RECYCLER_VIEW"
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintHorizontal_bias="1.0"
+                appState:layout_constraintStart_toStartOf="parent"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE_tv"
+                appState:layout_constraintBottom_toTopOf="@+id/activity_details_RECYCLER_VIEW"
                 />
 
 
@@ -279,11 +279,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintTop_toBottomOf="@+id/activity_details_RECYCLER_VIEW"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
+                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RECYCLER_VIEW"
+                appState:layout_constraintBottom_toBottomOf="parent"
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintHorizontal_bias="1.0"
+                appState:layout_constraintStart_toStartOf="parent"
 
                 />
 
@@ -292,11 +292,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
-                app:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/guideline_left"
-                app:layout_constraintTop_toBottomOf="@+id/divider_pre_rv"
+                appState:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
+                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"
+                appState:layout_constraintHorizontal_bias="0.0"
+                appState:layout_constraintStart_toStartOf="@+id/guideline_left"
+                appState:layout_constraintTop_toBottomOf="@+id/divider_pre_rv"
                 android:focusable="true"
                 android:focusedByDefault="true"
                 android:clickable="true"
@@ -317,32 +317,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.07"
-            app:layout_constraintStart_toStartOf="parent" />
+            appState:layout_constraintEnd_toEndOf="parent"
+            appState:layout_constraintGuide_percent="0.07"
+            appState:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.93"
-            app:layout_constraintStart_toStartOf="parent" />
+            appState:layout_constraintEnd_toEndOf="parent"
+            appState:layout_constraintGuide_percent="0.93"
+            appState:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.2"
-            app:layout_constraintStart_toStartOf="parent" />
+            appState:layout_constraintEnd_toEndOf="parent"
+            appState:layout_constraintGuide_percent="0.2"
+            appState:layout_constraintStart_toStartOf="parent" />
         <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintGuide_percent="0.87"
-            app:layout_constraintStart_toStartOf="parent" />
+            appState:layout_constraintEnd_toEndOf="parent"
+            appState:layout_constraintGuide_percent="0.87"
+            appState:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/activity_details_HEADING_TITLE_top_barrier_textview"
@@ -352,10 +352,10 @@
             android:text=""
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
-            app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            app:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_GUIDELINE_top"
-            app:layout_constraintBottom_toTopOf="@+id/activity_details_TITLE_tv"
+            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
+            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
+            appState:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_GUIDELINE_top"
+            appState:layout_constraintBottom_toTopOf="@+id/activity_details_TITLE_tv"
             />
 
 
@@ -367,10 +367,10 @@
             android:text=""
             android:textSize="36sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
-            app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            app:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_top_barrier_textview"
-            app:layout_constraintBottom_toTopOf="@id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
+            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
+            appState:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_top_barrier_textview"
+            appState:layout_constraintBottom_toTopOf="@id/activity_details_ORIGINAL_TITLE"
             />
 
         <TextView
@@ -380,9 +380,9 @@
             android:text=""
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"
-            app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            app:layout_constraintTop_toBottomOf="@+id/activity_details_TITLE_tv"
+            appState:layout_constraintBottom_toTopOf="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"
+            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
+            appState:layout_constraintTop_toBottomOf="@+id/activity_details_TITLE_tv"
             android:visibility="gone"
             />
         <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_left_bracket"
@@ -391,8 +391,8 @@
             android:text="("
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
-            app:layout_constraintEnd_toStartOf="@+id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintEnd_toStartOf="@+id/activity_details_ORIGINAL_TITLE"
             android:visibility="gone"
             />
         <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
@@ -401,8 +401,8 @@
             android:text=")"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
-            app:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE"
             android:visibility="gone"
             />
         <TextView android:id="@+id/activity_details_ORIGINAL_LANGUAGE_tv"
@@ -410,8 +410,8 @@
             android:layout_height="wrap_content"
             android:text="en"
             android:textSize="10sp"
-            app:layout_constraintTop_toTopOf="@+id/activity_details_ORIGINAL_TITLE"
-            app:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
+            appState:layout_constraintTop_toTopOf="@+id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
             android:visibility="gone"
             />
 
@@ -423,10 +423,10 @@
             android:text=""
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
-            app:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            app:layout_constraintTop_toBottomOf="@+id/activity_details_ORIGINAL_TITLE"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_details_HEADING_GUIDELINE_bottom"
+            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
+            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
+            appState:layout_constraintTop_toBottomOf="@+id/activity_details_ORIGINAL_TITLE"
+            appState:layout_constraintBottom_toBottomOf="@+id/activity_details_HEADING_GUIDELINE_bottom"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

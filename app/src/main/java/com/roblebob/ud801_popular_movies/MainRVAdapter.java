@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SortedList;
 
 import com.squareup.picasso.Picasso;
 
@@ -22,70 +21,74 @@ import java.util.List;
 public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVViewHolder> {
     public static final List< String> ORDEREDBY = new ArrayList< String>( Arrays.asList( "popular", "top_rated"));
     private final static String TAG =   MainRVAdapter.class .getSimpleName();
-    private final AsyncListDiffer< Movie> mDiffer = new AsyncListDiffer(this, DIFF_CALLBACK);
+    private final AsyncListDiffer<Main> mDiffer = new AsyncListDiffer(this, DIFF_CALLBACK);
     private ItemClickListener mItemClickListener;
 
+    public void submitList(List< Main> mainList) { mDiffer.submitList(mainList); }
 
-
-
-
-    @Override public int getItemCount() { return  mDiffer.getCurrentList().size(); }
-    public void submitList(List< Movie> movieList) { mDiffer.submitList( movieList); }
-
-    @Override public void onBindViewHolder(@NonNull MainRVViewHolder holder, int position) {
-        Movie movie = mDiffer .getCurrentList() .get( position);
-        holder.bindTo( movie);
-        holder.rankingTv.setText( String .valueOf( position + 1));
-    }
-
-    public static final DiffUtil.ItemCallback< Movie> DIFF_CALLBACK =  new DiffUtil.ItemCallback< Movie>() {
-        @Override public boolean areItemsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
-            return oldMovie.getMovieID() == newMovie.getMovieID();
+    public static final DiffUtil.ItemCallback< Main> DIFF_CALLBACK =  new DiffUtil.ItemCallback< Main>() {
+        @Override public boolean areItemsTheSame(@NonNull Main oldMain, @NonNull Main newMain) {
+            return oldMain.getID() == newMain.getID();
         }
-        @Override public boolean areContentsTheSame(@NonNull Movie oldMovie, @NonNull Movie newMovie) {
-            return oldMovie.equals( newMovie);
+        @Override public boolean areContentsTheSame(@NonNull Main oldMain, @NonNull Main newMain) {
+            return oldMain.equals(newMain);
         }
     };
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
-    MainRVAdapter( ItemClickListener itemClickListener) {
 
-        mItemClickListener =  itemClickListener;
-    }
+    MainRVAdapter(ItemClickListener itemClickListener) { mItemClickListener = itemClickListener; }
 
-    @NonNull @Override public MainRVViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType) {
-        View view =  LayoutInflater .from( parent .getContext()) .inflate( R.layout.main_recycler_view_single_item, parent, false);
+
+    @NonNull @Override public MainRVViewHolder  onCreateViewHolder( @NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater .from( parent .getContext()) .inflate( R.layout.main_rv_single_item, parent, false);
         return new MainRVViewHolder( view);
     }
+
+    @Override public void  onBindViewHolder( @NonNull MainRVViewHolder holder, int position) {
+        Main main = mDiffer .getCurrentList() .get( position);
+        holder.bindTo( main);
+        holder.rankingTv.setText( String .valueOf( position + 1));
+        if (main.isDetailed())  holder.rankingTv.setBackgroundColor( holder.itemView.getContext().getColor( R.color.colorYellow));
+        else                    holder.rankingTv.setBackgroundColor( holder.itemView.getContext().getColor( R.color.colorWhite));
+
+        // TODO:
+        // this.onAttachedToRecyclerView()
+    }
+
+    @Override public int  getItemCount() { return  mDiffer.getCurrentList().size(); }
+
+
+
+
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public interface ItemClickListener { void onItemClickListener( int id); }
-
-    public class MainRVViewHolder extends RecyclerView .ViewHolder implements View .OnClickListener {
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /////
+    public interface  ItemClickListener  { void onItemClickListener( int id); }
+    //
+    public class  MainRVViewHolder  extends RecyclerView .ViewHolder  implements View .OnClickListener {
 
         ImageView posterIv;
         TextView  rankingTv;
 
         public MainRVViewHolder( @NonNull View itemView) {
             super( itemView);
-            posterIv  = itemView .findViewById( R.id.main_recycler_view_single_item_IMAGE_VIEW);
-            rankingTv = itemView .findViewById( R.id.main_recycler_view_single_item_TEXT_VIEW);
+            posterIv  = itemView .findViewById( R.id.main_rv_single_item_IV);
+            rankingTv = itemView .findViewById( R.id.main_rv_single_item_TV);
             itemView .setOnClickListener( this);
         }
 
         @Override public void onClick( View v) {
-            mItemClickListener .onItemClickListener(  mDiffer.getCurrentList().get( getAdapterPosition()).getMovieID());
+            mItemClickListener .onItemClickListener(  mDiffer.getCurrentList().get( getAdapterPosition()).getID());
         }
 
-        public void bindTo(Movie movie) {
+        public void bindTo(Main main) {      Log.d(TAG + "::onBindViewHolder() ", "----[POS]---->  " + getAdapterPosition());
 
-            final String posterID = movie .getKey();
+            final String posterID = main.getPosterKey();
             Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + posterID) .into(posterIv);
 
-            //if (!movie.isDetailed())  mainViewModel.integrateXtras( mDiffer.getCurrentList().get( getAdapterPosition()) .getMovieID());
-
-            Log.d(TAG + "::onBindViewHolder() ", "----[POS:" + getAdapterPosition() + "]-----[SIZE:" + mDiffer.getCurrentList().size() + "]--->  " + posterID);
-
+            //if (!main.isDetailed())  mainViewModel.integrateXtras( mDiffer.getCurrentList().get( getAdapterPosition()) .getParent());
         }
     }
 }

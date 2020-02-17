@@ -6,10 +6,10 @@ import androidx.room.RoomDatabase;
 import android.content.Context;
 
 
-@Database( entities = {  Movie.class,  Xtra.class },   version = 1,   exportSchema = false)
+@Database( entities = { AppState.class, Main.class,  Detail.class },   version = 1,   exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {     /* singleton-pattern */
 
-    private static final String DATABASE_NAME  = "MovieDB149";
+    private static final String DATABASE_NAME  = "MovieDB154";
     private static AppDatabase  sInstance;
     private static final Object LOCK  = new Object();
     public static AppDatabase   getInstance( Context context) {
@@ -22,6 +22,8 @@ public abstract class AppDatabase extends RoomDatabase {     /* singleton-patter
         return sInstance;
     }
 
-    public abstract MovieDao movieDao();
-    public abstract XtraDao xtraDao();
+    public abstract MainDao movieDao();
+    public abstract DetailDao detailDao();
+    public abstract AppStateDao appStateDao();
+
 }

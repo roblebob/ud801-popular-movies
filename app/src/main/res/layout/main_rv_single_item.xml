@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main_rv_single_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:appState="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_recycler_view_single_item_CONSTRAINT_LAYOUT"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/main_recycler_view_single_item_IMAGE_VIEW"
+        android:id="@+id/main_rv_single_item_IV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent" />
+        appState:layout_constraintBottom_toBottomOf="parent"
+        appState:layout_constraintEnd_toEndOf="parent"
+        appState:layout_constraintStart_toStartOf="parent"
+        appState:layout_constraintTop_toBottomOf="parent" />
 
     <TextView
-        android:id="@+id/main_recycler_view_single_item_TEXT_VIEW"
+        android:id="@+id/main_rv_single_item_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
@@ -27,8 +28,8 @@
         android:text="1"
         android:textAlignment="center"
         android:textSize="10sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        appState:layout_constraintStart_toStartOf="parent"
+        appState:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

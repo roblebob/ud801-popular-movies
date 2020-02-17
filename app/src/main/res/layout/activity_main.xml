@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/activity_main_CONSTRAINT_LAYOUT"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:appState="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@android:color/white"
-        app:expandedTitleGravity="top"
+        appState:titleTextColor="@android:color/white"
+        appState:expandedTitleGravity="top"
         android:visibility="visible"
         >
 
@@ -23,13 +23,13 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBlack"
             android:backgroundTint="@color/colorBlack"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:titleTextColor="@android:color/white">
+            appState:layout_scrollFlags="scroll|enterAlways"
+            appState:titleTextColor="@android:color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|enterAlways">
+                appState:layout_scrollFlags="scroll|enterAlways">
 
                 <TextView
                     android:id="@+id/activity_main_TOOLBAR_textview"
@@ -53,10 +53,10 @@
                     android:textSize="36sp"
                     android:textStyle="bold"
                     android:typeface="serif"
-                    app:fontFamily="@font/cutive_mono"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    appState:fontFamily="@font/cutive_mono"
+                    appState:layout_constraintBottom_toBottomOf="parent"
+                    appState:layout_constraintStart_toStartOf="parent"
+                    appState:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.Toolbar>
@@ -68,7 +68,7 @@
             android:background="@color/colorBlack"
             android:backgroundTint="@color/colorBlack"
             android:visibility="gone"
-            app:layout_scrollFlags="enterAlways">
+            appState:layout_scrollFlags="enterAlways">
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -87,10 +87,10 @@
                 android:orientation="vertical"
                 android:progressDrawable="@drawable/ic_refresh_black_24dp"
                 android:progressTint="#06060A0A"
-                app:layout_constraintBottom_toBottomOf="@+id/activitity_main_BASIC_COUNT"
-                app:layout_constraintEnd_toStartOf="@+id/activitity_main_BASIC_COUNT"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activitity_main_BASIC_COUNT_label" />
+                appState:layout_constraintBottom_toBottomOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintEnd_toStartOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintStart_toStartOf="parent"
+                appState:layout_constraintTop_toBottomOf="@+id/activitity_main_BASIC_COUNT_label" />
 
             <TextView
                 android:id="@+id/activitity_main_BASIC_COUNT_label"
@@ -99,9 +99,9 @@
                 android:text="basics:"
                 android:textColor="@color/colorPrimary"
                 android:textSize="9sp"
-                app:layout_constraintBottom_toTopOf="@+id/activitity_main_BASIC_COUNT"
-                app:layout_constraintEnd_toEndOf="@+id/activitity_main_BASIC_COUNT"
-                app:layout_constraintTop_toTopOf="parent" />
+                appState:layout_constraintBottom_toTopOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintEnd_toEndOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/activitity_main_BASIC_COUNT"
@@ -111,8 +111,8 @@
                 android:background="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
-                app:layout_constraintEnd_toStartOf="@+id/activitity_main_DETAILED_COUNT"
-                app:layout_constraintTop_toBottomOf="@+id/activitity_main_BASIC_COUNT_label">
+                appState:layout_constraintEnd_toStartOf="@+id/activitity_main_DETAILED_COUNT"
+                appState:layout_constraintTop_toBottomOf="@+id/activitity_main_BASIC_COUNT_label">
 
                 <TextView
                     android:id="@+id/activitity_main_BASIC_COUNT_tv"
@@ -131,12 +131,12 @@
                 android:id="@+id/activitity_main_DETAILED_COUNT_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="detailed:"
+                android:text="detailedFLAG:"
                 android:textColor="@color/colorPrimary"
                 android:textSize="9sp"
-                app:layout_constraintBottom_toTopOf="@+id/activitity_main_DETAILED_COUNT"
-                app:layout_constraintEnd_toEndOf="@+id/activitity_main_DETAILED_COUNT"
-                app:layout_constraintTop_toTopOf="parent" />
+                appState:layout_constraintBottom_toTopOf="@+id/activitity_main_DETAILED_COUNT"
+                appState:layout_constraintEnd_toEndOf="@+id/activitity_main_DETAILED_COUNT"
+                appState:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/activitity_main_DETAILED_COUNT"
@@ -146,8 +146,8 @@
                 android:background="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/activitity_main_DETAILED_COUNT_label">
+                appState:layout_constraintEnd_toEndOf="parent"
+                appState:layout_constraintTop_toBottomOf="@+id/activitity_main_DETAILED_COUNT_label">
                 <TextView
                     android:id="@+id/activitity_main_DETAILED_COUNT_tv"
                     android:layout_width="wrap_content"
@@ -168,14 +168,14 @@
             android:layout_height="wrap_content"
             android:divider="@drawable/favorite_star_on"
             android:visibility="gone"
-            app:layout_scrollFlags="enterAlways"
-            app:tabIndicatorColor="@color/colorPrimary"
-            app:tabIndicatorHeight="7dp"
-            app:tabMode="fixed"
-            app:tabPaddingEnd="8dp"
-            app:tabSelectedTextColor="@color/colorBlack"
-            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-            app:tabTextColor="@color/colorGray">
+            appState:layout_scrollFlags="enterAlways"
+            appState:tabIndicatorColor="@color/colorPrimary"
+            appState:tabIndicatorHeight="7dp"
+            appState:tabMode="fixed"
+            appState:tabPaddingEnd="8dp"
+            appState:tabSelectedTextColor="@color/colorBlack"
+            appState:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            appState:tabTextColor="@color/colorGray">
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -191,13 +191,13 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_main_RECYCLER_VIEW"
+        android:id="@+id/activity_main_RV"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="fill_vertical"
         android:alwaysDrawnWithCache="false"
         android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        appState:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
 
@@ -208,9 +208,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        appState:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:visibility="visible"
-        app:layout_scrollFlags="scroll|enterAlways"
+        appState:layout_scrollFlags="scroll|enterAlways"
         >
 
 
@@ -221,13 +221,13 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="120dp"
             android:hint="please insert API KEY"
-            app:hintAnimationEnabled="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.039">
+            appState:hintAnimationEnabled="true"
+            appState:layout_constraintBottom_toBottomOf="parent"
+            appState:layout_constraintEnd_toEndOf="parent"
+            appState:layout_constraintHorizontal_bias="0.0"
+            appState:layout_constraintStart_toStartOf="parent"
+            appState:layout_constraintTop_toTopOf="parent"
+            appState:layout_constraintVertical_bias="0.039">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/activity_main_INITIAL_SETUP_textInputLayout_tv"

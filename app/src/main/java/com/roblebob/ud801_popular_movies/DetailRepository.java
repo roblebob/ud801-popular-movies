@@ -11,8 +11,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttpUrl;
@@ -20,52 +18,11 @@ import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttp
 /***************************************************************************************************
  *
  */
-public class XtraRepository extends AppRepository< Xtra> {
-
+public class DetailRepository extends AppAbstractRepository<Detail> {
     private AppDatabase appDatabase;
 
-
-    public List< String> ORDER() { return Xtra.ATTRIBUTE_list; }
-    public XtraRepository(@NonNull AppDatabase appDatabase) {
+    public DetailRepository(@NonNull AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
-
-    }
-
-
-
-
-    /* **********************************************************************************************
-     * Validates the given apiKey by sending an arbitrary dummy request,
-     * i.e. if invalid, IOEception is thrown.
-     *
-     * @param apiKey
-     */
-
-    public void start(String apiKey) {                      Log.e(this.getClass().getSimpleName(), "----->  Xtra Repository started with apikey: " + apiKey);
-
-        AppExecutors.getInstance().diskIO().execute(
-                () -> this.appDatabase .xtraDao() .insert( new Xtra(1, null)));
-
-
-        AppExecutors.getInstance().networkIO().execute(() -> {
-            try {
-                // dummy request
-                String response = getResponseFromHttpUrl( buildUrl(apiKey, 2, null));
-
-                // if IOEception is NOT thrown DO:
-                AppExecutors.getInstance().diskIO().execute(  () -> {
-                    this.appDatabase .xtraDao() .update( new Xtra(1,  apiKey));
-                    Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKey +  " accepted");
-                });
-            } catch (IOException e) { e.printStackTrace();
-                AppExecutors.getInstance().diskIO().execute(  () -> {
-                    this.appDatabase .xtraDao() .insert( new Xtra(1, null));
-                    Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKey + "  rejected");
-                });
-            }
-        });
-
-        Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  S t a r t e d   w i t h   A P I  K E Y :   " + apiKey);
     }
 
 
@@ -74,16 +31,14 @@ public class XtraRepository extends AppRepository< Xtra> {
      * @param movieID
      * @return
      */
-    public LiveData< List<Xtra>> getListLive(String key)  {
+    public LiveData< List<Detail>> getListLive(String key)  {
         Integer movieID = Integer.parseInt(key);
-        return this.appDatabase .xtraDao() .loadXtraList( movieID); }
-    public LiveData< List<Xtra>>  getNonlinksXtraListLive( int movieID)  { return this.appDatabase .xtraDao() .loadNonlinksXtraList( movieID); }
-    public LiveData< List<Xtra>>  getLinksXtraListLive( int movieID)  { return this.appDatabase .xtraDao() .loadLinksXtraList( movieID); }
+        return this.appDatabase .detailDao() .loadList( movieID); }
 
 
 
 
-    public LiveData< Integer> countMovies() { return this.appDatabase .xtraDao().countMovies(); }
+    public LiveData< Integer> countMovies() { return this.appDatabase .detailDao() .countMovies(); }
 
 
     /* **********************************************************************************************
@@ -91,18 +46,18 @@ public class XtraRepository extends AppRepository< Xtra> {
      * @param movieID
      */
     public  void integrate( String key)  {
-        int movieID = Integer .parseInt( key);
-        final String apiKey = this.appDatabase .xtraDao().loadPrime().getValue();
+        @NonNull int movieID = Integer .parseInt( key);
+        @NonNull final String apiKey = this.appDatabase .appStateDao().loadState("api_key").getValue();
         AppExecutors .getInstance() .networkIO() .execute( () -> {
             try { try {
 
                         JSONObject  jsonObject = new JSONObject(  Objects .requireNonNull(
                                 getResponseFromHttpUrl( buildUrl ( Objects.requireNonNull(
-                                        this.appDatabase
-                                                .xtraDao() .loadPrime().getValue()),movieID, null))));
+                                        this.appDatabase .appStateDao() .loadState("api_key").getValue()),movieID, null))));
 
-                        for (String attribute : Xtra.ATTRIBUTE_list) {
-                            switch (attribute) {
+
+                        for (String category : Detail.ORDER) {
+                            switch (category) {
                                 case "title":
                                 case "release_date":
                                 case "runtime":
@@ -110,45 +65,46 @@ public class XtraRepository extends AppRepository< Xtra> {
                                 case "overview":
                                 case "homepage":
                                 case "imdb_key":
-                                    insert( new Xtra(movieID,attribute,   jsonObject.getString(attribute)));
+
+                                    insert( new Detail(movieID,category,0,    jsonObject.getString(category)));
                                     break;
                                 case "budget":
-                                case "revenue":  if (jsonObject.getInt(attribute) > 0)
-                                    insert( new Xtra(movieID,attribute,   jsonObject.getString(attribute)));
+                                case "revenue":  if (jsonObject.getInt(category) > 0)
+                                    insert( new Detail(movieID,category,0,    jsonObject.getString(category)));
                                     break;
                                 case "original_title":
                                 case "original_language":  if ( ! jsonObject.getString("title") .equals( jsonObject.getString("original_title")))
-                                    insert( new Xtra(movieID,attribute,   jsonObject.getString(attribute)));
+                                    insert( new Detail(movieID, category,0,   jsonObject.getString(category)));
                                     break;
                                 case ("genres"):
-                                    insert( new Xtra(movieID,attribute,   jsonObject.getJSONArray(attribute).toString()));
+                                    insert( new Detail(movieID, category,0,   jsonObject.getJSONArray(category).toString()));
                                     break;
                             }
                         }
 
                         ////////////////////////////////////////////////////////////////////////////
-                        for (String attribute : Xtra.multi_ATTRIBUTE_list) {
+                        for (String category : Detail.ORDER) {
 
                             JSONArray  jsonArray  = (new JSONObject ( Objects.requireNonNull (
                                                             getResponseFromHttpUrl ( buildUrl (
-                                                                    apiKey, movieID, attribute))))
+                                                                    apiKey, movieID, category))))
                                                     ).getJSONArray("results");
 
                             for (int i = 0; i < jsonArray.length(); i++) {
 
                                 JSONObject jsonObj = jsonArray .getJSONObject (i);
 
-                                switch (attribute) {
+                                switch (category) {
 
                                     case "videos":
                                         if (jsonObj.getString("type").equals("Trailer")) {
                                             String s = jsonObj.getString("key")     + "," +    jsonObj.getString("name");
-                                            insert( new Xtra(movieID,attribute,i,  s));
+                                            insert( new Detail(movieID,category,i,  s));
                                         }
                                         break;
                                     case "review":
                                         String s =  jsonObj.getString("url")     + "," +    jsonObj.getString("author");
-                                        insert( new Xtra( movieID,attribute,i,  s));
+                                        insert( new Detail( movieID,category,i,  s));
                                         break;
                                 }
                             }
@@ -164,11 +120,9 @@ public class XtraRepository extends AppRepository< Xtra> {
 
     /* *********************************************************************************************
      *
-     * @param xtra
+     * @param detail
      */
-    public  void insert( Xtra xtra) { insertExec(xtra);}
-    private void insertAsync( final Xtra xtra) { new Thread(                                  () -> this.appDatabase .xtraDao() .insert(xtra)).start(); }
-    private void insertExec(  final Xtra xtra) { AppExecutors.getInstance().diskIO().execute( () -> this.appDatabase .xtraDao() .insert(xtra)); }
+    public void insert( Detail detail) { AppExecutors.getInstance().diskIO().execute( () -> this.appDatabase .detailDao() .insert(detail)); }
 
 
 

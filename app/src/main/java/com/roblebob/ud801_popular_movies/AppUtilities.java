@@ -1,13 +1,10 @@
 package com.roblebob.ud801_popular_movies;
 
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +15,12 @@ import java.util.Scanner;
 
 
 public class AppUtilities {
+
+    public static final List< String> ORDER = new ArrayList<>( Arrays.asList( "popular", "top_rated"));
+
+
+    public static String youtubeUrl( final String youtubeKey) { return "https://www.youtube.com/watch?v=" + youtubeKey; }
+
 
     /* *********************************************************************************************
      * This method returns the entire result from the HTTP response.
@@ -51,8 +54,8 @@ public class AppUtilities {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    public int getDetailedItemCountValidated( List<Movie> movieList) {
-        return  movieList.parallelStream() .filter(movie -> movie.isDetailed())  .mapToInt(movie -> 1)  .sum();
+    public int getDetailedItemCountValidated( List<Main> mainList) {
+        return  mainList.parallelStream() .filter(movie -> movie.isDetailed())  .mapToInt(movie -> 1)  .sum();
     }
 
     public static String invertOrderby( String orderby) {
@@ -64,31 +67,31 @@ public class AppUtilities {
     }
 
 
-    public static List<Movie> applyOrderedbyToMovieList(@NonNull String orderedby, @NonNull List<Movie> movieList) {
-
-        switch (orderedby) {
-
-            case "popular":
-                Collections.sort(movieList, ((Comparator<Movie>) (Movie m1, Movie m2) ->
-                        (Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) != 0) ?
-                                Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) :
-                                (Double.compare(m1.getFav(), m2.getFav()) != 0) ?
-                                        Double.compare(m1.getFav(), m2.getFav()) :
-                                        Double.compare(m1.getVoteAVG(), m2.getVoteAVG())
-                ).reversed());
-                break;
-
-            case "top_rated":
-                Collections.sort(movieList, ((Comparator<Movie>) (Movie m1, Movie m2) ->
-                        (Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) != 0) ?
-                                Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) :
-                                (Double.compare(m1.getFav(), m2.getFav()) != 0) ?
-                                        Double.compare(m1.getFav(), m2.getFav()) :
-                                        Double.compare(m1.getPopularVAL(), m2.getPopularVAL())
-                ).reversed());
-                break;
-        }
-        return movieList;
-    }
+//    public static List<Main> applyOrderedbyToMovieList(@NonNull String orderedby, @NonNull List<Main> mainList) {
+//
+//        switch (orderedby) {
+//
+//            case "popular":
+//                Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
+//                        (Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) != 0) ?
+//                                Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) :
+//                                (Double.compare(m1.getFa(), m2.getFav()) != 0) ?
+//                                        Double.compare(m1.getFav(), m2.getFav()) :
+//                                        Double.compare(m1.getVoteAVG(), m2.getVoteAVG())
+//                ).reversed());
+//                break;
+//
+//            case "top_rated":
+//                Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
+//                        (Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) != 0) ?
+//                                Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) :
+//                                (Double.compare(m1.getFav(), m2.getFav()) != 0) ?
+//                                        Double.compare(m1.getFav(), m2.getFav()) :
+//                                        Double.compare(m1.getPopularVAL(), m2.getPopularVAL())
+//                ).reversed());
+//                break;
+//        }
+//        return mainList;
+//    }
 
 }

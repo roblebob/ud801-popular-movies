@@ -15,9 +15,9 @@
         <item name="actionMenuTextColor">@android:color/holo_green_light</item>
         <!-- Tints the input fields like checkboxes and text fields -->
         <item name="colorAccent">@color/colorAccent</item>
-        <!-- Applies to views in their normal state. -->
+        <!-- Applies to views in their normal appState. -->
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
-        <!-- Applies to views in their activated state (i.e checked or switches) -->
+        <!-- Applies to views in their activated appState (i.e checked or switches) -->
         <item name="colorControlActivated">@color/colorYellow</item>
         <!-- Applied to framework control highlights (i.e ripples or list selectors) -->
         <item name="colorControlHighlight">@color/colorGray</item>

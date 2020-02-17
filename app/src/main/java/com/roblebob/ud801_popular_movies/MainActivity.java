@@ -34,22 +34,19 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
     @Override public void onItemClickListener( int movieID) {
 
-        Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-        intent .putExtra( DetailsActivity.EXTRA_movieID, movieID);
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent .putExtra( DetailActivity.INTENT_EXTRA_movieID, movieID);
         startActivity( intent);
     }
 
 
-
-
-
     @Override protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresentState = (savedInstanceState == null) ? new Bundle() : savedInstanceState;
+        mPresentState = (savedInstanceState == null)  ?  new Bundle()  :  savedInstanceState;
         if (mPresentState.getString("orderType") == null)
-            mPresentState.putString("orderType", "popular");
+            mPresentState.putString( "orderType", "popular");
 
-        setContentView(R.layout.activity_main);
+        setContentView( R.layout.activity_main);
 
         mMovieBasicsCountTv   = findViewById( R.id.activitity_main_BASIC_COUNT_tv);
         mMovieDetailedCountTv = findViewById( R.id.activitity_main_DETAILED_COUNT_tv);
@@ -58,60 +55,55 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         MainViewModel mainViewModel = ViewModelProviders.of(this, mMainViewModelFactory) .get(MainViewModel.class);
 
 
+        Log .e(TAG, "----------->");
+        mainViewModel.start("someInvalid");
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        //////
+
         /* * * * * * * * * * * * *
          *  R E C Y C L E R   V I E W
          */
-        mMainRV = (RecyclerView) this.findViewById(R.id.activity_main_RECYCLER_VIEW);
+        mMainRV = (RecyclerView) this.findViewById( R.id.activity_main_RV);
         mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
-        ((LinearLayoutManager) mRVLayoutManager).setInitialPrefetchItemCount(100);
-        mMainRV.setLayoutManager(mRVLayoutManager);
+        ((LinearLayoutManager) mRVLayoutManager) .setInitialPrefetchItemCount( 100);
+        mMainRV .setLayoutManager( mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this);
-        mainViewModel.getMovieListLiveMediated().observe(this, (List< Movie> list) -> mMainRVAdapter.submitList(list));
-        mMainRV.setAdapter(mMainRVAdapter);
-        mMainRV.setHasFixedSize(true);
+        mMainRV .setAdapter( mMainRVAdapter);
+        mMainRV .setHasFixedSize( true);
+
 
 
         /* * * * * * * * * * * * *
          *   B A R
          */
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_TOOLBAR);
+        Toolbar toolbar = (Toolbar) findViewById( R.id.activity_main_TOOLBAR);
         //if (toolbar != null)  setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar() .setDisplayShowTitleEnabled( false);
         toolbar.setFitsSystemWindows(true);
-
-
-
-
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////
-        ////
-        Log .e(TAG, "----------->");
-        mainViewModel.start("someInvalid");
-
-
 
 
 
         /* * * * * * * * * * * * *
          *  C O U N T :   M o v i e s
          */
-        mainViewModel  .countMovies()  .observe(this, new Observer< Integer>() {
+        mainViewModel.countMovies()  .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @NonNull Integer movieCount) {
-                mainViewModel.countMovies() .removeObserver(this);
+                mainViewModel.countMovies() .removeObserver( this);
 
                 Log.e(TAG, "---->   " + "Receiving database update for MovieCount:  " + movieCount);
                 mMovieBasicsCountTv .setText( String.valueOf( movieCount));
-                boolean isFirstRun = true;
 
-                // TODO: PRE RUN
                 if ( movieCount == 0) {  /* setup invalid */
+
                     Log .e(TAG, "----------->    invalid case");
-                    ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )  .setVisibility(View.VISIBLE);
-                    ((TabLayout)         findViewById( R.id.activity_main_TAB)               )  .setVisibility(View.GONE);
-                    ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))  .setVisibility(View.GONE);
-                    ((RecyclerView)      findViewById( R.id.activity_main_RECYCLER_VIEW)     )  .setVisibility(View.GONE);
+                    ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )  .setVisibility( View.VISIBLE);
+                    ((TabLayout)         findViewById( R.id.activity_main_TAB)               )  .setVisibility( View.GONE);
+                    ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))  .setVisibility( View.GONE);
+                    ((RecyclerView)      findViewById( R.id.activity_main_RV)                )  .setVisibility( View.GONE);
                     ((TextInputEditText) findViewById( R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(
                             (v, actionId, event) -> {
 
@@ -120,55 +112,65 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
                                  return false;   //  FALSE -> keyboard display goes into hiding
                             });
-                } else if (isFirstRun) {
-                    /* TODO first run after validation  */   //
-                    // Log .e(TAG, "----------->    valid case");
-                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility(View.GONE);
-                    ((TabLayout)        findViewById( R.id.activity_main_TAB)               )   .setVisibility(View.VISIBLE);
-                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility(View.VISIBLE);
-                    ((RecyclerView)     findViewById( R.id.activity_main_RECYCLER_VIEW)     )   .setVisibility(View.VISIBLE);
 
+                } else if ( ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)) .getVisibility() == View.VISIBLE)  {
+                    /* first run after validation  */
 
-                    isFirstRun = false;
+                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.GONE);
+                    ((TabLayout)        findViewById( R.id.activity_main_TAB)               )   .setVisibility( View.VISIBLE);
+                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
+                    ((RecyclerView)     findViewById( R.id.activity_main_RV)                )   .setVisibility( View.VISIBLE);
                 }
-
             }
         });
-
-
 
 
 
         /* * * * * * * * * * * * *
          *   C O U N T :   M o v i e s   h a v i n g   X t r a   i n f o r m a t i o n
          */
-        mainViewModel   .countDetailedMovies() .observe(this, new Observer<Integer>() {
-            @Override public void onChanged(Integer integer) {
-
-                mainViewModel.countDetailedMovies().removeObserver(this);
-                mMovieDetailedCountTv.setText(String.valueOf(integer));
+        mainViewModel.countDetailedMovies() .observe(this, new Observer<Integer>() {
+            @Override public void onChanged( Integer integer) {
+                mainViewModel.countDetailedMovies().removeObserver( this);
+                mMovieDetailedCountTv.setText( String.valueOf(integer));
             }
         });
 
 
-
-
-
+        
         /* * * * * * * * * * * * *
          *   T A B
          */
-        mTabLayout = (TabLayout) findViewById(R.id.activity_main_TAB);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override @MainThread public void onTabSelected(TabLayout.Tab tab)   {
-                mainViewModel.setOrderedbyTabPosition( tab.getPosition());
+        mTabLayout = (TabLayout) findViewById( R.id.activity_main_TAB);
+        mTabLayout.addOnTabSelectedListener( new TabLayout.OnTabSelectedListener() {
+            @Override @MainThread public void onTabSelected( TabLayout.Tab tab)   {
+                mainViewModel.setOrder( AppUtilities.ORDER.get( tab.getPosition()));
             }
-            @Override public void onTabUnselected(TabLayout.Tab tab) {}
-            @Override public void onTabReselected(TabLayout.Tab tab) {}
+            @Override public void onTabUnselected( TabLayout.Tab tab) {}
+            @Override public void onTabReselected( TabLayout.Tab tab) {}
         });
 
 
 
+
+
+
+        mainViewModel.getMovieListLiveByDatabase().observe(this, (List<Main> list) -> mMainRVAdapter.submitList( list));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //    @MainThread
 //    private void prepareOrderedby(int orderedbyTabPosition) {
@@ -181,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 //        mainViewModel.getTopRatedMovieListLive().removeObservers(this);
 //
 //        switch (orderedbyTabPosition) {
-//            case 0: mainViewModel.getPopularMovieListLive().observe(this, (List< Movie> list) -> mMainRVAdapter.submitList(list));   break;
-//            case 1: mainViewModel.getTopRatedMovieListLive().observe(this, (List< Movie> list) -> mMainRVAdapter.submitList(list));  break;
+//            case 0: mainViewModel.getPopularMovieListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));   break;
+//            case 1: mainViewModel.getTopRatedMovieListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));  break;
 //        }
 //    }
 

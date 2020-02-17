@@ -13,21 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.DetailsRVViewholder> {
-    private static final String TAG = DetailsRVAdapter.class.getSimpleName();
+public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.DetailsRVViewholder> {
+    private static final String TAG = DetailRVAdapter.class.getSimpleName();
     private static final String ARROW_right = Html.fromHtml("&blacktriangleright;").toString();
 
     private String mHomepageUrl;
     private String mImdbUrl;
-    private List<Xtra> linksXtraList;
-    private DetailsRVAdapter.ItemClickListener itemClickListener;
+    private List<Detail> linksDetailList;
+    private DetailRVAdapter.ItemClickListener itemClickListener;
 
-    DetailsRVAdapter(DetailsRVAdapter.ItemClickListener itemClickListener) {
+    DetailRVAdapter(DetailRVAdapter.ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void setLinksXtraList( List<Xtra>  linksXtraList) {
-        this.linksXtraList = linksXtraList;
+    public void setLinksDetailList(List<Detail> linksDetailList) {
+        this.linksDetailList = linksDetailList;
         notifyDataSetChanged();
     }
 
@@ -39,8 +39,8 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     public DetailsRVViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from( parent .getContext())
-                .inflate( R.layout.details_recycler_view_single_item, parent, false);
-        DetailsRVAdapter.DetailsRVViewholder detailsRVViewHolder = new DetailsRVAdapter.DetailsRVViewholder( view);
+                .inflate( R.layout.detail_rv_single_item, parent, false);
+        DetailRVAdapter.DetailsRVViewholder detailsRVViewHolder = new DetailRVAdapter.DetailsRVViewholder( view);
 
         return detailsRVViewHolder;
     }
@@ -49,54 +49,56 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
     @Override
     public void onBindViewHolder(@NonNull DetailsRVViewholder holder, int position) {
 
-        Xtra xtra = this.linksXtraList.get(position);
-        int subID = xtra.getExtraID() % 100;
-        String value = xtra.getValue();
+        Detail detail = this.linksDetailList.get(position);
+        int subID = detail.getOrder();
+        String value = detail.getContent();
 
         if /* homepage */ (subID == 18) {
 
-            holder .cardviewTextView    .setText( "home");
-            holder .nameTextView        .setText( "Official Homepage");
+            holder .tagTv.setText( "home");
+            holder .nameTv.setText( "Official Homepage");
             holder .urlString           = value;
 
         } else if ( /* imdbpage */ (subID == 19)) {
-            holder .cardviewTextView    .setText( "imdb");
-            holder .nameTextView        .setText( "IMDB's page");
+            holder .tagTv.setText( "imdb");
+            holder .nameTv.setText( "IMDB's page");
             holder .urlString =  value;
 
         } else if ( /* trailer */ 20 <= subID && subID < 40) {
             String[] S = value.split(",", 2);
-            holder.cardviewTextView.setText("trailer");
-            holder.nameTextView.setText( S[1]);
+            holder.tagTv.setText("trailer");
+            holder.nameTv.setText( S[1]);
             holder.urlString = S[0];
         }
 
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     //----------------------------------------------------------------------------------------------
 
     @Override public int getItemCount() {
-        return (this.linksXtraList != null)  ?  this.linksXtraList.size()   : 0; }
+        return (this.linksDetailList != null)  ?  this.linksDetailList.size()   : 0; }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    ///
+
     public interface ItemClickListener { void onItemClickListener( String type, String url); }
 
     class DetailsRVViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView cardviewTextView;
-        TextView triangleTextView;
-        TextView nameTextView;
+        TextView tagTv;
+        TextView triangleTv;
+        TextView nameTv;
         String urlString;
 
         public DetailsRVViewholder(View itemView) {
             super( itemView);
-            cardviewTextView    = ( TextView) itemView .findViewById( R.id.details_recycler_view_single_item_CARDVIEW_textview);
-            triangleTextView    = ( TextView) itemView .findViewById( R.id.details_recycler_view_single_item_TRIANGLE_textview);
-            nameTextView        = ( TextView) itemView .findViewById( R.id.details_recycler_view_single_item_NAME_textview);
-            nameTextView.setHorizontallyScrolling(true);
-            nameTextView.setMovementMethod(new ScrollingMovementMethod());
+            tagTv = ( TextView) itemView .findViewById( R.id.detail_rv_single_item_tag_cv_tv);
+            triangleTv = ( TextView) itemView .findViewById( R.id.detail_rv_single_item_triangle_tv);
+            nameTv = ( TextView) itemView .findViewById( R.id.detail_rv_single_item_name_tv);
+            nameTv.setHorizontallyScrolling(true);
+            nameTv.setMovementMethod(new ScrollingMovementMethod());
             itemView .setOnClickListener( this);
         }
 
@@ -104,7 +106,7 @@ public class DetailsRVAdapter extends RecyclerView .Adapter<DetailsRVAdapter.Det
         public void onClick(View v) {
 
             Log .e(TAG, "---------_>  "  + urlString);
-            itemClickListener.onItemClickListener(cardviewTextView.getText().toString(), urlString);
+            itemClickListener.onItemClickListener(tagTv.getText().toString(), urlString);
         }
     }
 }

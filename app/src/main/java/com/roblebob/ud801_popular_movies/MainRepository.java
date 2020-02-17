@@ -13,91 +13,29 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttpUrl;
 
 /* **************************************************************************************************
  *
  */
-public class MovieRepository extends AppRepository<Movie> {
+public class MainRepository extends AppAbstractRepository<Main> {
 
-
-    public List< String> ORDER() { return new ArrayList< String>( Arrays.asList( "popular", "top_rated")); }
+    public List< String> ORDER() { return AppUtilities.ORDER;}
     private AppDatabase appDatabase;
-    private LiveData< Integer> orderedbyTabPositionLive;
-    public  LiveData< String> orderedbyLive;
 
-
-    public MovieRepository( AppDatabase appDatabase) {
+    public MainRepository(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
-        AppExecutors.getInstance().diskIO().execute(  () -> this.appDatabase .movieDao() .insert(
-                new Movie(1, false, false, 0, 0, 0, null)));
-
     }
 
 
-    /* *********************************************************************************************
-     * Validates the given apiKey by sending an arbitrary dummy request,
-     * i.e. if invalid, IOEception is thrown.
-     *
-     * @param apiKey
-     */
-    public void start( String apiKey) {
-
-        orderedbyTabPositionLive = this.appDatabase .movieDao() .loadOrderedbyTabPositionLive();
-
-        //Log.e(this.getClass().getSimpleName(), "----->  MovieRepository started with apikey: " + apiKey);
-        AppExecutors.getInstance().networkIO().execute(() -> {
-            try {
-                String response = getResponseFromHttpUrl( buildUrl ( apiKey, "popular", 1));
-                AppExecutors .getInstance() .diskIO() .execute( () -> appDatabase .movieDao() .updateApiKey( apiKey));
-                Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKey +  " accepted");
-                integrate(apiKey);
-            } catch (IOException e) { e.printStackTrace();
-                AppExecutors .getInstance() .diskIO() .execute( () -> appDatabase .movieDao() .updateApiKey( null));
-                Log.e (this.getClass().getSimpleName(), "R e p o s i t y -->  apiKey: " + apiKey +  " rejected");
-            }
-        });
-    }
 
 
-    /* *********************************************************************************************
-     *
-     *
-     */
-
-
-    public LiveData< List< Movie>> getListLive(String s)  { return this.appDatabase .movieDao() .loadMovieListLive(); }
-
-    public LiveData<  Integer>  getOrderedbyTabPositionLive()  { return this.appDatabase .movieDao() .loadOrderedbyTabPositionLive(); }
-
-    public  LiveData< List< Movie>> getListLive(int orderedbyTabPosition)  {
-        Log .e(this.getClass().getSimpleName(), " ---------->> " + orderedbyTabPosition);
-        if ( orderedbyTabPosition == 1)       return this.appDatabase .movieDao() .loadTopRatedMovieListLive();
-        else /* orderedbyTabPosition == 0 */  return this.appDatabase .movieDao() .loadPopularMovieListLive();
-    }
-    public LiveData< List< Movie>>  getPopularMovieListLive()  { return this.appDatabase .movieDao() .loadPopularMovieListLive(); }
-    public LiveData< List< Movie>>  getTopRatedMovieListLive()  { return this.appDatabase .movieDao() .loadTopRatedMovieListLive(); }
-
-
-
-
-
-
-
-    public void insertOrderedbyTabPosition(int position) {
-        AppExecutors .getInstance() .diskIO() .execute(
-                () -> appDatabase .movieDao() .updateOrderedbyTabPosition( position)); }
-
-
-
-
-    public LiveData< Integer> countMovies() { return this.appDatabase.movieDao().countMovies(); }
-    public  LiveData< Movie>  getMovieLive( int movieID)  { return  this.appDatabase .movieDao() .loadMovieLive( movieID); }
+    public LiveData< List<Main>>  getListLive(String s)  { return this.appDatabase .movieDao() .loadMovieListLive(); }
+    public LiveData< List<Main>>  getPopularMovieListLive()  { return this.appDatabase .movieDao() .loadPopularMovieListLive(); }
+    public LiveData< List<Main>>  getTopRatedMovieListLive()  { return this.appDatabase .movieDao() .loadTopRatedMovieListLive(); }
+    public LiveData< Integer> countMovies() { return this.appDatabase.movieDao().loadMovieCountLive(); }
+    public  LiveData<Main>  getMovieLive(int movieID)  { return  this.appDatabase .movieDao() .loadMovieLive( movieID); }
 
 
 
@@ -123,7 +61,7 @@ public class MovieRepository extends AppRepository<Movie> {
                     JSONArray jsonArray = jsonObject.getJSONArray("results");
                     for (int i = 0; i < jsonArray.length(); i++) {
 
-                        insert( new Movie(
+                        insert( new Main(
                                 jsonArray .getJSONObject( i).getInt("id"),
                                 false,
                                 false,
@@ -141,12 +79,12 @@ public class MovieRepository extends AppRepository<Movie> {
 
     /* *********************************************************************************************
      *
-     * @param movie
+     * @param main
      */
-    //private void insert(           Movie movie) { insertExec(movie);}
-    //private void insertAsync(final Movie movie) { new Thread(                                    () -> this.appDatabase  .movieDao() .insert(movie)) .start(); }
+    //private void insert(           Main main) { insertExec(main);}
+    //private void insertAsync(final Main main) { new Thread(                                    () -> this.appDatabase  .movieDao() .insert(main)) .start(); }
     @WorkerThread
-    public void insert( Movie movie) { AppExecutors.getInstance().diskIO() .execute(  () -> this.appDatabase  .movieDao() .insert(movie))         ; }
+    public void insert( Main main) { AppExecutors.getInstance().diskIO() .execute(  () -> this.appDatabase  .movieDao() .insert(main))         ; }
 
 
 
