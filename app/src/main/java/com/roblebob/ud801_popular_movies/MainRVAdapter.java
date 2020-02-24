@@ -16,15 +16,48 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVViewHolder> {
-    public static final List< String> ORDEREDBY = new ArrayList< String>( Arrays.asList( "popular", "top_rated"));
     private final static String TAG =   MainRVAdapter.class .getSimpleName();
     private final AsyncListDiffer<Main> mDiffer = new AsyncListDiffer(this, DIFF_CALLBACK);
     private ItemClickListener mItemClickListener;
 
-    public void submitList(List< Main> mainList) { mDiffer.submitList(mainList); }
+    private String order;
+    public void submitOrder(@NonNull String order) {
+        if (getItemCount() > 0) {
+            this.order = order;
+            List<Main> mainList = new ArrayList<Main>(mDiffer.getCurrentList());
+            switch (order) {
+
+                case "popular":
+                    Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
+                            (Double.compare(m1.getFavorite(), m2.getFavorite()) != 0) ? Double.compare(m1.getFavorite(), m2.getFavorite()) :
+                                    (Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) != 0) ? Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) :
+                                            (Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) != 0) ? Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) :
+                                                    Double.compare(m1.getVoteCNT(), m2.getVoteCNT())
+                    ).reversed());
+                    break;
+
+                case "top_rated":
+                    Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
+                            (Double.compare(m1.getFavorite(), m2.getFavorite()) != 0) ? Double.compare(m1.getFavorite(), m2.getFavorite()) :
+                                    (Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) != 0) ? Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) :
+                                            (Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) != 0) ? Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) :
+                                                    Double.compare(m1.getVoteCNT(), m2.getVoteCNT())
+                    ).reversed());
+                    break;
+            }
+            submitList(mainList);
+            Log.e(TAG, "--order-changed-to-" + order +  "---> " + mainList.toString().substring(0,100));
+            notifyDataSetChanged();
+        }
+    }
+
+
+    public void submitList( List< Main> mainList) { mDiffer.submitList(mainList); }
 
     public static final DiffUtil.ItemCallback< Main> DIFF_CALLBACK =  new DiffUtil.ItemCallback< Main>() {
         @Override public boolean areItemsTheSame(@NonNull Main oldMain, @NonNull Main newMain) {

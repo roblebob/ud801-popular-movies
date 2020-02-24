@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
     @Override protected void onCreate( Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mPresentState = (savedInstanceState == null)  ?  new Bundle()  :  savedInstanceState;
+        super .onCreate( savedInstanceState);
+        mPresentState =  (savedInstanceState == null)    ?    new Bundle()    :    savedInstanceState;
         if (mPresentState.getString("orderType") == null)
             mPresentState.putString( "orderType", "popular");
 
@@ -53,11 +53,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         mMainViewModelFactory = new MainViewModelFactory( this.getApplication());
         MainViewModel mainViewModel = ViewModelProviders.of(this, mMainViewModelFactory) .get(MainViewModel.class);
-
-
-        Log .e(TAG, "----------->");
-        mainViewModel.start("someInvalid");
-
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
         /* * * * * * * * * * * * *
-         *   C O U N T :   M o v i e s   h a v i n g   X t r a   i n f o r m a t i o n
+         *   C O U N T :   M o v i e s   h a v i n g   " D e t a i l e d "   i n f o r m a t i o n
          */
         mainViewModel.countDetailedMovies() .observe(this, new Observer<Integer>() {
             @Override public void onChanged( Integer integer) {
@@ -143,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
          */
         mTabLayout = (TabLayout) findViewById( R.id.activity_main_TAB);
         mTabLayout.addOnTabSelectedListener( new TabLayout.OnTabSelectedListener() {
-            @Override @MainThread public void onTabSelected( TabLayout.Tab tab)   {
+            @Override public void onTabSelected( TabLayout.Tab tab)   {
                 mainViewModel.setOrder( AppUtilities.ORDER.get( tab.getPosition()));
             }
             @Override public void onTabUnselected( TabLayout.Tab tab) {}
@@ -153,9 +148,16 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
 
-
-
         mainViewModel.getMovieListLiveByDatabase().observe(this, (List<Main> list) -> mMainRVAdapter.submitList( list));
+
+        mainViewModel.getOrder().observe(this, (String order) -> {
+
+            Log.e(TAG, "--order-changed---> " + order);
+            if (order != null)  mMainRVAdapter .submitOrder( order);
+            else                mMainRVAdapter .submitOrder( AppUtilities.ORDER.get(0));
+        });
+
+
     }
 
 
@@ -179,12 +181,12 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 //
 //        mainViewModel.setOrderedbyTabPosition( orderedbyTabPosition);
 //
-//        mainViewModel.getPopularMovieListLive().removeObservers(this);
-//        mainViewModel.getTopRatedMovieListLive().removeObservers(this);
+//        mainViewModel.getPopularListLive().removeObservers(this);
+//        mainViewModel.getTopRatedListLive().removeObservers(this);
 //
 //        switch (orderedbyTabPosition) {
-//            case 0: mainViewModel.getPopularMovieListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));   break;
-//            case 1: mainViewModel.getTopRatedMovieListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));  break;
+//            case 0: mainViewModel.getPopularListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));   break;
+//            case 1: mainViewModel.getTopRatedListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));  break;
 //        }
 //    }
 

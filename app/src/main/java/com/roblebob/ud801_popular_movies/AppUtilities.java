@@ -58,18 +58,15 @@ public class AppUtilities {
         return  mainList.parallelStream() .filter(movie -> movie.isDetailed())  .mapToInt(movie -> 1)  .sum();
     }
 
-    public static String invertOrderby( String orderby) {
-        switch (orderby) {
-            case "popular":     return "top_rated";
-            case "top_Rated":   return "popular";
-            default:            return null;
-        }
-    }
-
-
-//    public static List<Main> applyOrderedbyToMovieList(@NonNull String orderedby, @NonNull List<Main> mainList) {
+//    public static String invertOrderby( String orderby) {
+//        switch (orderby) {
+//            case "popular":     return "top_rated";
+//            case "top_Rated":   return "popular";
+//            default:            return null;
+//        }
+//    }
 //
-//        switch (orderedby) {
+// switch (orderedby) {
 //
 //            case "popular":
 //                Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
@@ -91,6 +88,9 @@ public class AppUtilities {
 //                ).reversed());
 //                break;
 //        }
+//    public static List<Main> applyOrderedbyToMovieList(@NonNull String orderedby, @NonNull List<Main> mainList) {
+//
+//
 //        return mainList;
 //    }
 

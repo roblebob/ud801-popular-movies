@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     private RecyclerView mDetailsRV;
     private DetailRVAdapter mDetailRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
-    private Button favoriteFLAGbutton;
+    private Button favoriteButton;
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -72,8 +72,8 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             /* *************************************************************************************
              *
              */
-            favoriteFLAGbutton = (Button) findViewById( R.id.activity_details_BUTTON_favorite);
-            favoriteFLAGbutton.setOnClickListener(v -> detailsViewModel .getMainLive( movieID) .observe(this,
+            favoriteButton = (Button) findViewById( R.id.activity_details_BUTTON_favorite);
+            favoriteButton.setOnClickListener(v -> detailsViewModel .getMainLive( movieID) .observe(this,
                     (movie) -> { AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase .movieDao() .inverseFavorite(movieID));
                                     Log.e(TAG, "CLICKED!!" + movie.isFavorite());           }));
 
@@ -118,7 +118,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     private void includeParent(Main main) {
         if (main.getPosterKey() != null)    Picasso .get() .load( main.getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
 
-        favoriteFLAGbutton .setCompoundDrawableTintList( ColorStateList.valueOf( getResources().getColor(
+        favoriteButton.setCompoundDrawableTintList( ColorStateList.valueOf( getResources().getColor(
                 main.isFavorite()  ?  R.color.colorYellow  :  R.color.colorGray
         )));
 

@@ -18,7 +18,7 @@ public interface MainDao {
     @Delete                                             void delete(Main main);
 
 
-    @Query("SELECT * FROM Main ORDER BY favorite DESC,    CASE (SELECT `value` FROM AppState WHERE posterKey = 'order') WHEN 'popular' THEN popularVAL WHEN 'top_rated' THEN voteAVG END DESC,      CASE (SELECT `value` FROM AppState WHERE posterKey = 'order') WHEN 'popular' THEN voteAVG WHEN 'top_rated' THEN popularVAL  END, voteCNT DESC")
+    @Query("SELECT * FROM Main ORDER BY favorite DESC,    CASE (SELECT `value` FROM AppState WHERE `key` = 'order') WHEN 'popular' THEN popularVAL WHEN 'top_rated' THEN voteAVG END DESC,      CASE (SELECT `value` FROM AppState WHERE `key` = 'order') WHEN 'popular' THEN voteAVG WHEN 'top_rated' THEN popularVAL  END DESC, voteCNT DESC")
     LiveData< List<Main>> loadMovieListLive();
 
     @Query(value = "SELECT * FROM Main ORDER BY favorite DESC, popularVAL DESC, voteAVG DESC, voteCNT DESC")

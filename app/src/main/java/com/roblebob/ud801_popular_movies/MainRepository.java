@@ -29,13 +29,11 @@ public class MainRepository extends AppAbstractRepository<Main> {
     }
 
 
-
-
-    public LiveData< List<Main>>  getListLive(String s)  { return this.appDatabase .movieDao() .loadMovieListLive(); }
-    public LiveData< List<Main>>  getPopularMovieListLive()  { return this.appDatabase .movieDao() .loadPopularMovieListLive(); }
-    public LiveData< List<Main>>  getTopRatedMovieListLive()  { return this.appDatabase .movieDao() .loadTopRatedMovieListLive(); }
-    public LiveData< Integer> countMovies() { return this.appDatabase.movieDao().loadMovieCountLive(); }
-    public  LiveData<Main>  getMovieLive(int movieID)  { return  this.appDatabase .movieDao() .loadMovieLive( movieID); }
+    public LiveData< List<Main>>  getListLive(String s)       { return this.appDatabase .movieDao() .loadMovieListLive(); }
+    public LiveData< List<Main>>  getPopularListLive()        { return this.appDatabase .movieDao() .loadPopularMovieListLive(); }
+    public LiveData< List<Main>>  getTopRatedListLive()       { return this.appDatabase .movieDao() .loadTopRatedMovieListLive(); }
+    public LiveData< Integer>     countMovies()               { return this.appDatabase .movieDao() .loadMovieCountLive(); }
+    public LiveData< Main>        getMovieLive(int movieID)   { return this.appDatabase .movieDao() .loadMovieLive( movieID); }
 
 
 
@@ -50,7 +48,7 @@ public class MainRepository extends AppAbstractRepository<Main> {
             boolean condition = true;
             int page;
             for (String order : ORDER()) {         page = 0;
-                do { try { try {                            page++;
+                do { try { try {                   page++;
 
                     JSONObject jsonObject = new JSONObject( Objects.requireNonNull(
                                                     AppUtilities .getResponseFromHttpUrl(

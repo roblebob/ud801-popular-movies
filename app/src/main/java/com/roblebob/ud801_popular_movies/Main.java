@@ -38,6 +38,7 @@ public class Main {
     public int getID()                   { return this.ID; }
 
     public boolean isFavorite()          { return this.favorite; }
+    @ Ignore public int getFavorite()    { return (isFavorite())  ? 1 : 0;}
     public boolean isDetailed()          { return this.detailed; }
 
     public double  getPopularVAL()       { return this.popularVAL; }

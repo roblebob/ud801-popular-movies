@@ -39,15 +39,15 @@ public class MainViewModel extends AndroidViewModel{
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         orderLive = mAppDatabase.appStateDao().loadState("order");
-        popularMovieListLive  = mainRepository.getPopularMovieListLive();
-        topRatedMovieListLive = mainRepository.getTopRatedMovieListLive();
+        popularMovieListLive  = mainRepository.getPopularListLive();
+        topRatedMovieListLive = mainRepository.getTopRatedListLive();
 
         movieListLiveByDatabase = mainRepository.getListLive(null);
 
         movieListLiveByMediator = new MediatorLiveData<>() ;
-        movieListLiveByMediator.addSource(orderLive,             value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
-        movieListLiveByMediator.addSource(popularMovieListLive,  value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
-        movieListLiveByMediator.addSource(topRatedMovieListLive, value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
+        movieListLiveByMediator .addSource( orderLive,             value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
+        movieListLiveByMediator .addSource( popularMovieListLive,  value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
+        movieListLiveByMediator .addSource( topRatedMovieListLive, value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
     }
 
 
@@ -65,10 +65,14 @@ public class MainViewModel extends AndroidViewModel{
     }
 
 
-    public void setOrder(String order) { AppExecutors.getInstance().diskIO().execute( () ->
-            mAppDatabase.appStateDao().update( new AppState( "order", order ))); }
+    public void setOrder(String order) { AppExecutors.getInstance().diskIO().execute( () ->{
+        mAppDatabase .appStateDao() .update( new AppState( "order", order ));
+        Log.e(this.getClass().getSimpleName() + " :: setOrder(...", "--->  " + order );
+    }); }
 
-
+    public LiveData< String> getOrder(){
+        return mAppDatabase.appStateDao().loadState("order");
+    }
     /* *********************************************************************************************
      *
      *
@@ -91,8 +95,8 @@ public class MainViewModel extends AndroidViewModel{
 
             } catch (IOException e) {
                 e.printStackTrace();
-                AppExecutors .getInstance() .diskIO() .execute(
-                        () -> mAppDatabase.appStateDao().update(new AppState("api_key", null)));
+                AppExecutors .getInstance() .diskIO() .execute( () ->
+                        mAppDatabase.appStateDao().update(new AppState("api_key", null)));
                 Log.e (this.getClass().getSimpleName(), "apiKey: " + apiKey +  " rejected");
             }
         });
