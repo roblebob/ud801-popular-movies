@@ -67,6 +67,19 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         ((LinearLayoutManager) mRVLayoutManager) .setInitialPrefetchItemCount( 100);
         mMainRV .setLayoutManager( mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this);
+
+
+        mainViewModel.getMovieListLiveByDatabase().observe(this, (List<Main> list) -> mMainRVAdapter.submitList( list));
+
+        mainViewModel.getOrder().observe(this, (String order) -> {
+
+            Log.e(TAG, "--order-changed---> " + order);
+            if (order != null)  mMainRVAdapter .submitOrder( order);
+            else                mMainRVAdapter .submitOrder( AppUtilities.ORDER.get(0));
+        });
+
+
+
         mMainRV .setAdapter( mMainRVAdapter);
         mMainRV .setHasFixedSize( true);
 
@@ -137,9 +150,11 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
          *   T A B
          */
         mTabLayout = (TabLayout) findViewById( R.id.activity_main_TAB);
+        mTabLayout.setSelected(true);
         mTabLayout.addOnTabSelectedListener( new TabLayout.OnTabSelectedListener() {
             @Override public void onTabSelected( TabLayout.Tab tab)   {
                 mainViewModel.setOrder( AppUtilities.ORDER.get( tab.getPosition()));
+
             }
             @Override public void onTabUnselected( TabLayout.Tab tab) {}
             @Override public void onTabReselected( TabLayout.Tab tab) {}
@@ -147,15 +162,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
 
-
-        mainViewModel.getMovieListLiveByDatabase().observe(this, (List<Main> list) -> mMainRVAdapter.submitList( list));
-
-        mainViewModel.getOrder().observe(this, (String order) -> {
-
-            Log.e(TAG, "--order-changed---> " + order);
-            if (order != null)  mMainRVAdapter .submitOrder( order);
-            else                mMainRVAdapter .submitOrder( AppUtilities.ORDER.get(0));
-        });
 
 
     }

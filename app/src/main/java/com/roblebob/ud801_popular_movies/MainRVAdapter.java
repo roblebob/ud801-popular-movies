@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVViewHolder> {
     private final static String TAG =   MainRVAdapter.class .getSimpleName();
@@ -51,15 +52,20 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
                     break;
             }
             submitList(mainList);
-            Log.e(TAG, "--order-changed-to-" + order +  "---> " + mainList.toString().substring(0,100));
-            notifyDataSetChanged();
+            Log.e(TAG, "--order-changed-to-" + order +  "---> " +
+                    mainList.parallelStream()
+                            .map(movie -> movie.getID())
+                            .collect(Collectors.toList()).toString());
         }
     }
 
 
-    public void submitList( List< Main> mainList) { mDiffer.submitList(mainList); }
+    public void submitList( @NonNull  List< Main> mainList) { mDiffer.submitList( new ArrayList<>(mainList)); }
+
+
 
     public static final DiffUtil.ItemCallback< Main> DIFF_CALLBACK =  new DiffUtil.ItemCallback< Main>() {
+
         @Override public boolean areItemsTheSame(@NonNull Main oldMain, @NonNull Main newMain) {
             return oldMain.getID() == newMain.getID();
         }
@@ -80,9 +86,6 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
     @Override public void  onBindViewHolder( @NonNull MainRVViewHolder holder, int position) {
         Main main = mDiffer .getCurrentList() .get( position);
         holder.bindTo( main);
-        holder.rankingTv.setText( String .valueOf( position + 1));
-        if (main.isDetailed())  holder.rankingTv.setBackgroundColor( holder.itemView.getContext().getColor( R.color.colorYellow));
-        else                    holder.rankingTv.setBackgroundColor( holder.itemView.getContext().getColor( R.color.colorWhite));
 
         // TODO:
         // this.onAttachedToRecyclerView()
@@ -116,10 +119,15 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
             mItemClickListener .onItemClickListener(  mDiffer.getCurrentList().get( getAdapterPosition()).getID());
         }
 
-        public void bindTo(Main main) {      Log.d(TAG + "::onBindViewHolder() ", "----[POS]---->  " + getAdapterPosition());
+        public void bindTo(Main main) {      Log.d(TAG + "::onBindViewHolder() ", "----[POS:" + getAdapterPosition() + "]---->  " + main.getID());
 
             final String posterID = main.getPosterKey();
             Picasso .get() .load( "http://image.tmdb.org/t/p/w185/" + posterID) .into(posterIv);
+
+            rankingTv.setText( String .valueOf( getAdapterPosition() + 1));
+            if (main.isDetailed())  rankingTv.setBackgroundColor( itemView.getContext().getColor( R.color.colorYellow));
+            else                    rankingTv.setBackgroundColor( itemView.getContext().getColor( R.color.colorWhite));
+
 
             //if (!main.isDetailed())  mainViewModel.integrateXtras( mDiffer.getCurrentList().get( getAdapterPosition()) .getParent());
         }

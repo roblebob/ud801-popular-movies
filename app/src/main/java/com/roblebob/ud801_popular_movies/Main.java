@@ -1,5 +1,6 @@
 package com.roblebob.ud801_popular_movies;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

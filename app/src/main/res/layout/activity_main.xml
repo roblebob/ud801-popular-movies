@@ -166,7 +166,6 @@
         <com.google.android.material.tabs.TabLayout android:id="@+id/activity_main_TAB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/favorite_star_on"
             android:visibility="gone"
             appState:layout_scrollFlags="enterAlways"
             appState:tabIndicatorColor="@color/colorPrimary"
