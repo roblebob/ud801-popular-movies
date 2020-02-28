@@ -11,8 +11,8 @@ import java.util.List;
 @Dao
 public interface DetailDao {
 
-    @Query("SELECT * FROM Detail WHERE parent = :movieId AND `order` < 10")
-    LiveData< List<Detail>> loadList(int movieId);
+    @Query("SELECT * FROM Detail  WHERE movieID = :movieID ORDER BY `_ID`")
+    LiveData< List<Detail>> loadList(int movieID);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert( Detail detail);
@@ -23,7 +23,7 @@ public interface DetailDao {
     @Delete
     void delete( Detail detail);
 
-    @Query(value = "SELECT COUNT( DISTINCT parent) FROM Detail")
+    @Query(value = "SELECT COUNT( DISTINCT movieID) FROM Detail")
     LiveData< Integer> countMovies();
 
 }

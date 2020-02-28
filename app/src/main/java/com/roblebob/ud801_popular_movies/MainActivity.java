@@ -20,7 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements MainRVAdapter.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements MainRVAdapter.ItemClickListener  {
     private static final String TAG = MainActivity.class.getSimpleName();
     private MainViewModelFactory mMainViewModelFactory;
 
@@ -85,6 +85,11 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
 
+
+
+
+
+
         /* * * * * * * * * * * * *
          *   B A R
          */
@@ -145,7 +150,23 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         });
 
 
-        
+        /* * * * * * * * * * * * *
+         */
+        mainViewModel .getApiKeyLive() .observe(this, new Observer<String>() {
+            @Override public void onChanged( String apiKey) {
+                mainViewModel.getApiKeyLive().removeObserver( this);
+                Log.e(TAG, "--API-KEY-->  " + apiKey);
+            }
+        });
+
+
+
+
+
+
+
+
+
         /* * * * * * * * * * * * *
          *   T A B
          */
@@ -165,18 +186,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

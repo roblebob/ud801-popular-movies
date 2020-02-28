@@ -18,7 +18,6 @@ public class AppUtilities {
 
     public static final List< String> ORDER = new ArrayList<>( Arrays.asList( "popular", "top_rated"));
 
-
     public static String youtubeUrl( final String youtubeKey) { return "https://www.youtube.com/watch?v=" + youtubeKey; }
 
 

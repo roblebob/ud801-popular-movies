@@ -1,259 +1,446 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/activity_detail_CONSTRAINT_LAYOUT"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:appState="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".DetailActivity"
     >
+    <com.google.android.material.appbar.AppBarLayout android:id="@+id/activity_detail_APPBAR"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        appState:titleTextColor="@android:color/white"
+        appState:expandedTitleGravity="top"
+        android:visibility="visible"
+        >
 
-    <ScrollView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activity_detail_TOOLBAR"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorBlack"
+            android:backgroundTint="@color/colorBlack"
+            appState:layout_scrollFlags="scroll|enterAlways"
+            appState:titleTextColor="@android:color/white">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_detail_TOOLBAR_constraint_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                appState:layout_scrollFlags="scroll|enterAlways">
+
+
+                <ImageView
+                    android:id="@+id/activity_detail_TOOLBAR_iv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    appState:layout_constraintBottom_toBottomOf="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
+                    appState:layout_constraintStart_toStartOf="parent"
+                    appState:layout_constraintTop_toTopOf="@+id/activity_detail_TOOLBAR_popularity_label_tv"
+                    appState:layout_constraintVertical_bias="1.0"
+                    appState:srcCompat="@drawable/test"
+                    android:scaleType="centerCrop"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_detail_TOOLBAR_popularity_label_tv"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="147dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTintMode="add"
+                    android:bufferType="spannable"
+                    android:clickable="false"
+                    android:fontFamily="@font/cutive_mono"
+                    android:freezesText="false"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="popularity:"
+                    android:textAlignment="viewEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorWhite"
+                    android:textIsSelectable="false"
+                    android:textSize="13sp"
+                    android:typeface="serif"
+                    appState:fontFamily="@font/cutive_mono"
+
+                    appState:layout_constraintStart_toEndOf="@+id/activity_details_BUTTON_favorite"
+                    appState:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/activity_detail_TOOLBAR_popularity_value_tv"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:backgroundTintMode="add"
+                    android:bufferType="spannable"
+                    android:clickable="false"
+                    android:fontFamily="@font/cutive_mono"
+                    android:freezesText="false"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="3500.0"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorBlack"
+                    android:textIsSelectable="false"
+                    android:textSize="13sp"
+                    android:typeface="serif"
+                    appState:fontFamily="@font/cutive_mono"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_label_tv"
+                    appState:layout_constraintHorizontal_bias="0.0"
+                    appState:layout_constraintStart_toEndOf="@+id/activity_details_BUTTON_favorite"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_popularity_label_tv" />
+
+
+                <TextView
+                    android:id="@+id/activity_detail_TOOLBAR_vote_average_label_tv"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="96dp"
+                    android:backgroundTintMode="add"
+                    android:bufferType="spannable"
+                    android:clickable="false"
+                    android:fontFamily="@font/cutive_mono"
+                    android:freezesText="false"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="vote averg"
+                    android:textAlignment="viewEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorWhite"
+                    android:textIsSelectable="false"
+                    android:textSize="13sp"
+                    android:typeface="serif"
+                    appState:fontFamily="@font/cutive_mono"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_label_tv"
+                    appState:layout_constraintHorizontal_bias="1.0"
+                    appState:layout_constraintStart_toEndOf="@+id/activity_details_BUTTON_favorite"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_popularity_value_tv" />
+
+                <TextView
+                    android:id="@+id/activity_detail_TOOLBAR_vote_average_value_tv"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="72dp"
+                    android:background="@color/colorWhite"
+                    android:backgroundTintMode="add"
+                    android:bufferType="spannable"
+                    android:clickable="false"
+                    android:fontFamily="@font/cutive_mono"
+                    android:freezesText="false"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="8.5"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorBlack"
+                    android:textIsSelectable="false"
+                    android:textSize="13sp"
+
+                    android:typeface="serif"
+                    appState:fontFamily="@font/cutive_mono"
+                    appState:layout_constraintBottom_toTopOf="@+id/activity_detail_TOOLBAR_vote_count_label_tv"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_vote_average_label_tv"
+                    appState:layout_constraintHorizontal_bias="0.0"
+                    appState:layout_constraintStart_toEndOf="@+id/activity_details_BUTTON_favorite"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_vote_average_label_tv"
+                    appState:layout_constraintVertical_bias="0.0" />
+
+                <TextView
+                    android:id="@+id/activity_detail_TOOLBAR_vote_count_label_tv"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTintMode="add"
+                    android:bufferType="spannable"
+                    android:clickable="false"
+                    android:fontFamily="@font/cutive_mono"
+                    android:freezesText="false"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="vote count:"
+                    android:textAlignment="viewEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorWhite"
+                    android:textIsSelectable="false"
+                    android:textSize="13sp"
+                    android:typeface="serif"
+
+                    appState:fontFamily="@font/cutive_mono"
+                    appState:layout_constraintBottom_toTopOf="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
+                    appState:layout_constraintHorizontal_bias="1.0"
+                    appState:layout_constraintStart_toEndOf="@+id/activity_details_BUTTON_favorite" />
+
+                <TextView
+                    android:id="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:backgroundTintMode="add"
+                    android:bufferType="spannable"
+                    android:clickable="false"
+                    android:fontFamily="@font/cutive_mono"
+                    android:freezesText="false"
+                    android:lineSpacingMultiplier="1.3"
+                    android:text="12000"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                    android:textColor="@color/colorBlack"
+                    android:textIsSelectable="false"
+                    android:textSize="13sp"
+                    android:typeface="serif"
+                    appState:fontFamily="@font/cutive_mono"
+                    appState:layout_constraintBottom_toBottomOf="parent"
+                    appState:layout_constraintEnd_toEndOf="parent"
+                    appState:layout_constraintHorizontal_bias="0.0"
+                    appState:layout_constraintStart_toEndOf="@+id/activity_details_BUTTON_favorite" />
+
+                <Button
+                    android:id="@+id/activity_details_BUTTON_favorite"
+                    android:layout_width="102dp"
+                    android:layout_height="93dp"
+                    android:background="#00000000"
+                    android:drawableStart="@drawable/favorite_star_on"
+                    android:drawableTint="@color/colorGray"
+                    android:textSize="10sp"
+                    appState:layout_constraintBottom_toBottomOf="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
+                    appState:layout_constraintEnd_toEndOf="parent"
+                    appState:layout_constraintStart_toStartOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_details_RECYCLER_VIEW"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".DetailActivity"
-            >
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="279dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusedByDefault="true"
+        appState:layout_constraintBottom_toBottomOf="parent"
+        appState:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
+        appState:layout_constraintEnd_toEndOf="parent"
 
-            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintGuide_percent="0.5"
-                appState:layout_constraintStart_toStartOf="parent" />
-            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintGuide_percent="0.25"
-                appState:layout_constraintStart_toStartOf="parent" />
-            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_center_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintGuide_percent="0.75"
-                appState:layout_constraintStart_toStartOf="parent" />
-            <androidx.constraintlayout.widget.Guideline android:id="@+id/guideline_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintGuide_percent="0.07"
-                appState:layout_constraintStart_toStartOf="parent" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintGuide_percent="0.93"
-                appState:layout_constraintStart_toStartOf="parent" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="240dp"
-                android:adjustViewBounds="true"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_center"
-                appState:layout_constraintHorizontal_bias="0.0"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_left"
-                appState:layout_constraintTop_toTopOf="parent"
-                appState:srcCompat="@drawable/test" />
-
-            <TextView android:id="@+id/activity_details_RELEASE_DATE_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:text=""
-                android:textSize="30sp"
-                appState:layout_constraintRight_toRightOf="parent"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_center"
-                appState:layout_constraintTop_toTopOf="@+id/imageView"
-                />
-
-            <TextView android:id="@+id/activity_details_RUNTIME_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="38dp"
-                android:text=""
-                android:textSize="18sp"
-                android:textStyle="italic"
-                appState:layout_constraintBottom_toTopOf="@+id/activity_details_RELEASE_DATE_tv"
-                appState:layout_constraintStart_toStartOf="@+id/activity_details_RELEASE_DATE_tv"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RELEASE_DATE_tv"
-                appState:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/activity_details_RUNTIME_unit_minutes_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="min"
-                android:textSize="18sp"
-                android:textStyle="italic"
-                android:layout_marginStart="2dp"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME_tv"
-                appState:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME_tv" />
+        appState:layout_constraintHorizontal_bias="0.0"
+        appState:layout_constraintStart_toStartOf="parent"
+        appState:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView android:id="@+id/activity_details_RATING_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="8.4"
-                android:textStyle="bold"
-                appState:layout_constraintBottom_toTopOf="@+id/activity_details_BUTTON_favorite"
-                appState:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME_tv"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME_tv"
-                tools:layout_editor_absoluteY="282dp" />
+    <!--    <FrameLayout-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:appState="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    >-->
 
-            <TextView android:id="@+id/activity_details_RATING_MAX_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="/10"
-                android:textStyle="bold"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RATING_tv"
-                appState:layout_constraintStart_toEndOf="@+id/activity_details_RATING_tv" />
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        >-->
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            tools:context=".DetailActivity"-->
+<!--            >-->
 
-            <Button android:id="@+id/activity_details_BUTTON_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00000000"
-                android:drawableStart="@drawable/favorite_star_on"
-                android:drawableTint="@color/colorGray"
-                android:textSize="10sp"
-                appState:layout_constraintBottom_toBottomOf="@+id/imageView"
-                appState:layout_constraintStart_toStartOf="@+id/activity_details_RATING_tv" />
+<!--            <TextView android:id="@+id/activity_details_RELEASE_DATE_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="36dp"-->
+<!--                android:text=""-->
+<!--                android:textSize="30sp"-->
+<!--                appState:layout_constraintRight_toRightOf="parent"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_center"-->
+<!--                appState:layout_constraintTop_toTopOf="@+id/imageView"-->
+<!--                />-->
 
-            <TextView
-                android:id="@+id/activity_details_TAGLINE_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="41dp"
-                android:lineSpacingMultiplier="1.3"
-                android:singleLine="false"
-                android:text=""
-                android:textAlignment="viewEnd"
-                android:textSize="20sp"
-                android:textStyle="italic"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                appState:layout_constraintRight_toLeftOf="@+id/guideline_right"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_left"
-                appState:layout_constraintTop_toBottomOf="@+id/imageView" />
+<!--            <TextView android:id="@+id/activity_details_RUNTIME_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="38dp"-->
+<!--                android:text=""-->
+<!--                android:textSize="18sp"-->
+<!--                android:textStyle="italic"-->
+<!--                appState:layout_constraintBottom_toTopOf="@+id/activity_details_RELEASE_DATE_tv"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/activity_details_RELEASE_DATE_tv"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RELEASE_DATE_tv"-->
+<!--                appState:layout_constraintVertical_bias="0.0" />-->
 
-            <TextView
-                android:id="@+id/activity_details_OVERVIEW_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="41dp"
-                android:lineSpacingMultiplier="1.3"
-                android:singleLine="false"
-                android:text=""
-                android:textSize="16sp"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                appState:layout_constraintRight_toLeftOf="@+id/guideline_right"
-                appState:layout_constraintStart_toEndOf="@+id/guideline_left"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE_tv" />
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_RUNTIME_unit_minutes_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="min"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textStyle="italic"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RUNTIME_tv"-->
+<!--                appState:layout_constraintStart_toEndOf="@+id/activity_details_RUNTIME_tv" />-->
 
 
-            <TextView
-                android:id="@+id/activity_details_GENRES_LABEL_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.3"
-                android:text="Genres: "
-                android:textSize="10sp"
-                android:textStyle="bold"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES_tv"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+<!--            <TextView android:id="@+id/activity_details_RATING_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="8.4"-->
+<!--                android:textStyle="bold"-->
+<!--                appState:layout_constraintBottom_toTopOf="@+id/activity_details_BUTTON_favorite"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/activity_details_RUNTIME_tv"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RUNTIME_tv"-->
+<!--                tools:layout_editor_absoluteY="282dp" />-->
 
-            <TextView
-                android:id="@+id/activity_details_GENRES_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
-                android:lineSpacingMultiplier="1.3"
-                android:text=""
-                android:textAlignment="viewEnd"
-                android:textSize="12sp"
-                android:textStyle="italic"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW_tv" />
+<!--            <TextView android:id="@+id/activity_details_RATING_MAX_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="/10"-->
+<!--                android:textStyle="bold"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_RATING_tv"-->
+<!--                appState:layout_constraintStart_toEndOf="@+id/activity_details_RATING_tv" />-->
+
+<!--            <Button android:id="@+id/activity_details_BUTTON_favorite"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="#00000000"-->
+<!--                android:drawableStart="@drawable/favorite_star_on"-->
+<!--                android:drawableTint="@color/colorGray"-->
+<!--                android:textSize="10sp"-->
+<!--                appState:layout_constraintBottom_toBottomOf="@+id/imageView"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/activity_details_RATING_tv" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_TAGLINE_tv"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="41dp"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:singleLine="false"-->
+<!--                android:text=""-->
+<!--                android:textAlignment="viewEnd"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textStyle="italic"-->
+<!--                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"-->
+<!--                appState:layout_constraintRight_toLeftOf="@+id/guideline_right"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_left"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/imageView" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_OVERVIEW_tv"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="41dp"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:singleLine="false"-->
+<!--                android:text=""-->
+<!--                android:textSize="16sp"-->
+<!--                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"-->
+<!--                appState:layout_constraintRight_toLeftOf="@+id/guideline_right"-->
+<!--                appState:layout_constraintStart_toEndOf="@+id/guideline_left"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_details_TAGLINE_tv" />-->
 
 
-            <TextView
-                android:id="@+id/activity_details_BUDGET_LABEL_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.3"
-                android:text="Budget: "
-                android:textSize="10sp"
-                android:textStyle="bold"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_GENRES_LABEL_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text="Genres: "-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_GENRES_tv"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />-->
 
-            <TextView
-                android:id="@+id/activity_Details_BUDGET_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:lineSpacingMultiplier="1.3"
-                android:text=""
-                android:textSize="14sp"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                appState:layout_constraintLeft_toRightOf="@+id/activity_details_BUDGET_LABEL_tv"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES_tv" />
-
-            <TextView
-                android:id="@+id/activity_details_BUDGET_UNIT_dollarsign_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.3"
-                android:text="$"
-                android:textSize="14sp"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_GENRES_tv"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="35dp"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text=""-->
+<!--                android:textAlignment="viewEnd"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="italic"-->
+<!--                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_details_OVERVIEW_tv" />-->
 
 
-            <TextView
-                android:id="@+id/activity_details_REVENUE_LABEL_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.3"
-                android:text="Revenue: "
-                android:textSize="10sp"
-                android:textStyle="bold"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_BUDGET_LABEL_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text="Budget: "-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />-->
 
-            <TextView
-                android:id="@+id/activity_Details_REVENUE_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:lineSpacingMultiplier="1.3"
-                android:text=""
-                android:textSize="14sp"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"
-                appState:layout_constraintLeft_toRightOf="@+id/activity_details_REVENUE_LABEL_tv"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET_tv" />
-            <TextView
-                android:id="@+id/activity_details_REVENUE_UNIT_dollarsign_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.3"
-                android:text="$"
-                android:textSize="14sp"
-                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_center_right" />
+<!--            <TextView-->
+<!--                android:id="@+id/activity_Details_BUDGET_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text=""-->
+<!--                android:textSize="14sp"-->
+<!--                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"-->
+<!--                appState:layout_constraintLeft_toRightOf="@+id/activity_details_BUDGET_LABEL_tv"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_details_GENRES_tv" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_BUDGET_UNIT_dollarsign_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text="$"-->
+<!--                android:textSize="14sp"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_BUDGET_tv"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_center_right" />-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_REVENUE_LABEL_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text="Revenue: "-->
+<!--                android:textSize="10sp"-->
+<!--                android:textStyle="bold"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_center_left" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/activity_Details_REVENUE_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text=""-->
+<!--                android:textSize="14sp"-->
+<!--                appState:layout_constraintEnd_toStartOf="@+id/guideline_center_right"-->
+<!--                appState:layout_constraintLeft_toRightOf="@+id/activity_details_REVENUE_LABEL_tv"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_Details_BUDGET_tv" />-->
+<!--            <TextView-->
+<!--                android:id="@+id/activity_details_REVENUE_UNIT_dollarsign_tv"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:lineSpacingMultiplier="1.3"-->
+<!--                android:text="$"-->
+<!--                android:textSize="14sp"-->
+<!--                appState:layout_constraintBaseline_toBaselineOf="@+id/activity_Details_REVENUE_tv"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_center_right" />-->
 
 
 
@@ -261,176 +448,177 @@
 
 
 
-            <View android:id="@+id/divider_pre_rv"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="45dp"
-                android:layout_marginBottom="45dp"
-                android:background="?android:attr/listDivider"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintHorizontal_bias="1.0"
-                appState:layout_constraintStart_toStartOf="parent"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE_tv"
-                appState:layout_constraintBottom_toTopOf="@+id/activity_details_RECYCLER_VIEW"
-                />
+<!--            <View android:id="@+id/divider_pre_rv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginTop="45dp"-->
+<!--                android:layout_marginBottom="45dp"-->
+<!--                android:background="?android:attr/listDivider"-->
+<!--                appState:layout_constraintEnd_toEndOf="parent"-->
+<!--                appState:layout_constraintHorizontal_bias="1.0"-->
+<!--                appState:layout_constraintStart_toStartOf="parent"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_Details_REVENUE_tv"-->
+<!--                appState:layout_constraintBottom_toTopOf="@+id/activity_details_RECYCLER_VIEW"-->
+<!--                />-->
 
 
-            <View android:id="@+id/divider_post_rv"
-                android:layout_width="match_parent"
-                android:layout_height="16dp"
-                android:background="?android:attr/listDivider"
-                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RECYCLER_VIEW"
-                appState:layout_constraintBottom_toBottomOf="parent"
-                appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintHorizontal_bias="1.0"
-                appState:layout_constraintStart_toStartOf="parent"
+<!--            <View android:id="@+id/divider_post_rv"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="16dp"-->
+<!--                android:background="?android:attr/listDivider"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/activity_details_RECYCLER_VIEW"-->
+<!--                appState:layout_constraintBottom_toBottomOf="parent"-->
+<!--                appState:layout_constraintEnd_toEndOf="parent"-->
+<!--                appState:layout_constraintHorizontal_bias="1.0"-->
+<!--                appState:layout_constraintStart_toStartOf="parent"-->
 
-                />
+<!--                />-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activity_details_RECYCLER_VIEW"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                appState:layout_constraintBottom_toTopOf="@+id/divider_post_rv"
-                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"
-                appState:layout_constraintHorizontal_bias="0.0"
-                appState:layout_constraintStart_toStartOf="@+id/guideline_left"
-                appState:layout_constraintTop_toBottomOf="@+id/divider_pre_rv"
-                android:focusable="true"
-                android:focusedByDefault="true"
-                android:clickable="true"
-                />
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/activity_details_RECYCLER_VIEW"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="50dp"-->
+<!--                appState:layout_constraintBottom_toTopOf="@+id/divider_post_rv"-->
+<!--                appState:layout_constraintEnd_toStartOf="@+id/guideline_right"-->
+<!--                appState:layout_constraintHorizontal_bias="0.0"-->
+<!--                appState:layout_constraintStart_toStartOf="@+id/guideline_left"-->
+<!--                appState:layout_constraintTop_toBottomOf="@+id/divider_pre_rv"-->
+<!--                android:focusable="true"-->
+<!--                android:focusedByDefault="true"-->
+<!--                android:clickable="true"-->
+<!--                />-->
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-    </ScrollView>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/activity_details_HEADING"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#008577">
-
-        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            appState:layout_constraintEnd_toEndOf="parent"
-            appState:layout_constraintGuide_percent="0.07"
-            appState:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            appState:layout_constraintEnd_toEndOf="parent"
-            appState:layout_constraintGuide_percent="0.93"
-            appState:layout_constraintStart_toStartOf="parent" />
-
-        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            appState:layout_constraintEnd_toEndOf="parent"
-            appState:layout_constraintGuide_percent="0.2"
-            appState:layout_constraintStart_toStartOf="parent" />
-        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            appState:layout_constraintEnd_toEndOf="parent"
-            appState:layout_constraintGuide_percent="0.87"
-            appState:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/activity_details_HEADING_TITLE_top_barrier_textview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold"
-            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
-            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            appState:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_GUIDELINE_top"
-            appState:layout_constraintBottom_toTopOf="@+id/activity_details_TITLE_tv"
-            />
+<!--    </ScrollView>-->
 
 
-        <TextView
-            android:id="@+id/activity_details_TITLE_tv"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:gravity="start|center_vertical"
-            android:text=""
-            android:textSize="36sp"
-            android:textStyle="bold"
-            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
-            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            appState:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_top_barrier_textview"
-            appState:layout_constraintBottom_toTopOf="@id/activity_details_ORIGINAL_TITLE"
-            />
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/activity_details_HEADING"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#008577">-->
 
-        <TextView
-            android:id="@+id/activity_details_ORIGINAL_TITLE"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="16sp"
-            android:textStyle="bold"
-            appState:layout_constraintBottom_toTopOf="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"
-            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            appState:layout_constraintTop_toBottomOf="@+id/activity_details_TITLE_tv"
-            android:visibility="gone"
-            />
-        <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_left_bracket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="("
-            android:textSize="16sp"
-            android:textStyle="bold"
-            appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
-            appState:layout_constraintEnd_toStartOf="@+id/activity_details_ORIGINAL_TITLE"
-            android:visibility="gone"
-            />
-        <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=")"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"
-            appState:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE"
-            android:visibility="gone"
-            />
-        <TextView android:id="@+id/activity_details_ORIGINAL_LANGUAGE_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="en"
-            android:textSize="10sp"
-            appState:layout_constraintTop_toTopOf="@+id/activity_details_ORIGINAL_TITLE"
-            appState:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE_right_bracket"
-            android:visibility="gone"
-            />
+<!--        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_left"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            appState:layout_constraintEnd_toEndOf="parent"-->
+<!--            appState:layout_constraintGuide_percent="0.07"-->
+<!--            appState:layout_constraintStart_toStartOf="parent" />-->
 
-        <TextView
-            android:id="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="start|center_vertical"
-            android:text=""
-            android:textSize="20sp"
-            android:textStyle="bold"
-            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"
-            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"
-            appState:layout_constraintTop_toBottomOf="@+id/activity_details_ORIGINAL_TITLE"
-            appState:layout_constraintBottom_toBottomOf="@+id/activity_details_HEADING_GUIDELINE_bottom"
-            />
+<!--        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_right"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            appState:layout_constraintEnd_toEndOf="parent"-->
+<!--            appState:layout_constraintGuide_percent="0.93"-->
+<!--            appState:layout_constraintStart_toStartOf="parent" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_top"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            appState:layout_constraintEnd_toEndOf="parent"-->
+<!--            appState:layout_constraintGuide_percent="0.2"-->
+<!--            appState:layout_constraintStart_toStartOf="parent" />-->
+<!--        <androidx.constraintlayout.widget.Guideline android:id="@+id/activity_details_HEADING_GUIDELINE_bottom"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            appState:layout_constraintEnd_toEndOf="parent"-->
+<!--            appState:layout_constraintGuide_percent="0.87"-->
+<!--            appState:layout_constraintStart_toStartOf="parent" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/activity_details_HEADING_TITLE_top_barrier_textview"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="start|center_vertical"-->
+<!--            android:text=""-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"-->
+<!--            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"-->
+<!--            appState:layout_constraintTop_toTopOf="@+id/activity_details_HEADING_GUIDELINE_top"-->
+<!--            appState:layout_constraintBottom_toTopOf="@+id/activity_details_TITLE_tv"-->
+<!--            />-->
 
 
-</FrameLayout>
+<!--        <TextView-->
+<!--            android:id="@+id/activity_details_TITLE_tv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:gravity="start|center_vertical"-->
+<!--            android:text=""-->
+<!--            android:textSize="36sp"-->
+<!--            android:textStyle="bold"-->
+<!--            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"-->
+<!--            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"-->
+<!--            appState:layout_constraintTop_toBottomOf="@+id/activity_details_HEADING_TITLE_top_barrier_textview"-->
+<!--            appState:layout_constraintBottom_toTopOf="@id/activity_details_ORIGINAL_TITLE"-->
+<!--            />-->
 
+<!--        <TextView-->
+<!--            android:id="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=""-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            appState:layout_constraintBottom_toTopOf="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"-->
+<!--            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"-->
+<!--            appState:layout_constraintTop_toBottomOf="@+id/activity_details_TITLE_tv"-->
+<!--            android:visibility="gone"-->
+<!--            />-->
+<!--        <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_left_bracket"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="("-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            appState:layout_constraintEnd_toStartOf="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            android:visibility="gone"-->
+<!--            />-->
+<!--        <TextView android:id="@+id/activity_details_ORIGINAL_TITLE_right_bracket"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=")"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            appState:layout_constraintBaseline_toBaselineOf="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            appState:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            android:visibility="gone"-->
+<!--            />-->
+<!--        <TextView android:id="@+id/activity_details_ORIGINAL_LANGUAGE_tv"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="en"-->
+<!--            android:textSize="10sp"-->
+<!--            appState:layout_constraintTop_toTopOf="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            appState:layout_constraintStart_toEndOf="@+id/activity_details_ORIGINAL_TITLE_right_bracket"-->
+<!--            android:visibility="gone"-->
+<!--            />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/activity_details_HEADING_TITLE_bottom_barrier_textview"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:gravity="start|center_vertical"-->
+<!--            android:text=""-->
+<!--            android:textSize="20sp"-->
+<!--            android:textStyle="bold"-->
+<!--            appState:layout_constraintStart_toStartOf="@+id/activity_details_HEADING_GUIDELINE_left"-->
+<!--            appState:layout_constraintEnd_toEndOf="@+id/activity_details_HEADING_GUIDELINE_right"-->
+<!--            appState:layout_constraintTop_toBottomOf="@+id/activity_details_ORIGINAL_TITLE"-->
+<!--            appState:layout_constraintBottom_toBottomOf="@+id/activity_details_HEADING_GUIDELINE_bottom"-->
+<!--            />-->
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+<!--</FrameLayout>-->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

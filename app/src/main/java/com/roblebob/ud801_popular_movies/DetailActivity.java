@@ -11,7 +11,6 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,16 +31,16 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
     private AppDatabase mAppDatabase;
 
-    private RecyclerView mDetailsRV;
+    private RecyclerView mDetailRV;
     private DetailRVAdapter mDetailRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
     private Button favoriteButton;
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+    protected void onCreate( Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState);
+        setContentView( R.layout.activity_detail);
 
         Intent intent = getIntent();
         if ( intent != null && intent.hasExtra(INTENT_EXTRA_movieID))
@@ -49,22 +48,20 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
         // if (savedInstanceState != null && savedInstanceState.containsKey( INSTANCE_ID))  ID = savedInstanceState .getInt( INSTANCE_ID, -1);
         if (movieID > 0) {
 
-
-            DetailViewModelFactory detailsViewModelFactory = new DetailViewModelFactory(this.getApplication(), movieID);
-            final DetailViewModel detailsViewModel = ViewModelProviders.of(this, detailsViewModelFactory).get(DetailViewModel.class);
-
+            DetailViewModelFactory detailViewModelFactory = new DetailViewModelFactory(this.getApplication(), movieID);
+            final DetailViewModel detailViewModel = ViewModelProviders.of(this, detailViewModelFactory) .get( DetailViewModel.class);
 
 
 
             /* *************************************************************************************
              *
              */
-            mDetailsRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
+            mDetailRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
             mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-            mDetailsRV .setLayoutManager( mDetailsRVLayoutManager);
+            mDetailRV.setLayoutManager( mDetailsRVLayoutManager);
             mDetailRVAdapter = new DetailRVAdapter(this);
-            mDetailsRV .setAdapter(mDetailRVAdapter);
-            mDetailsRV .setHasFixedSize(false);
+            mDetailRV.setAdapter(mDetailRVAdapter);
+            mDetailRV.setHasFixedSize(false);
 
 
 
@@ -73,8 +70,8 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
              *
              */
             favoriteButton = (Button) findViewById( R.id.activity_details_BUTTON_favorite);
-            favoriteButton.setOnClickListener(v -> detailsViewModel .getMainLive( movieID) .observe(this,
-                    (movie) -> { AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase .movieDao() .inverseFavorite(movieID));
+            favoriteButton.setOnClickListener(v -> detailViewModel .getMainLive() .observe(this,
+                    (movie) -> { AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase .mainDao() .inverseFavorite(movieID));
                                     Log.e(TAG, "CLICKED!!" + movie.isFavorite());           }));
 
 
@@ -83,20 +80,29 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             /* *************************************************************************************
              *
              */
-            detailsViewModel .getMainLive(  movieID) .observe(this,
+            detailViewModel.getApiKeyLive() .observe(this,
+                    new Observer< String>() { @Override public void onChanged(String apiKey) {
+                        detailViewModel .getApiKeyLive() .removeObserver( this);
+                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (api_key) update from LiveData  " + apiKey);
+                        detailViewModel.integrate(apiKey);
+                    }});
+
+
+            detailViewModel .getMainLive() .observe(this,
                     new Observer<Main>() { @Override public void onChanged(Main main) {
-                        detailsViewModel .getMainLive( movieID) .removeObserver( this);
-                        includeParent(main);
+                        detailViewModel .getMainLive() .removeObserver( this);
+                        includeParent( main);
                     }});
 
-            detailsViewModel .getListLive(  movieID) .observe(this,
+            detailViewModel .getListLive() .observe(this,
                     new Observer< List<Detail>>() { @Override public void onChanged(List<Detail> detailList) {
-                        detailsViewModel .getListLive(movieID) .removeObserver( this);
-                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (xtraNonlinks)update from LiveData  " + detailList.toString());
-                        populateNonlinksFromXtraListIntoUI(detailList);
+                        detailViewModel .getListLive() .removeObserver( this);
+                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (detailList) update from LiveData  " + detailList.toString());
+                        if (detailList.size() > 0)  mDetailRVAdapter .setDetailList( detailList);
                     }});
 
-        } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID= " + movieID);
+
+        } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID");
     }
 
 
@@ -116,13 +122,17 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
      * @param main
      */
     private void includeParent(Main main) {
-        if (main.getPosterKey() != null)    Picasso .get() .load( main.getPosterURL()) .into( (ImageView) findViewById( R.id.imageView));
+        if (main.getPosterKey() != null)
+            Picasso .get() .load( main.getPosterURL())
+                .into( (ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv));
+
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText( String.valueOf( main .getPopularVAL()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( String.valueOf( main .getVoteAVG()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( String.valueOf( main .getVoteCNT()));
 
         favoriteButton.setCompoundDrawableTintList( ColorStateList.valueOf( getResources().getColor(
                 main.isFavorite()  ?  R.color.colorYellow  :  R.color.colorGray
         )));
-
-        ((TextView) findViewById( R.id.activity_details_RATING_tv)) .setText(  String.valueOf(main.getVoteAVG()));
     }
 
 
@@ -134,75 +144,9 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     /* *********************************************************************************************
      *
      */
-    private void populateNonlinksFromXtraListIntoUI(List<Detail> detailList) {                                  Log.d(TAG, "change has occured -->  populateNonlinksFromXtraListIntoUI()");
-        detailList.forEach(  (Detail detail) -> {
-
-            switch(Detail.ORDER.get(detail.getOrder())) {
-
-                case "title":
-                    ((TextView) findViewById(R.id.activity_details_TITLE_tv)).setText(detail.getOrder());
-                    break;
-                case "original_title":
-                    ((TextView) findViewById(R.id.activity_details_ORIGINAL_TITLE)).setText(detail.getOrder());
-                    ((TextView) findViewById(R.id.activity_details_ORIGINAL_TITLE)).setVisibility(View.VISIBLE);
-                    break;
-                case "original_language":
-                    ((TextView) findViewById(R.id.activity_details_ORIGINAL_LANGUAGE_tv)) .setText( detail.getContent());
-                    ((TextView) findViewById(R.id.activity_details_ORIGINAL_LANGUAGE_tv))         .setVisibility( View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_ORIGINAL_TITLE_left_bracket))  .setVisibility( View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_ORIGINAL_TITLE_right_bracket)) .setVisibility( View.VISIBLE);
-                    break;
-                case "release_date":
-                    ((TextView) findViewById(R.id.activity_details_RELEASE_DATE_tv)).setText(detail.getContent().split("-")[0]);  // take only the year
-                    ((TextView) findViewById(R.id.activity_details_RELEASE_DATE_tv)) .setVisibility( View.VISIBLE);
-                    break;
-                case "runtime":
-                    ((TextView) findViewById( R.id.activity_details_RUNTIME_tv)).setText(detail.getContent());
-                    ((TextView) findViewById( R.id.activity_details_RUNTIME_tv))              .setVisibility( View.VISIBLE);
-                    ((TextView) findViewById( R.id.activity_details_RUNTIME_unit_minutes_tv)) .setVisibility( View.VISIBLE);
-                    break;
-                case "tagline":
-                    ((TextView) findViewById( R.id.activity_details_TAGLINE_tv)) .setText( detail.getContent());
-                    ((TextView) findViewById( R.id.activity_details_TAGLINE_tv)) .setVisibility(View.VISIBLE);
-                    break;
-                case "overview":
-                    ((TextView) findViewById(R.id.activity_details_OVERVIEW_tv)).setText(detail.getContent());
-                    ((TextView) findViewById(R.id.activity_details_OVERVIEW_tv)).setVisibility(View.VISIBLE);
-                    break;
-                case "genres":
-                    ((TextView) findViewById(R.id.activity_details_GENRES_tv)).setText(detail.getContent());
-                    ((TextView) findViewById(R.id.activity_details_GENRES_tv)).setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_GENRES_LABEL_tv)).setVisibility(View.VISIBLE);
-                    break;
-                case "budget":
-                    ((TextView) findViewById(R.id.activity_Details_BUDGET_tv)).setText(detail.getContent());
-                    ((TextView) findViewById(R.id.activity_Details_BUDGET_tv)).setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_BUDGET_LABEL_tv)).setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_BUDGET_UNIT_dollarsign_tv)).setVisibility(View.VISIBLE);
-                case "revenue":
-                    ((TextView) findViewById(R.id.activity_Details_REVENUE_tv)).setText(detail.getContent());
-                    ((TextView) findViewById(R.id.activity_Details_REVENUE_tv)).setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_REVENUE_LABEL_tv)).setVisibility(View.VISIBLE);
-                    ((TextView) findViewById(R.id.activity_details_REVENUE_UNIT_dollarsign_tv)).setVisibility(View.VISIBLE);
-                    break;
-            }
-        });
+    private void populateRVDetails(  List<Detail> detailList) {
+        mDetailRVAdapter.setDetailList(detailList);
     }
-
-
-
-
-    /* *********************************************************************************************
-     *
-     */
-    private void populateLinksXtraIntoUI(  List<Detail> detailList) {
-        mDetailRVAdapter.setLinksDetailList(detailList);
-    }
-
-
-
-
-
 
 
     /* *********************************************************************************************
@@ -215,7 +159,5 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( (new URL(url).toString())));
             startActivity(browserIntent);
         } catch (MalformedURLException e) { e.printStackTrace(); }
-
-
     }
 }

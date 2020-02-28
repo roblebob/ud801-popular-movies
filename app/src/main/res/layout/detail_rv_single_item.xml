@@ -1,68 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout 
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/detail_rv_single_item"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:appState="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
 
-        android:id="@+id/detail_rv_single_item_tag_cv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        appState:layout_constraintBottom_toBottomOf="@+id/detail_rv_single_item_name_tv"
-        appState:layout_constraintEnd_toStartOf="@+id/detail_rv_single_item_triangle_tv"
-        appState:layout_constraintHorizontal_chainStyle="packed"
-        appState:layout_constraintStart_toStartOf="parent"
-        appState:layout_constraintTop_toTopOf="@+id/detail_rv_single_item_name_tv">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/detail_rv_single_item_CONTENT_cv"
+        android:visibility="visible"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        appState:layout_constraintBottom_toBottomOf="parent"
+        appState:layout_constraintEnd_toEndOf="parent"
+        appState:layout_constraintTop_toTopOf="parent"
+        >
 
         <TextView
-            android:id="@+id/detail_rv_single_item_tag_cv_tv"
-            android:layout_width="35dp"
-            android:layout_height="wrap_content"
-            android:text="trailer"
-            android:textAlignment="center"
-            android:textSize="10dp" />
+            android:id="@+id/detail_rv_single_item_CONTENT_tv"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="10dp"
+
+            android:gravity="end|center_vertical"
+            android:scrollHorizontally="true"
+
+            android:typeface="serif"
+            appState:fontFamily="@font/cutive_mono"
+            android:textAlignment="viewEnd"
+            android:textSize="17sp"
+            android:text="2010-20-01"
+            />
 
     </androidx.cardview.widget.CardView>
 
 
-    <TextView
-        android:id="@+id/detail_rv_single_item_triangle_tv"
+
+
+
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/detail_rv_single_item_LABEL_cv"
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
-        android:gravity="fill_vertical"
-        android:text="&#x25B8;"
-        android:textSize="36sp"
-        appState:layout_constraintBottom_toBottomOf="@+id/detail_rv_single_item_name_tv"
-        appState:layout_constraintEnd_toStartOf="@+id/detail_rv_single_item_name_tv"
-        appState:layout_constraintStart_toEndOf="@+id/detail_rv_single_item_tag_cv"
-        appState:layout_constraintTop_toTopOf="parent" />
+        android:alpha="1.0"
 
-    <TextView
-        android:id="@+id/detail_rv_single_item_name_tv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
-        android:gravity="start|center_vertical"
-        android:maxLines="1"
-        android:scrollHorizontally="true"
-        android:text="fwegfwergewrv"
-        android:textAlignment="viewStart"
-        android:textSize="12sp"
-        appState:layout_constraintBottom_toBottomOf="parent"
-        appState:layout_constraintEnd_toEndOf="parent"
-        appState:layout_constraintStart_toEndOf="@+id/detail_rv_single_item_triangle_tv"
-        appState:layout_constraintTop_toTopOf="parent"
+        android:background="@color/colorBlack"
 
-        />
+        android:backgroundTint="@color/colorBlack"
+        android:visibility="visible"
+        appState:cardBackgroundColor="#FFFFFF"
+        appState:cardCornerRadius="4dp"
+        appState:cardPreventCornerOverlap="true"
+        appState:cardUseCompatPadding="true"
+        appState:contentPadding="4dp"
+        appState:layout_constraintStart_toStartOf="parent"
+        appState:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/detail_rv_single_item_LABEL_tv"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:gravity="end|center_vertical"
+            android:scrollHorizontally="true"
+
+            android:text="release_date"
+            android:textAlignment="inherit"
+
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            appState:fontFamily="@font/cutive_mono" />
+
+    </androidx.cardview.widget.CardView>
 
 
+    <ImageView
+        android:id="@+id/detail_rv_single_item_LABEL_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_send_black_24dp"
+        android:textColor="@color/colorBlack"
+        android:visibility="gone"
+        appState:layout_constraintBottom_toBottomOf="@+id/detail_rv_single_item_LABEL_cv"
+        appState:layout_constraintStart_toEndOf="@+id/detail_rv_single_item_LABEL_cv"
+        appState:layout_constraintTop_toTopOf="@+id/detail_rv_single_item_LABEL_cv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

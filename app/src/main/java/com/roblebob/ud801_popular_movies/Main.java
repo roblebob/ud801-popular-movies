@@ -1,6 +1,5 @@
 package com.roblebob.ud801_popular_movies;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -12,7 +11,7 @@ import java.util.Objects;
 @Entity(tableName = "Main")
 public class Main {
 
-    @PrimaryKey(autoGenerate = false) private int     ID;
+    @PrimaryKey(autoGenerate = false) private int movieID;
     @ColumnInfo(name = "favorite")    private boolean favorite;
     @ColumnInfo(name = "detailed")    private boolean detailed;
     @ColumnInfo(name = "popularVAL")  private double  popularVAL;
@@ -20,23 +19,23 @@ public class Main {
     @ColumnInfo(name = "voteCNT")     private int     voteCNT;
     @ColumnInfo(name = "posterKey")   private String  posterKey;
 
-    public Main( int ID,
+    public Main( int movieID,
             boolean favorite,  boolean detailed,
             double popularVAL,  double voteAVG,  int voteCNT,
             String posterKey){
-        this.ID = ID;
+        this.movieID = movieID;
         this.favorite = favorite;  this.detailed = detailed;
         this.popularVAL = popularVAL;  this.voteAVG = voteAVG;  this.voteCNT =  voteCNT;
         this.posterKey = posterKey;
     }
 
-    @Override public int     hashCode() { return Objects.hash(  getID(), isFavorite(), isDetailed(), getPopularVAL(), getVoteAVG(),   getVoteCNT(),  getPosterKey()); }
+    @Override public int     hashCode() { return Objects.hash(  getMovieID(), isFavorite(), isDetailed(), getPopularVAL(), getVoteAVG(),   getVoteCNT(),  getPosterKey()); }
     @Override public boolean equals(@Nullable Object obj) {   if ( obj == null) return false;   return this.toString() .equals( obj.toString());    }
 
 
 
 
-    public int getID()                   { return this.ID; }
+    public int getMovieID()              { return this.movieID; }
 
     public boolean isFavorite()          { return this.favorite; }
     @ Ignore public int getFavorite()    { return (isFavorite())  ? 1 : 0;}
@@ -52,7 +51,7 @@ public class Main {
 
 
 
-    public void setID(int ID)                    { this.ID = ID; }
+    public void setMovieID(int movieID)          { this.movieID = movieID; }
 
     public void setFavorite(boolean favorite)    { this.favorite = favorite; }
     public void setDetailed(boolean detailed)    { this.detailed = detailed; }

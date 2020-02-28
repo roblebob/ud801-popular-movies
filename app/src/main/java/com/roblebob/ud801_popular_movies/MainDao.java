@@ -27,15 +27,15 @@ public interface MainDao {
     @Query(value = "SELECT * FROM Main ORDER BY favorite DESC, voteAVG DESC, popularVAL DESC, voteCNT DESC")
     LiveData< List<Main>> loadTopRatedMovieListLive();
 
-    @Query(value = "SELECT * FROM Main WHERE ID = :ID")
-    LiveData<Main> loadMovieLive(int ID);
+    @Query(value = "SELECT * FROM Main WHERE movieID = :movieID")
+    LiveData<Main> loadMovieLive(int movieID);
 
-    @Query(value = "SELECT COUNT(*) FROM Main WHERE ID > 1 ")
+    @Query(value = "SELECT COUNT(*) FROM Main")
     LiveData< Integer> loadMovieCountLive();
 
-    @Query(value = "UPDATE Main SET `favorite` = :favoriteFLAG WHERE ID = :ID")
-    void updateFav(int ID, boolean favoriteFLAG);
+    @Query(value = "UPDATE Main SET `favorite` = :favorite WHERE movieID = :movieID")
+    void updateFavorite(int movieID, boolean favorite);
 
-    @Query(value = "UPDATE Main SET `favorite` = (CASE (SELECT favorite FROM Main WHERE ID = :ID) WHEN 0 THEN 1 WHEN 1 THEN 0 END) WHERE ID = :ID")
-    void inverseFavorite(int ID);
+    @Query(value = "UPDATE Main SET `favorite` = (CASE (SELECT favorite FROM Main WHERE movieID = :movieID) WHEN 0 THEN 1 WHEN 1 THEN 0 END) WHERE movieID = :movieID")
+    void inverseFavorite(int movieID);
 }

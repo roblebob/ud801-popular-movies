@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.Observer;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,9 +17,13 @@ import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttp
 public class MainViewModel extends AndroidViewModel{
 
     private AppDatabase mAppDatabase;
+
     private MainRepository mainRepository;
     private DetailRepository detailRepository;
+
+    private LiveData< String> apiKeyLive;
     private LiveData< String> orderLive;
+
     private LiveData< List<Main>> popularMovieListLive;
     private LiveData< List<Main>> topRatedMovieListLive;
     private LiveData< List<Main>> movieListLiveByDatabase;
@@ -31,7 +36,7 @@ public class MainViewModel extends AndroidViewModel{
     public MainViewModel(@NonNull Application application) {
         super( application);
         mAppDatabase = AppDatabase.getInstance( application);
-        AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase.appStateDao().insert(new AppState("api_key", null)));
+        //AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase.appStateDao().insert(new AppState("api_key", null)));
         AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase.appStateDao().insert(new AppState("order", "popular")));
         mainRepository = new MainRepository( mAppDatabase);
         detailRepository = new DetailRepository(  mAppDatabase);
@@ -39,6 +44,8 @@ public class MainViewModel extends AndroidViewModel{
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         orderLive = mAppDatabase.appStateDao().loadState("order");
+        apiKeyLive = mAppDatabase.appStateDao().loadState("api_key");
+
         popularMovieListLive  = mainRepository.getPopularListLive();
         topRatedMovieListLive = mainRepository.getTopRatedListLive();
 
@@ -48,8 +55,11 @@ public class MainViewModel extends AndroidViewModel{
         movieListLiveByMediator .addSource( orderLive,             value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
         movieListLiveByMediator .addSource( popularMovieListLive,  value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
         movieListLiveByMediator .addSource( topRatedMovieListLive, value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
-    }
 
+
+
+
+    }
 
     public List<Main> combine(
             LiveData< String> orderLive,
@@ -78,6 +88,8 @@ public class MainViewModel extends AndroidViewModel{
      *
      * @param apiKey
      */
+    public LiveData< String> getApiKeyLive() { return apiKeyLive; }
+
     public void start( String apiKey) {
         AppExecutors.getInstance().networkIO().execute( () -> {
             try {
@@ -91,12 +103,13 @@ public class MainViewModel extends AndroidViewModel{
                 AppExecutors.getInstance().mainThread().execute( () ->
                         Toast.makeText(  getApplication().getApplicationContext(), "apiKey accepted", Toast.LENGTH_SHORT).show());
 
+
                 mainRepository.integrate(apiKey);
 
             } catch (IOException e) {
                 e.printStackTrace();
                 AppExecutors .getInstance() .diskIO() .execute( () ->
-                        mAppDatabase.appStateDao().update(new AppState("api_key", null)));
+                        mAppDatabase.appStateDao().insert(new AppState("api_key", null)));
                 Log.e (this.getClass().getSimpleName(), "apiKey: " + apiKey +  " rejected");
             }
         });
