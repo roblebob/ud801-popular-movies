@@ -34,7 +34,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     private RecyclerView mDetailRV;
     private DetailRVAdapter mDetailRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
-    private Button favoriteButton;
+    private ImageView favoriteButton;
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -69,7 +69,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             /* *************************************************************************************
              *
              */
-            favoriteButton = (Button) findViewById( R.id.activity_details_BUTTON_favorite);
+            favoriteButton = (ImageView) findViewById( R.id.activity_details_BUTTON_favorite);
             favoriteButton.setOnClickListener(v -> detailViewModel .getMainLive() .observe(this,
                     (movie) -> { AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase .mainDao() .inverseFavorite(movieID));
                                     Log.e(TAG, "CLICKED!!" + movie.isFavorite());           }));
@@ -130,9 +130,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( String.valueOf( main .getVoteAVG()));
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( String.valueOf( main .getVoteCNT()));
 
-        favoriteButton.setCompoundDrawableTintList( ColorStateList.valueOf( getResources().getColor(
-                main.isFavorite()  ?  R.color.colorYellow  :  R.color.colorGray
-        )));
+
     }
 
 

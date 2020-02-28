@@ -118,41 +118,41 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
             switch (detail.getOrder()) {
 
                 case "title":
-                    contentTv.setTextSize(35);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
-                    contentTv.setTypeface(contentTv.getTypeface(), Typeface.BOLD);
-                    contentTv.setText( "   " + detail.getContent());
+                    contentTv .setTextSize(35);
+                    contentCv .setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
+                    contentTv .setTypeface(contentTv.getTypeface(), Typeface.BOLD);
+                    contentTv .setText( "   " + detail.getContent());
                     break;
 
                 case "original_title":
-                    contentTv.setTextSize(27);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
-                    contentTv.setText( detail.getContent());
+                    contentTv .setTextSize(27);
+                    contentCv .setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
+                    contentTv .setText( detail.getContent());
                     break;
 
                 case "original_language":
-                    contentTv.setTextSize(17);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
-                    contentTv.setText("(" + detail.getContent() + ")");
+                    contentTv .setTextSize(17);
+                    contentCv .setCardBackgroundColor( itemView .getResources() .getColor( R.color.colorPrimary));
+                    contentTv .setText("(" + detail.getContent() + ")");
                     break;
 
                 case "release_date":
-                    contentTv.setTextSize(24);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimaryLight));
-                    contentTv.setText(detail.getContent());
+                    contentTv .setTextSize(17);
+                    contentCv .setCardBackgroundColor( itemView .getResources() .getColor( R.color.colorPrimaryLight));
+                    contentTv .setText(detail.getContent());
                     break;
 
                 case "runtime":
-                    contentTv.setTextSize(17);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimaryLight));
-                    contentTv.setText(detail.getContent() + " min.");
+                    contentTv .setTextSize(15);
+                    contentCv .setCardBackgroundColor(itemView.getResources() .getColor (R.color.colorPrimaryLight));
+                    contentTv .setText(detail.getContent() + " min.");
                     break;
 
 
                 case "tagline":
-                    contentTv.setTextSize(27);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText( "    " + detail.getContent());
+                    contentTv .setTextSize(27);
+                    contentCv .setCardBackgroundColor( itemView .getResources() .getColor( R.color.colorWhite));
+                    contentTv .setText( "    " + detail.getContent());
                     break;
 
                 case "overview":
@@ -185,7 +185,7 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                     urlString = detail.getContent();
                     break;
 
-                case "imdbpage":
+                case "imdb":
                     contentTv.setTextSize(17);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
                     contentTv.setText("imdb page's version");

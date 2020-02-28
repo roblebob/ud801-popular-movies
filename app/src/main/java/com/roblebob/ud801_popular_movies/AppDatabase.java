@@ -9,7 +9,7 @@ import android.content.Context;
 @Database( entities = { AppState.class, Main.class,  Detail.class },   version = 1,   exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {     /* singleton-pattern */
 
-    private static final String DATABASE_NAME  = "MovieDB185";
+    private static final String DATABASE_NAME  = "MovieDB186";
     private static AppDatabase  sInstance;
     private static final Object LOCK  = new Object();
     public static AppDatabase   getInstance( Context context) {
