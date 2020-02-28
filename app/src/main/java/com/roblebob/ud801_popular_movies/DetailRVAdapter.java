@@ -1,5 +1,6 @@
 package com.roblebob.ud801_popular_movies;
 
+import android.graphics.Typeface;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -119,7 +120,8 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                 case "title":
                     contentTv.setTextSize(35);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
-                    contentTv.setText(  detail.getContent());
+                    contentTv.setTypeface(contentTv.getTypeface(), Typeface.BOLD);
+                    contentTv.setText( "   " + detail.getContent());
                     break;
 
                 case "original_title":
@@ -150,18 +152,18 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                 case "tagline":
                     contentTv.setTextSize(27);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText( detail.getContent());
+                    contentTv.setText( "    " + detail.getContent());
                     break;
 
                 case "overview":
                     contentTv.setTextSize(21);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText( "   " + detail.getContent());
+                    contentTv.setText( "      " + detail.getContent());
                     break;
 
 
                 case "genres":
-                    contentTv.setTextSize(17);
+                    contentTv.setTextSize(21);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
                     contentTv.setText( detail.getContent());
                     break;
@@ -171,7 +173,8 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                 case "revenue":
                     contentTv.setTextSize(17);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText(detail.getContent() + " $");  // TODO
+                    contentTv.setText( prepareForMonetary(detail.getContent()));
+                    contentTv.setTypeface(contentTv.getTypeface(), Typeface.BOLD);
                     break;
 
 
@@ -209,5 +212,18 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
         }
 
 
+        public String prepareForMonetary(String s) {
+
+            s = new StringBuilder(s).reverse().toString();
+            char[] sArray = s.toCharArray();
+
+            StringBuilder sBuilder = new StringBuilder();
+            for (int i = 0; i < s.length(); i++) {
+                sBuilder.append( sArray[i]);
+                if ((i+1) % 3 == 0 ) sBuilder.append( " ");
+            }
+
+            return sBuilder.reverse().toString()  + " $";
+        }
     }
 }

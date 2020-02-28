@@ -77,16 +77,16 @@ public class DetailRepository {
                                 break;
 
 
-//                            case "genres":
-//                                JSONArray jsonArray = new JSONArray( jsonObject.getJSONArray( order));
-//
-//                                String content = jsonArray .getJSONObject(0) .getString("name");
-//                                for (int i = 1; i < jsonArray.length(); i++) {
-//                                    content += "\n" + jsonArray .getJSONObject( i) .getString("name");
-//                                }
-//
-//                                insert(  new Detail( movieID, order, content, null));
-//                                break;
+                            case "genres":
+                                JSONArray jsonArray = jsonObject.getJSONArray( order);
+
+                                String content = jsonArray .getJSONObject(0) .getString("name");
+                                for (int i = 1; i < jsonArray.length(); i++) {
+                                    content += "\n" + jsonArray .getJSONObject( i) .getString("name");
+                                }
+
+                                insert(  new Detail( movieID, order, content, null));
+                                break;
 
 
                             case "budget":
