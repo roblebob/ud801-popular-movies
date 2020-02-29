@@ -1,5 +1,5 @@
 package com.roblebob.ud801_popular_movies;
-import androidx.annotation.MainThread;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
-
 import java.util.List;
 
 
@@ -42,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
     @Override protected void onCreate( Bundle savedInstanceState) {
         super .onCreate( savedInstanceState);
-        mPresentState =  (savedInstanceState == null)    ?    new Bundle()    :    savedInstanceState;
+        mPresentState =  (savedInstanceState == null)   ?   new Bundle()   :   savedInstanceState;
         if (mPresentState.getString("orderType") == null)
             mPresentState.putString( "orderType", "popular");
 
@@ -63,29 +62,20 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
          *  R E C Y C L E R   V I E W
          */
         mMainRV = (RecyclerView) this.findViewById( R.id.activity_main_RV);
-        mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
+        mRVLayoutManager = new GridLayoutManager(this,   2,   RecyclerView.VERTICAL,   false);
         ((LinearLayoutManager) mRVLayoutManager) .setInitialPrefetchItemCount( 100);
         mMainRV .setLayoutManager( mRVLayoutManager);
         mMainRVAdapter = new MainRVAdapter( this);
 
-
         mainViewModel.getMovieListLiveByDatabase().observe(this, (List<Main> list) -> mMainRVAdapter.submitList( list));
-
         mainViewModel.getOrder().observe(this, (String order) -> {
-
             Log.e(TAG, "--order-changed---> " + order);
             if (order != null)  mMainRVAdapter .submitOrder( order);
             else                mMainRVAdapter .submitOrder( AppUtilities.ORDER.get(0));
         });
 
-
-
         mMainRV .setAdapter( mMainRVAdapter);
         mMainRV .setHasFixedSize( true);
-
-
-
-
 
 
 
@@ -100,6 +90,42 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
 
+
+        /* * * * * * * * * * * * *
+         *
+         */
+        mainViewModel.getApiKeyLive().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String apiKey) {
+                mainViewModel.getApiKeyLive().removeObserver( this);
+
+                Log.e(TAG, "--API-KEY-->  " + apiKey);
+                if (apiKey == null) {
+
+                    ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )  .setVisibility( View.VISIBLE);
+                    ((TabLayout)         findViewById( R.id.activity_main_TAB)               )  .setVisibility( View.GONE);
+                    ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))  .setVisibility( View.GONE);
+                    ((RecyclerView)      findViewById( R.id.activity_main_RV)                )  .setVisibility( View.GONE);
+                    ((TextInputEditText) findViewById( R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(
+                            (v, actionId, event) -> {
+
+                                Log .e(TAG, "----------->    ACTION was called:   " + v.getText().toString() );
+                                mainViewModel.start( v.getText().toString());
+
+                                return false;   //  FALSE -> keyboard display goes into hiding
+                            });
+                } else {
+                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.GONE);
+                    ((TabLayout)        findViewById( R.id.activity_main_TAB)               )   .setVisibility( View.VISIBLE);
+                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
+                    ((RecyclerView)     findViewById( R.id.activity_main_RV)                )   .setVisibility( View.VISIBLE);
+                }
+            }
+        });
+
+
+
+
         /* * * * * * * * * * * * *
          *  C O U N T :   M o v i e s
          */
@@ -109,33 +135,9 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
                 Log.e(TAG, "---->   " + "Receiving database update for MovieCount:  " + movieCount);
                 mMovieBasicsCountTv .setText( String.valueOf( movieCount));
-
-                if ( movieCount == 0) {  /* setup invalid */
-
-                    Log .e(TAG, "----------->    invalid case");
-                    ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )  .setVisibility( View.VISIBLE);
-                    ((TabLayout)         findViewById( R.id.activity_main_TAB)               )  .setVisibility( View.GONE);
-                    ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))  .setVisibility( View.GONE);
-                    ((RecyclerView)      findViewById( R.id.activity_main_RV)                )  .setVisibility( View.GONE);
-                    ((TextInputEditText) findViewById( R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(
-                            (v, actionId, event) -> {
-
-                                Log .e(TAG, "----------->    ACTION was called:   " + v.getText().toString() );
-                                 mainViewModel.start( v.getText().toString());
-
-                                 return false;   //  FALSE -> keyboard display goes into hiding
-                            });
-
-                } else if ( ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)) .getVisibility() == View.VISIBLE)  {
-                    /* first run after validation  */
-
-                    ((ConstraintLayout) findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.GONE);
-                    ((TabLayout)        findViewById( R.id.activity_main_TAB)               )   .setVisibility( View.VISIBLE);
-                    ((ConstraintLayout) findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
-                    ((RecyclerView)     findViewById( R.id.activity_main_RV)                )   .setVisibility( View.VISIBLE);
-                }
             }
         });
+
 
 
 
@@ -148,21 +150,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
                 mMovieDetailedCountTv.setText( String.valueOf(integer));
             }
         });
-
-
-        /* * * * * * * * * * * * *
-         */
-        mainViewModel .getApiKeyLive() .observe(this, new Observer<String>() {
-            @Override public void onChanged( String apiKey) {
-                mainViewModel.getApiKeyLive().removeObserver( this);
-                Log.e(TAG, "--API-KEY-->  " + apiKey);
-            }
-        });
-
-
-
-
-
 
 
 
@@ -180,31 +167,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
             @Override public void onTabUnselected( TabLayout.Tab tab) {}
             @Override public void onTabReselected( TabLayout.Tab tab) {}
         });
-
-
-
-
-
     }
-
-
-
-//    @MainThread
-//    private void prepareOrderedby(int orderedbyTabPosition) {
-//
-//        MainViewModel mainViewModel = ViewModelProviders.of(this, mMainViewModelFactory) .get(MainViewModel.class);
-//
-//        mainViewModel.setOrderedbyTabPosition( orderedbyTabPosition);
-//
-//        mainViewModel.getPopularListLive().removeObservers(this);
-//        mainViewModel.getTopRatedListLive().removeObservers(this);
-//
-//        switch (orderedbyTabPosition) {
-//            case 0: mainViewModel.getPopularListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));   break;
-//            case 1: mainViewModel.getTopRatedListLive().observe(this, (List< Main> list) -> mMainRVAdapter.submitList(list));  break;
-//        }
-//    }
-
-
     // TODO : save mPresentState before closing
 }

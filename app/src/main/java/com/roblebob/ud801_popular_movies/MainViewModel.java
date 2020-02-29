@@ -55,10 +55,6 @@ public class MainViewModel extends AndroidViewModel{
         movieListLiveByMediator .addSource( orderLive,             value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
         movieListLiveByMediator .addSource( popularMovieListLive,  value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
         movieListLiveByMediator .addSource( topRatedMovieListLive, value -> movieListLiveByMediator .setValue( combine( orderLive, popularMovieListLive, topRatedMovieListLive )));
-
-
-
-
     }
 
     public List<Main> combine(
@@ -93,7 +89,7 @@ public class MainViewModel extends AndroidViewModel{
     public void start( String apiKey) {
         AppExecutors.getInstance().networkIO().execute( () -> {
             try {
-                // dummy request simply to verify th apiKey
+                // dummy request simply to verify the apiKey
                 String response = getResponseFromHttpUrl("https://api.themoviedb.org/3/movie/popular?api_key=" + apiKey);
 
                 // IF no IOException is thrown THEN:
@@ -103,14 +99,17 @@ public class MainViewModel extends AndroidViewModel{
                 AppExecutors.getInstance().mainThread().execute( () ->
                         Toast.makeText(  getApplication().getApplicationContext(), "apiKey accepted", Toast.LENGTH_SHORT).show());
 
+                mainRepository .integrate( apiKey);
 
-                mainRepository.integrate(apiKey);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException e) { e.printStackTrace();
+
+
                 AppExecutors .getInstance() .diskIO() .execute( () ->
                         mAppDatabase.appStateDao().insert(new AppState("api_key", null)));
-                Log.e (this.getClass().getSimpleName(), "apiKey: " + apiKey +  " rejected");
+
+                AppExecutors.getInstance().mainThread().execute( () ->
+                        Toast.makeText(  getApplication().getApplicationContext(), "apiKey rejected", Toast.LENGTH_SHORT).show());
             }
         });
     }

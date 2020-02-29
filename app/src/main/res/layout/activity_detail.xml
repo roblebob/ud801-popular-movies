@@ -33,15 +33,25 @@
                 android:layout_height="match_parent"
                 appState:layout_scrollFlags="scroll|enterAlways">
 
+                <ImageView
+                    android:id="@+id/activity_detail_TOOLBAR_back_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    appState:layout_constraintStart_toStartOf="parent"
+                    appState:layout_constraintTop_toTopOf="parent"
+                    appState:srcCompat="@drawable/arrow_back" />
+
 
                 <ImageView
                     android:id="@+id/activity_detail_TOOLBAR_iv"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:drawableStart="@drawable/favorite_star_on"
+                    android:layout_height="match_parent"
 
-                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:scaleType="center"
                     appState:layout_constraintBottom_toBottomOf="parent"
                     appState:layout_constraintEnd_toEndOf="parent"
                     appState:layout_constraintTop_toTopOf="parent"
@@ -60,7 +70,7 @@
                     android:fontFamily="@font/cutive_mono"
                     android:freezesText="false"
                     android:lineSpacingMultiplier="1.3"
-                    android:text="popularity"
+                    android:text="popular"
                     android:textAlignment="viewEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="@color/colorWhite"
@@ -74,11 +84,11 @@
                 <TextView
                     android:id="@+id/activity_detail_TOOLBAR_popularity_value_tv"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:layout_width="102dp"
-                    android:layout_height="17dp"
-                    android:layout_marginTop="32dp"
-                    android:alpha="0.6"
-                    android:background="@color/colorWhite"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#7FFFFFFF"
                     android:backgroundTintMode="add"
                     android:bufferType="spannable"
                     android:clickable="false"
@@ -94,8 +104,8 @@
                     android:typeface="serif"
                     appState:fontFamily="@font/cutive_mono"
                     appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
-                    appState:layout_constraintStart_toStartOf="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
-                    appState:layout_constraintTop_toBottomOf="@+id/activity_details_BUTTON_favorite" />
+                    appState:layout_constraintStart_toStartOf="parent"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_movieID_tv" />
 
                 <TextView
                     android:id="@+id/activity_detail_TOOLBAR_vote_average_label_tv"
@@ -109,7 +119,7 @@
                     android:fontFamily="@font/cutive_mono"
                     android:freezesText="false"
                     android:lineSpacingMultiplier="1.3"
-                    android:text="vote averg"
+                    android:text="voteAVG"
                     android:textAlignment="viewEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="@color/colorWhite"
@@ -124,18 +134,19 @@
                 <TextView
                     android:id="@+id/activity_detail_TOOLBAR_vote_average_value_tv"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:layout_width="103dp"
-                    android:layout_height="18dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:background="@color/colorWhite"
+                    android:background="#7FFFFFFF"
                     android:backgroundTintMode="add"
                     android:bufferType="spannable"
                     android:clickable="false"
                     android:fontFamily="@font/cutive_mono"
+
                     android:freezesText="false"
                     android:lineSpacingMultiplier="1.3"
                     android:text="8.5"
-
                     android:textAlignment="textEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="@color/colorBlack"
@@ -143,8 +154,8 @@
                     android:textSize="13sp"
                     android:typeface="serif"
                     appState:fontFamily="@font/cutive_mono"
-                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
-                    appState:layout_constraintStart_toStartOf="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_value_tv"
+                    appState:layout_constraintStart_toStartOf="parent"
                     appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_popularity_value_tv" />
 
                 <TextView
@@ -159,8 +170,7 @@
                     android:fontFamily="@font/cutive_mono"
                     android:freezesText="false"
                     android:lineSpacingMultiplier="1.3"
-
-                    android:text="vote count"
+                    android:text="voteCNT"
                     android:textAlignment="viewEnd"
                     android:textAppearance="@style/TextAppearance.AppCompat.Display1"
                     android:textColor="@color/colorWhite"
@@ -176,10 +186,10 @@
                     android:id="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="0dp"
-                    android:layout_height="17dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@color/colorWhite"
+                    android:background="#7FFFFFFF"
                     android:backgroundTintMode="add"
                     android:bufferType="spannable"
                     android:clickable="false"
@@ -194,27 +204,25 @@
                     android:textSize="13sp"
                     android:typeface="serif"
                     appState:fontFamily="@font/cutive_mono"
-                    appState:layout_constraintBottom_toBottomOf="parent"
-                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_popularity_value_tv"
                     appState:layout_constraintHorizontal_bias="0.0"
-                    appState:layout_constraintStart_toStartOf="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
-                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_vote_average_value_tv"
-                    appState:layout_constraintVertical_bias="0.0" />
+                    appState:layout_constraintStart_toStartOf="parent"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_vote_average_value_tv" />
 
                 <ImageView
                     android:id="@+id/activity_details_BUTTON_favorite"
-                    android:layout_width="205dp"
-                    android:layout_height="182dp"
-                    android:layout_marginEnd="5dp"
-                    appState:layout_constraintEnd_toStartOf="@+id/activity_detail_TOOLBAR_iv"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    appState:layout_constraintBottom_toBottomOf="parent"
+                    appState:layout_constraintEnd_toEndOf="@+id/activity_detail_TOOLBAR_vote_count_label_tv"
                     appState:layout_constraintStart_toStartOf="parent"
-                    appState:layout_constraintTop_toTopOf="parent"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_vote_count_value_tv"
                     appState:srcCompat="@drawable/ic_star_black_24dp" />
 
                 <TextView
-                    android:id="@+id/activity_detail_TOOLBAR_popularity_value_tv2"
+                    android:id="@+id/activity_detail_TOOLBAR_movieID_tv"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                    android:layout_width="102dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="17dp"
                     android:alpha="0.85"
                     android:background="@color/colorBlack"
@@ -232,11 +240,8 @@
                     android:textSize="13sp"
                     android:typeface="serif"
                     appState:fontFamily="@font/cutive_mono"
-                    appState:layout_constraintBottom_toTopOf="@+id/activity_detail_TOOLBAR_popularity_value_tv"
-                    appState:layout_constraintEnd_toStartOf="@+id/activity_detail_TOOLBAR_popularity_label_tv"
-                    appState:layout_constraintHorizontal_bias="0.0"
-                    appState:layout_constraintStart_toStartOf="parent"
-                    appState:layout_constraintTop_toBottomOf="@+id/activity_details_BUTTON_favorite" />
+                    appState:layout_constraintStart_toStartOf="@+id/activity_detail_TOOLBAR_popularity_label_tv"
+                    appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_back_iv" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -263,30 +268,6 @@
         appState:layout_constraintStart_toStartOf="parent"
         appState:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/activity_detail_TOOLBAR_movieID_value_tv"
-        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/colorWhite"
-        android:backgroundTintMode="add"
-        android:bufferType="spannable"
-        android:clickable="false"
-        android:fontFamily="@font/cutive_mono"
-        android:freezesText="false"
-        android:lineSpacingMultiplier="1.3"
-        android:text="787"
-        android:textAlignment="textEnd"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@color/colorBlack"
-        android:textIsSelectable="false"
-        android:textSize="13sp"
-        android:typeface="serif"
-        appState:fontFamily="@font/cutive_mono"
-        appState:layout_anchor="@+id/activity_detail_APPBAR"
-        appState:layout_anchorGravity="end|top" />
 
 
     <!--    <FrameLayout-->

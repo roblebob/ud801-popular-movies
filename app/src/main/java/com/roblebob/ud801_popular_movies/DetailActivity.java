@@ -11,14 +11,17 @@ import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import static java.lang.String.*;
 
 public class DetailActivity extends AppCompatActivity  implements DetailRVAdapter.ItemClickListener  {
     private static final String TAG = DetailActivity.class.getSimpleName();
@@ -81,21 +84,20 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
              *
              */
             detailViewModel.getApiKeyLive() .observe(this,
-                    new Observer< String>() { @Override public void onChanged(String apiKey) {
+                    new Observer< String>() { @Override public void onChanged( String apiKey) {
                         detailViewModel .getApiKeyLive() .removeObserver( this);
                         Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (api_key) update from LiveData  " + apiKey);
                         detailViewModel.integrate(apiKey);
                     }});
 
-
             detailViewModel .getMainLive() .observe(this,
-                    new Observer<Main>() { @Override public void onChanged(Main main) {
+                    new Observer<Main>() { @Override public void onChanged( Main main) {
                         detailViewModel .getMainLive() .removeObserver( this);
                         includeParent( main);
                     }});
 
             detailViewModel .getListLive() .observe(this,
-                    new Observer< List<Detail>>() { @Override public void onChanged(List<Detail> detailList) {
+                    new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
                         detailViewModel .getListLive() .removeObserver( this);
                         Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (detailList) update from LiveData  " + detailList.toString());
                         if (detailList.size() > 0)  mDetailRVAdapter .setDetailList( detailList);
@@ -122,15 +124,27 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
      * @param main
      */
     private void includeParent(Main main) {
-        if (main.getPosterKey() != null)
-            Picasso .get() .load( main.getPosterURL())
-                .into( (ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv));
 
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText( String.valueOf( main .getPopularVAL()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( String.valueOf( main .getVoteAVG()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( String.valueOf( main .getVoteCNT()));
+        ImageView imageView = (ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv);
+
+        imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                Picasso .get().load(main.getPosterURL())
+                        .placeholder(R.drawable.test)
+                        //.error(R.drawable.error)
+                        //.resize(screenWidth, imageHeight)
+                        .fit()
+                        .centerInside()
+                        .into(imageView);
+                imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
 
 
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText( valueOf( main .getMovieID()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText( valueOf( main .getPopularVAL()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( valueOf( main .getVoteAVG()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( valueOf( main .getVoteCNT()));
     }
 
 
