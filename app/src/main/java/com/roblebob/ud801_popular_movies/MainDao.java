@@ -19,19 +19,20 @@ public interface MainDao {
 
 
     @Query("SELECT * FROM Main ORDER BY favorite DESC,    CASE (SELECT `value` FROM AppState WHERE `key` = 'order') WHEN 'popular' THEN popularVAL WHEN 'top_rated' THEN voteAVG END DESC,      CASE (SELECT `value` FROM AppState WHERE `key` = 'order') WHEN 'popular' THEN voteAVG WHEN 'top_rated' THEN popularVAL  END DESC, voteCNT DESC")
-    LiveData< List<Main>> loadMovieListLive();
+    LiveData< List<Main>> loadMainListLive();
 
     @Query(value = "SELECT * FROM Main ORDER BY favorite DESC, popularVAL DESC, voteAVG DESC, voteCNT DESC")
-    LiveData< List<Main>> loadPopularMovieListLive();
+    LiveData< List<Main>> loadPopularListLive();
 
     @Query(value = "SELECT * FROM Main ORDER BY favorite DESC, voteAVG DESC, popularVAL DESC, voteCNT DESC")
-    LiveData< List<Main>> loadTopRatedMovieListLive();
+    LiveData< List<Main>> loadTopRatedListLive();
 
     @Query(value = "SELECT * FROM Main WHERE movieID = :movieID")
-    LiveData<Main> loadMovieLive(int movieID);
+    LiveData<Main> loadMainLive(int movieID);
 
     @Query(value = "SELECT COUNT(*) FROM Main")
-    LiveData< Integer> loadMovieCountLive();
+    LiveData< Integer> loadMainCountLive();
+
 
     @Query(value = "UPDATE Main SET `favorite` = :favorite WHERE movieID = :movieID")
     void updateFavorite(int movieID, boolean favorite);

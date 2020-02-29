@@ -29,12 +29,14 @@ public class MainRepository  {
     }
 
 
-    public LiveData< List<Main>>  getListLive(String s)       { return this.appDatabase .mainDao() .loadMovieListLive(); }
-    public LiveData< List<Main>>  getPopularListLive()        { return this.appDatabase .mainDao() .loadPopularMovieListLive(); }
-    public LiveData< List<Main>>  getTopRatedListLive()       { return this.appDatabase .mainDao() .loadTopRatedMovieListLive(); }
-    public LiveData< Integer>     countMovies()               { return this.appDatabase .mainDao() .loadMovieCountLive(); }
-    public LiveData< Main>        getMovieLive(int movieID)   { return this.appDatabase .mainDao() .loadMovieLive( movieID); }
+    public LiveData< List<Main>>  getListLive(String s)       { return this.appDatabase .mainDao() .loadMainListLive(); }
+    public LiveData< List<Main>>  getPopularListLive()        { return this.appDatabase .mainDao() .loadPopularListLive(); }
+    public LiveData< List<Main>>  getTopRatedListLive()       { return this.appDatabase .mainDao() .loadTopRatedListLive(); }
+    public LiveData< Integer>     countMovies()               { return this.appDatabase .mainDao() .loadMainCountLive(); }
+    public LiveData< Main>        getMainLive(int movieID)    { return this.appDatabase .mainDao() .loadMainLive( movieID); }
 
+    public void inverseFavorite(int movieID) {
+        AppExecutors.getInstance().diskIO().execute(() -> this.appDatabase.mainDao().inverseFavorite( movieID)); }
 
 
     /* *********************************************************************************************

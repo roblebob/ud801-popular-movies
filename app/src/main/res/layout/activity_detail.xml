@@ -210,7 +210,7 @@
                     appState:layout_constraintTop_toBottomOf="@+id/activity_detail_TOOLBAR_vote_average_value_tv" />
 
                 <ImageView
-                    android:id="@+id/activity_details_BUTTON_favorite"
+                    android:id="@+id/activity_details_TOOLBAR_favorite_star"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     appState:layout_constraintBottom_toBottomOf="parent"

@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.*;
@@ -37,7 +36,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     private RecyclerView mDetailRV;
     private DetailRVAdapter mDetailRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
-    private ImageView favoriteButton;
+    private ImageView favoriteStar;
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
@@ -72,10 +71,16 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             /* *************************************************************************************
              *
              */
-            favoriteButton = (ImageView) findViewById( R.id.activity_details_BUTTON_favorite);
-            favoriteButton.setOnClickListener(v -> detailViewModel .getMainLive() .observe(this,
-                    (movie) -> { AppExecutors.getInstance().diskIO().execute( () -> mAppDatabase .mainDao() .inverseFavorite(movieID));
-                                    Log.e(TAG, "CLICKED!!" + movie.isFavorite());           }));
+            favoriteStar = (ImageView) findViewById( R.id.activity_details_TOOLBAR_favorite_star);
+
+            favoriteStar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    detailViewModel.inverseFavorite();
+                }
+            });
+
+
 
 
 
@@ -93,7 +98,9 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             detailViewModel .getMainLive() .observe(this,
                     new Observer<Main>() { @Override public void onChanged( Main main) {
                         detailViewModel .getMainLive() .removeObserver( this);
-                        includeParent( main);
+                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (main) update from LiveData  " + main);
+                        Log.e(TAG, "CLICKED !!! " + main.isFavorite());
+                        populateToolbar( main);
                     }});
 
             detailViewModel .getListLive() .observe(this,
@@ -123,10 +130,14 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
      *
      * @param main
      */
-    private void includeParent(Main main) {
+    private void populateToolbar(Main main) {
+
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText( valueOf( main .getMovieID()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText( valueOf( main .getPopularVAL()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( valueOf( main .getVoteAVG()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( valueOf( main .getVoteCNT()));
 
         ImageView imageView = (ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv);
-
         imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
                 Picasso .get().load(main.getPosterURL())
@@ -140,25 +151,13 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             }
         });
 
-
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText( valueOf( main .getMovieID()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText( valueOf( main .getPopularVAL()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( valueOf( main .getVoteAVG()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( valueOf( main .getVoteCNT()));
+        ((ImageView) findViewById(R.id.activity_details_TOOLBAR_favorite_star)) .setColorFilter( this.getApplicationContext().getColor(
+                (main.isFavorite())   ?   R.color.colorYellow   :  R.color.colorWhite
+        ));
     }
 
 
 
-
-
-
-
-    /* *********************************************************************************************
-     *
-     */
-    private void populateRVDetails(  List<Detail> detailList) {
-        mDetailRVAdapter.setDetailList(detailList);
-    }
 
 
     /* *********************************************************************************************
