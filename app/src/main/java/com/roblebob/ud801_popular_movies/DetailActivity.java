@@ -1,6 +1,7 @@
 package com.roblebob.ud801_popular_movies;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,16 +29,15 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     public static final String INTENT_EXTRA_movieID = "INTENT_EXTRA_movieID";
     // Extra for the task ID to be received after rotation
     public static final String INSTANCE_movieID = "INSTANCE_ID";
-
     private int movieID;
-
     private AppDatabase mAppDatabase;
-
     private RecyclerView mDetailRV;
     private DetailRVAdapter mDetailRVAdapter;
     private RecyclerView.LayoutManager mDetailsRVLayoutManager;
     private ImageView favoriteStar;
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    /////
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -53,11 +53,9 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             DetailViewModelFactory detailViewModelFactory = new DetailViewModelFactory(this.getApplication(), movieID);
             final DetailViewModel detailViewModel = ViewModelProviders.of(this, detailViewModelFactory) .get( DetailViewModel.class);
 
+            favoriteStar = (ImageView) findViewById( R.id.activity_details_TOOLBAR_favorite_star);
+            favoriteStar .setOnClickListener( (v) -> detailViewModel.inverseFavorite());
 
-
-            /* *************************************************************************************
-             *
-             */
             mDetailRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
             mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
             mDetailRV.setLayoutManager( mDetailsRVLayoutManager);
@@ -67,38 +65,21 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
 
 
-
             /* *************************************************************************************
              *
              */
-            favoriteStar = (ImageView) findViewById( R.id.activity_details_TOOLBAR_favorite_star);
 
-            favoriteStar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    detailViewModel.inverseFavorite();
-                }
-            });
-
-
-
-
-
-
-            /* *************************************************************************************
-             *
-             */
             detailViewModel.getApiKeyLive() .observe(this,
                     new Observer< String>() { @Override public void onChanged( String apiKey) {
                         detailViewModel .getApiKeyLive() .removeObserver( this);
-                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (api_key) update from LiveData  " + apiKey);
+                        Log.d( TAG + ":::getApiKeyLive()\t", "\t[DB]---(apiKey)--->\t" + apiKey);
                         detailViewModel.integrate(apiKey);
                     }});
 
             detailViewModel .getMainLive() .observe(this,
                     new Observer<Main>() { @Override public void onChanged( Main main) {
                         detailViewModel .getMainLive() .removeObserver( this);
-                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (main) update from LiveData  " + main);
+                        Log.d( TAG + ":::getMainLive()\t", "\t[DB]---(main)--->\t" + main.toString());
                         Log.e(TAG, "CLICKED !!! " + main.isFavorite());
                         populateToolbar( main);
                     }});
@@ -106,59 +87,17 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             detailViewModel .getListLive() .observe(this,
                     new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
                         detailViewModel .getListLive() .removeObserver( this);
-                        Log.d( TAG, ">+>+>+>+>+>>+>+>+>" + "Receiving database (detailList) update from LiveData  " + detailList.toString());
+                        Log.d( TAG + ":::getListLive()\t", "\t[DB]---(detailList)--->\t" + detailList.toString());
                         if (detailList.size() > 0)  mDetailRVAdapter .setDetailList( detailList);
                     }});
-
 
         } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID");
     }
 
 
-
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////
-
-
-
-
-
-    /* *********************************************************************************************
-     *
-     * @param main
-     */
-    private void populateToolbar(Main main) {
-
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText( valueOf( main .getMovieID()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText( valueOf( main .getPopularVAL()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText( valueOf( main .getVoteAVG()));
-        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText( valueOf( main .getVoteCNT()));
-
-        ImageView imageView = (ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv);
-        imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            public void onGlobalLayout() {
-                Picasso .get().load(main.getPosterURL())
-                        .placeholder(R.drawable.test)
-                        //.error(R.drawable.error)
-                        //.resize(screenWidth, imageHeight)
-                        .fit()
-                        .centerInside()
-                        .into(imageView);
-                imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-
-        ((ImageView) findViewById(R.id.activity_details_TOOLBAR_favorite_star)) .setColorFilter( this.getApplicationContext().getColor(
-                (main.isFavorite())   ?   R.color.colorYellow   :  R.color.colorWhite
-        ));
-    }
-
-
-
-
 
     /* *********************************************************************************************
      *
@@ -170,5 +109,43 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( (new URL(url).toString())));
             startActivity(browserIntent);
         } catch (MalformedURLException e) { e.printStackTrace(); }
+    }
+
+
+
+
+    /* *********************************************************************************************
+     *
+     * @param main
+     */
+    private void populateToolbar(Main main) {
+
+        Toolbar toolbar = (Toolbar) findViewById( R.id.activity_detail_TOOLBAR);
+        if (toolbar != null)  setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) { getSupportActionBar() .setDisplayShowTitleEnabled( false); }
+        toolbar.setFitsSystemWindows(false);
+
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText(  valueOf( main .getMovieID()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText(  valueOf( main .getPopularVAL()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_average_value_tv)) .setText(  valueOf( main .getVoteAVG()));
+        ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText(  valueOf( main .getVoteCNT()));
+
+        ImageView imageView = ((ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv));
+        imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                Picasso .get()
+                        .load( main.getPosterURL())
+                        .placeholder( R.drawable.placeholder)
+                        .error(R.drawable.error)
+                        //.resize(screenWidth, imageHeight)
+                        .fit()
+                        .centerInside()
+                        .into( imageView);
+                imageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
+        });
+
+        ((ImageView) findViewById( R.id.activity_details_TOOLBAR_favorite_star)) .setColorFilter( this.getApplicationContext() .getColor(
+                (main.isFavorite())   ?   R.color.colorYellow   :  R.color.colorWhite               ));
     }
 }
