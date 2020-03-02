@@ -37,8 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="24dp"
                     android:backgroundTintMode="add"
                     android:bufferType="spannable"
                     android:clickable="false"
@@ -54,7 +53,6 @@
                     android:textStyle="bold"
                     android:typeface="serif"
                     appState:fontFamily="@font/cutive_mono"
-                    appState:layout_constraintBottom_toBottomOf="parent"
                     appState:layout_constraintStart_toStartOf="parent"
                     appState:layout_constraintTop_toTopOf="parent" />
 
@@ -70,27 +68,36 @@
             android:visibility="visible"
             appState:layout_scrollFlags="enterAlways">
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="37dp"
+                android:layout_height="36dp"
+                android:src="@drawable/connection_status_indicator"
+                appState:layout_constraintBottom_toBottomOf="parent"
+                appState:layout_constraintStart_toStartOf="parent" />
+
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
-                android:layout_height="15dp"
+                android:layout_height="19dp"
                 android:backgroundTint="#A0A0A0A0"
                 android:clickable="true"
                 android:contextClickable="true"
                 android:focusable="auto"
                 android:focusableInTouchMode="true"
                 android:foregroundTint="@color/colorPrimary"
+                android:alpha="0.66"
                 android:foregroundTintMode="multiply"
                 android:indeterminate="true"
                 android:indeterminateTint="#00897B"
                 android:orientation="vertical"
                 android:progressDrawable="@drawable/ic_refresh_black_24dp"
                 android:progressTint="#06060A0A"
-                appState:layout_constraintBottom_toBottomOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintBottom_toBottomOf="parent"
                 appState:layout_constraintEnd_toStartOf="@+id/activitity_main_BASIC_COUNT"
-                appState:layout_constraintStart_toStartOf="parent"
-                appState:layout_constraintTop_toBottomOf="@+id/activitity_main_BASIC_COUNT_label" />
+                appState:layout_constraintStart_toEndOf="@+id/imageView"
+                appState:layout_constraintTop_toTopOf="@+id/imageView" />
 
             <TextView
                 android:id="@+id/activitity_main_BASIC_COUNT_label"
@@ -100,19 +107,20 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="9sp"
                 appState:layout_constraintBottom_toTopOf="@+id/activitity_main_BASIC_COUNT"
-                appState:layout_constraintEnd_toEndOf="@+id/activitity_main_BASIC_COUNT"
-                appState:layout_constraintTop_toTopOf="parent" />
+                appState:layout_constraintStart_toStartOf="@+id/activitity_main_BASIC_COUNT" />
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/activitity_main_BASIC_COUNT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
+                appState:layout_constraintBottom_toBottomOf="@+id/progressBar"
                 appState:layout_constraintEnd_toStartOf="@+id/activitity_main_DETAILED_COUNT"
-                appState:layout_constraintTop_toBottomOf="@+id/activitity_main_BASIC_COUNT_label">
+                appState:layout_constraintTop_toTopOf="@+id/progressBar">
 
                 <TextView
                     android:id="@+id/activitity_main_BASIC_COUNT_tv"
@@ -126,12 +134,11 @@
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
-
             <TextView
                 android:id="@+id/activitity_main_DETAILED_COUNT_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="detailedFLAG:"
+                android:text="detailed"
                 android:textColor="@color/colorPrimary"
                 android:textSize="9sp"
                 appState:layout_constraintBottom_toTopOf="@+id/activitity_main_DETAILED_COUNT"
@@ -142,12 +149,14 @@
                 android:id="@+id/activitity_main_DETAILED_COUNT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
+                appState:layout_constraintBottom_toBottomOf="@+id/activitity_main_BASIC_COUNT"
                 appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintTop_toBottomOf="@+id/activitity_main_DETAILED_COUNT_label">
+                appState:layout_constraintTop_toTopOf="@+id/activitity_main_BASIC_COUNT">
+
                 <TextView
                     android:id="@+id/activitity_main_DETAILED_COUNT_tv"
                     android:layout_width="wrap_content"
@@ -168,7 +177,7 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             appState:layout_scrollFlags="enterAlways"
-            appState:tabIndicatorColor="@color/colorPrimary"
+            appState:tabIndicatorColor="@color/colorPrimaryDark"
             appState:tabIndicatorHeight="7dp"
             appState:tabMode="fixed"
             appState:tabPaddingEnd="8dp"

@@ -1,12 +1,10 @@
 package com.roblebob.ud801_popular_movies;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,58 +14,39 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.*;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-
 import static java.lang.String.*;
 
 public class DetailActivity extends AppCompatActivity  implements DetailRVAdapter.ItemClickListener  {
     private static final String TAG = DetailActivity.class.getSimpleName();
-    // Extra for the task ID to be received in the intent
     public static final String INTENT_EXTRA_movieID = "INTENT_EXTRA_movieID";
-    // Extra for the task ID to be received after rotation
-    public static final String INSTANCE_movieID = "INSTANCE_ID";
     private int movieID;
-    private AppDatabase mAppDatabase;
-    private RecyclerView mDetailRV;
     private DetailRVAdapter mDetailRVAdapter;
-    private RecyclerView.LayoutManager mDetailsRVLayoutManager;
-    private ImageView favoriteStar;
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    /////
 
-    @Override
-    protected void onCreate( Bundle savedInstanceState) {
+    @Override protected void onCreate( Bundle savedInstanceState) {
         super.onCreate( savedInstanceState);
         setContentView( R.layout.activity_detail);
 
         Intent intent = getIntent();
         if ( intent != null && intent.hasExtra(INTENT_EXTRA_movieID))
             movieID = intent .getIntExtra(INTENT_EXTRA_movieID, -1);
-        // if (savedInstanceState != null && savedInstanceState.containsKey( INSTANCE_ID))  ID = savedInstanceState .getInt( INSTANCE_ID, -1);
         if (movieID > 0) {
 
             DetailViewModelFactory detailViewModelFactory = new DetailViewModelFactory(AppDatabase.getInstance(getApplicationContext()), movieID);
             final DetailViewModel detailViewModel = ViewModelProviders.of(this, detailViewModelFactory) .get( DetailViewModel.class);
 
-            favoriteStar = (ImageView) findViewById( R.id.activity_details_TOOLBAR_favorite_star);
-            favoriteStar .setOnClickListener( (v) -> detailViewModel.inverseFavorite());
+            ImageView favoriteStar = (ImageView) findViewById(R.id.activity_details_TOOLBAR_favorite_star);
+            favoriteStar.setOnClickListener( (v) -> detailViewModel.inverseFavorite());
 
-            mDetailRV = (RecyclerView) this.findViewById( R.id.activity_details_RECYCLER_VIEW);
-            mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-            mDetailRV.setLayoutManager( mDetailsRVLayoutManager);
+            RecyclerView mDetailRV = (RecyclerView) this.findViewById(R.id.activity_details_RECYCLER_VIEW);
+            RecyclerView.LayoutManager mDetailsRVLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+            mDetailRV.setLayoutManager(mDetailsRVLayoutManager);
             mDetailRVAdapter = new DetailRVAdapter(this);
             mDetailRV.setAdapter(mDetailRVAdapter);
             mDetailRV.setHasFixedSize(false);
 
-
-
-            /* *************************************************************************************
-             *
-             */
 
             detailViewModel.getApiKeyLive() .observe(this,
                     new Observer< String>() { @Override public void onChanged( String apiKey) {
@@ -99,11 +78,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////
 
-    /* *********************************************************************************************
-     *
-     */
-    @Override
-    public void onItemClickListener(String type, String url) {
+    @Override public void onItemClickListener(String type, String url) {
         Log .e(TAG, "CLICKED !!!   [type]:" + type + "   [url]:" + url);
         try {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( (new URL(url).toString())));
@@ -112,14 +87,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     }
 
 
-
-
-    /* *********************************************************************************************
-     *
-     * @param main
-     */
     private void populateToolbar(Main main) {
-
         try {
             Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_TOOLBAR);
 
@@ -139,7 +107,6 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
                 }
             });
         } catch (NullPointerException e) { e.printStackTrace(); }
-
 
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText(  valueOf( main .getMovieID()));
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText(  valueOf( main .getPopularVAL()));

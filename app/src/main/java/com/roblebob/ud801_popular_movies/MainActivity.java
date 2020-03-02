@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
     public Context context;
     private AppDatabase appDatabase;
     private MainViewModelFactory mainViewModelFactory;
-
 
     @Override protected void onCreate( Bundle savedInstanceState) {
         super .onCreate( savedInstanceState);
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         });
 
 
-
         mainViewModel .getApiKeyLive() .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
                 mainViewModel .getApiKeyLive() .removeObserver( this);
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
             }
         });
         mainViewModel .getOrderLive() .observe(this, new Observer<String>() {
-            @Override public void onChanged(String order) {
+            @Override public void onChanged( @Nullable String order) {
                 mainViewModel .getOrderLive() .removeObserver( this);
                 Toast .makeText( context, "order: " + order, Toast.LENGTH_SHORT).show();        Log.e(TAG + ":::mainViewModel .orderLive\t", "\t" + order);
                 if (order != null)  mMainRVAdapter .submitOrder(  order);
@@ -106,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         });
     }
 
+    public boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = null;
+        if (cm != null)  activeNetwork = cm.getActiveNetworkInfo();
+        return  (activeNetwork != null)  &&  (activeNetwork.isConnectedOrConnecting());
+    }
 
 
 

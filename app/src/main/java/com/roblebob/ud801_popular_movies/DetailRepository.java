@@ -18,9 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttpUrl;
 
-/***************************************************************************************************
- *
- */
 public class DetailRepository {
     private AppDatabase appDatabase;
     public DetailRepository( @NonNull AppDatabase appDatabase) { this.appDatabase = appDatabase; }
@@ -111,16 +108,6 @@ public class DetailRepository {
     public void insert( Detail detail) { AppExecutors.getInstance().diskIO().execute( () -> this.appDatabase .detailDao() .insert(detail)); }
 
 
-
-
-    /* *********************************************************************************************
-     * Generates validated urls as strings for the  themoviedb.org  API
-     *
-     * @param apiKey
-     * @param movieID
-     * @param xtraKEY ∈  { null, "videos", "reviews"}
-     * @return url as a String, not as a URL !!!
-     */
     public String buildUrl( @NonNull String apiKey, String key) {
         try { return  new URL( Uri
                 .parse( "https://api.themoviedb.org/3/movie")
