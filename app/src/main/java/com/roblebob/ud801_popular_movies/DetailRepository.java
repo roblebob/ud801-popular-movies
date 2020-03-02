@@ -22,29 +22,12 @@ import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttp
  *
  */
 public class DetailRepository {
-
     private AppDatabase appDatabase;
-
-    public DetailRepository(@NonNull AppDatabase appDatabase) {
-
-        this.appDatabase = appDatabase;
-    }
+    public DetailRepository( @NonNull AppDatabase appDatabase) { this.appDatabase = appDatabase; }
+    public LiveData< List<Detail>> getListLive( int movieID)  { return this.appDatabase .detailDao() .loadList( movieID); }
 
 
-    /* *********************************************************************************************
-     *
-     */
-    public LiveData< List<Detail>> getListLive(int movieID)  { return this.appDatabase .detailDao() .loadList( movieID); }
-
-    public LiveData< Integer> countMovies() { return this.appDatabase .detailDao() .countMovies(); }
-
-
-
-    /* **********************************************************************************************
-     *
-     * @param movieID
-     */
-    public  void integrate(final String apiKey, final Integer movieID)  {
+    public  void integrate( final String apiKey, final Integer movieID)  {
         Log.e(this.getClass().getSimpleName() + "::integrate(\t", "\t" + "apiKey=" + apiKey + "\t,\t" + "movieID=" + movieID + "\t)" );
 
         if (apiKey != null)
@@ -91,57 +74,36 @@ public class DetailRepository {
 
                         }
                     }
-                } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| static):\tJSONException"); }
 
-                    //////////////////////////////////////////////////////////////////////////
 
                     for (String order : Detail.ORDER.subList( 12 /*videos*/, 14 /*reviews*/)) {
 
-                        Log.e(this.getClass().getSimpleName(), "-->\t" + order);
+                        String res = getResponseFromHttpUrl(  buildUrl( apiKey, (movieID + "/" + order)));
+                        JSONArray jsonArray = (new JSONObject ( Objects.requireNonNull (res))).getJSONArray("results");
 
-                        JSONArray  jsonArray;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObj = jsonArray .getJSONObject (i);
+                            switch (order) {
 
-                        try {
-                            String url = buildUrl (apiKey, (movieID + "/" + order));
-                            Log.e(this.getClass().getSimpleName(), "-->\t" +url);
-                            String res = getResponseFromHttpUrl ( url);
-                            jsonArray = (new JSONObject ( Objects.requireNonNull (res))).getJSONArray("results");
+                                case "videos":
+                                    if (jsonObj.getString("type").equals("Trailer"))
+                                        insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("name"),  /*link*/ jsonObj.getString("key")));
+                                    break;
 
-
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-
-                                JSONObject jsonObj = jsonArray .getJSONObject (i);
-
-                                switch (order) {
-
-                                    case "videos":
-                                        try {
-                                            if (jsonObj.getString("type").equals("Trailer"))
-                                                insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("name"),  /*link*/ jsonObj.getString("key")));
-
-                                        } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| videos):\tJSONException"); }
-                                        break;
-
-                                    case "reviews":
-                                        try {
-                                            insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("author"),
-                                                    /*link*/ ((jsonObj.getString("url"))
-                                                    .replace("https://www.themoviedb.org/review/", "")
-                                                    .equals( jsonObj.getString("id")))
-                                                    ?   jsonObj.getString("id")
-                                                    :   jsonObj.getString("url")
-                                            ));
-
-                                        } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| reviews):\tJSONException"); }
-                                        break;
-                                }
+                                case "reviews":
+                                    insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("author"),
+                                            /*link*/ ((jsonObj.getString("url"))
+                                            .replace("https://www.themoviedb.org/review/", "")
+                                            .equals( jsonObj.getString("id")))
+                                            ?   jsonObj.getString("id")
+                                            :   jsonObj.getString("url")
+                                    ));
+                                    break;
                             }
-                        } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| dynamic):\tJSONException"); }
-
+                        }
                     }
-
-                } catch (IOException e)          { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tIOException"); }
+                } catch (JSONException e) { e.printStackTrace();  Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tJSONException"); }
+                } catch (IOException e)   { e.printStackTrace();  Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tIOException"); }
             });
     }
 

@@ -5,13 +5,10 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-
 
 @Entity(tableName = "Detail", indices = {@Index(value = {"movieID","order"}, unique = false)})
 public class Detail {

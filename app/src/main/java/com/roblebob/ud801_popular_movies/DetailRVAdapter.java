@@ -25,44 +25,28 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
     private List<Detail> detailList;
     private DetailRVAdapter.ItemClickListener itemClickListener;
 
-    DetailRVAdapter(DetailRVAdapter.ItemClickListener itemClickListener) {
+    DetailRVAdapter( DetailRVAdapter.ItemClickListener itemClickListener) {
         this.itemClickListener = itemClickListener;
     }
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    public void setDetailList(List<Detail> detailList) {
+
+    void setDetailList(List<Detail> detailList) {
         this.detailList = new ArrayList<>(detailList);
-        Log.e(TAG, "--> " + detailList.toString());
         notifyDataSetChanged();
     }
 
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @NonNull
-    @Override
-    public DetailsRVViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from( parent .getContext())
-                .inflate( R.layout.detail_rv_single_item, parent, false);
-        DetailRVAdapter.DetailsRVViewholder detailsRVViewHolder = new DetailRVAdapter.DetailsRVViewholder( view);
-
-        return detailsRVViewHolder;
+    @NonNull @Override public DetailsRVViewholder onCreateViewHolder( @NonNull ViewGroup parent, int viewType) {
+        return new DetailRVAdapter.DetailsRVViewholder(
+                (View) LayoutInflater
+                        .from(parent.getContext())
+                        .inflate(R.layout.detail_rv_single_item, parent, false)     );
     }
 
-
-    @Override
-    public void onBindViewHolder(@NonNull DetailsRVViewholder holder, int position) {
-
+    @Override public void onBindViewHolder( @NonNull DetailsRVViewholder holder, int position) {
         Detail detail = this.detailList.get( position);
-        holder.bindTo( detail);
+        holder .bindTo( detail);
     }
 
-
-    //----------------------------------------------------------------------------------------------
-
-    @Override public int getItemCount() {
-        return (this.detailList != null)  ?  this.detailList.size()   : 0; }
-
+    @Override public int getItemCount() { return (this.detailList != null)  ?  this.detailList.size()   : 0; }
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ///
@@ -70,72 +54,51 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
     public interface ItemClickListener { void onItemClickListener( String type, String url); }
 
     class DetailsRVViewholder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         TextView labelTv, contentTv;
         CardView labelCv, contentCv;
         ImageView labelIv;
         String urlString;
 
-        public DetailsRVViewholder(View itemView) {
+        private DetailsRVViewholder(View itemView) {
             super(itemView);
-
-            labelCv = (CardView) itemView.findViewById(R.id.detail_rv_single_item_LABEL_cv);
-            labelTv = (TextView) itemView.findViewById(R.id.detail_rv_single_item_LABEL_tv);
-            labelIv = (ImageView) itemView.findViewById(R.id.detail_rv_single_item_LABEL_iv);
-
-            contentCv = (CardView) itemView.findViewById(R.id.detail_rv_single_item_CONTENT_cv);
-            contentTv = (TextView) itemView.findViewById(R.id.detail_rv_single_item_CONTENT_tv);
-
-
-            //nameTv.setHorizontallyScrolling(true);
-            //nameTv.setMovementMethod(new ScrollingMovementMethod());
+            labelCv  = (CardView)  itemView .findViewById( R.id.detail_rv_single_item_LABEL_cv);
+            labelTv  = (TextView)  itemView .findViewById( R.id.detail_rv_single_item_LABEL_tv);
+            labelIv  = (ImageView) itemView .findViewById( R.id.detail_rv_single_item_LABEL_iv);
+            contentCv = (CardView) itemView .findViewById( R.id.detail_rv_single_item_CONTENT_cv);
+            contentTv = (TextView) itemView .findViewById( R.id.detail_rv_single_item_CONTENT_tv);
             itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            itemClickListener.onItemClickListener(labelTv.getText().toString(), urlString);
-        }
+        @Override public void onClick(View v) { itemClickListener .onItemClickListener(labelTv.getText().toString(), urlString); }
 
-
-        /* *********************************************************************************************
-         *
-         */
-        public void bindTo(Detail detail) {
-
-
-            labelCv .setCardBackgroundColor(itemView.getResources().getColor(  R.color.colorBlack));
-            labelTv .setTextColor(itemView.getResources().getColor(  R.color.colorWhite));
-            labelTv .setTextSize(12);
-            labelTv .setText(  detail.getOrder());
-            if (detail.getLink() == null)  labelIv.setVisibility(View.GONE);
-            else {
-                labelIv.setVisibility(View.VISIBLE);
-            }
-
-            contentTv .setTextAlignment(View.  TEXT_ALIGNMENT_VIEW_END);
-            final String emptySpacesIntro = "       ";
-
+        private void bindTo( Detail detail) {
+            labelCv .setCardBackgroundColor( itemView.getResources().getColor(  R.color.colorBlack));
+            labelTv .setTextColor( itemView.getResources().getColor(  R.color.colorWhite));
+            labelTv .setTextSize( 12);
+            labelTv .setText( detail.getOrder());
+            if (detail.getLink() == null)  labelIv.setVisibility( View.GONE);
+            else                           labelIv.setVisibility( View.VISIBLE);
+            contentTv .setTextAlignment(View .TEXT_ALIGNMENT_VIEW_END);
 
             switch (detail.getOrder()) {
 
                 case "title":
                     contentTv .setTextSize(35);
-                    contentCv .setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
-                    contentTv .setTypeface(contentTv.getTypeface(), Typeface.BOLD);
-                    contentTv .setText( "   " + detail.getContent());
+                    contentCv .setCardBackgroundColor(itemView.getResources().getColor( R.color.colorPrimary));
+                    contentTv .setTypeface( contentTv.getTypeface(), Typeface.BOLD);
+                    contentTv .setText(String.format("   %s", detail.getContent()));
                     break;
 
                 case "original_title":
                     contentTv .setTextSize(27);
-                    contentCv .setCardBackgroundColor(itemView.getResources().getColor(R.color.colorPrimary));
+                    contentCv .setCardBackgroundColor(itemView.getResources().getColor( R.color.colorPrimary));
                     contentTv .setText( detail.getContent());
                     break;
 
                 case "original_language":
                     contentTv .setTextSize(17);
                     contentCv .setCardBackgroundColor( itemView .getResources() .getColor( R.color.colorPrimary));
-                    contentTv .setText("(" + detail.getContent() + ")");
+                    contentTv .setText(String.format("(%s)", detail.getContent()));
                     break;
 
                 case "release_date":
@@ -147,29 +110,26 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                 case "runtime":
                     contentTv .setTextSize(15);
                     contentCv .setCardBackgroundColor(itemView.getResources() .getColor (R.color.colorPrimaryLight));
-                    contentTv .setText(detail.getContent() + " min.");
+                    contentTv .setText(String.format("%s min.", detail.getContent()));
                     break;
-
 
                 case "tagline":
                     contentTv .setTextSize(27);
                     contentCv .setCardBackgroundColor( itemView .getResources() .getColor( R.color.colorWhite));
-                    contentTv .setText( "    " + detail.getContent());
+                    contentTv .setText(String.format("    %s", detail.getContent()));
                     break;
 
                 case "overview":
                     contentTv.setTextSize(21);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText( "      " + detail.getContent());
+                    contentTv.setText(String.format("      %s", detail.getContent()));
                     break;
-
 
                 case "genres":
                     contentTv.setTextSize(21);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
                     contentTv.setText( detail.getContent());
                     break;
-
 
                 case "budget":
                 case "revenue":
@@ -179,29 +139,20 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                     contentTv.setTypeface(contentTv.getTypeface(), Typeface.BOLD);
                     break;
 
-
                 case "homepage":
+                case "imdb_id":
                     contentTv.setTextSize(17);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
                     contentTv.setText( detail.getOrder());
                     this.urlString = detail.getUrl();
                     break;
 
-                case "imdb_id":
-                    contentTv.setTextSize(17);
-                    contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText("imdb page's version");
-                    this.urlString = detail.getUrl();
-                    break;
-
-
                 case "videos":
                     contentTv .setTextSize(17);
                     contentCv .setCardBackgroundColor(itemView.getResources().getColor(  R.color.colorWhite));
-                    contentTv .setText( "       " + detail.getContent());
+                    contentTv .setText(String.format("       %s", detail.getContent()));
                     this.urlString = detail.getUrl();
                     break;
-
 
                 case "reviews":
                     contentTv.setTextSize(17);
@@ -209,22 +160,19 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                     contentTv.setText( detail.getContent());
                     this.urlString = detail.getUrl();
                     break;
-
             }
         }
 
 
-        public String prepareForMonetary(String s) {
-
-            s = new StringBuilder(s).reverse().toString();
-            char[] sArray = s.toCharArray();
+        private String prepareForMonetary( String s) {
+            s = new StringBuilder( s) .reverse() .toString();
+            char[] sArray = s .toCharArray();
 
             StringBuilder sBuilder = new StringBuilder();
             for (int i = 0; i < s.length(); i++) {
                 sBuilder.append( sArray[i]);
                 if ((i+1) % 3 == 0 ) sBuilder.append( " ");
             }
-
             return sBuilder.reverse().toString()  + " $";
         }
     }
