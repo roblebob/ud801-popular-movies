@@ -85,46 +85,62 @@ public class DetailRepository {
                                 break;
 
                             case "homepage":
-                            case "imdb_key":
+                            case "imdb_id":
                                 insert(  new Detail( movieID, order, order, jsonObject.getString( order)));
                                 break;
 
                         }
                     }
+                } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| static):\tJSONException"); }
 
-                    ////////////////////////////////////////////////////////////////////////////
-//                        for (String order : Detail.ORDER.subList( 12 /*videos*/, 13 /*reviews*/)) {
-//
-//                            JSONArray  jsonArray  = (new JSONObject ( Objects.requireNonNull (
-//                                                            getResponseFromHttpUrl ( buildUrl (
-//                                                                    apiKey, movieID, order))))
-//                                                    ).getJSONArray("results");
-//
-//                            for (int i = 0; i < jsonArray.length(); i++) {
-//
-//                                JSONObject jsonObj = jsonArray .getJSONObject (i);
-//
-//                                switch (order) {
-//
-//                                    case "videos":
-//                                        if (jsonObj.getString("type").equals("Trailer"))
-//                                            insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("name"),  /*link*/ jsonObj.getString("key")));
-//                                        break;
-//
-//                                    case "reviews":
-//                                        insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("author"),
-//                                                        /*link*/ ((jsonObj.getString("url"))
-//                                                                     .replace("https://www.themoviedb.org/review/", "")
-//                                                                        .equals( jsonObj.getString("id")))
-//                                                            ?   jsonObj.getString("id")
-//                                                            :   jsonObj.getString("url")
-//                                        ));
-//                                        break;
-//                                }
-//                            }
-//                        }
+                    //////////////////////////////////////////////////////////////////////////
 
-                } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tJSONException"); }
+                    for (String order : Detail.ORDER.subList( 12 /*videos*/, 14 /*reviews*/)) {
+
+                        Log.e(this.getClass().getSimpleName(), "-->\t" + order);
+
+                        JSONArray  jsonArray;
+
+                        try {
+                            String url = buildUrl (apiKey, (movieID + "/" + order));
+                            Log.e(this.getClass().getSimpleName(), "-->\t" +url);
+                            String res = getResponseFromHttpUrl ( url);
+                            jsonArray = (new JSONObject ( Objects.requireNonNull (res))).getJSONArray("results");
+
+
+
+                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                                JSONObject jsonObj = jsonArray .getJSONObject (i);
+
+                                switch (order) {
+
+                                    case "videos":
+                                        try {
+                                            if (jsonObj.getString("type").equals("Trailer"))
+                                                insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("name"),  /*link*/ jsonObj.getString("key")));
+
+                                        } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| videos):\tJSONException"); }
+                                        break;
+
+                                    case "reviews":
+                                        try {
+                                            insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("author"),
+                                                    /*link*/ ((jsonObj.getString("url"))
+                                                    .replace("https://www.themoviedb.org/review/", "")
+                                                    .equals( jsonObj.getString("id")))
+                                                    ?   jsonObj.getString("id")
+                                                    :   jsonObj.getString("url")
+                                            ));
+
+                                        } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| reviews):\tJSONException"); }
+                                        break;
+                                }
+                            }
+                        } catch (JSONException e)        { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "| dynamic):\tJSONException"); }
+
+                    }
+
                 } catch (IOException e)          { e.printStackTrace(); Log .e(this.getClass().getSimpleName(), "E R R O R  in  integrate("+ movieID + "):\tIOException"); }
             });
     }
@@ -147,12 +163,12 @@ public class DetailRepository {
         try { return  new URL( Uri
                 .parse( "https://api.themoviedb.org/3/movie")
                 .buildUpon()
-                .appendPath( key)
+                .appendEncodedPath( key)
                 .appendQueryParameter("api_key", apiKey)
                 .appendQueryParameter("language", "en-US")
                 .build()
                 .toString()
-            ).toString();
+        ).toString();
         } catch ( MalformedURLException e) {
             e.printStackTrace();
             Log.e(this.getClass().getSimpleName() + "::buildUrl()\t", "\tMalformedURLException");

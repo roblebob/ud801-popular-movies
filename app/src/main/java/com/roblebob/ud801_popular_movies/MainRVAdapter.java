@@ -36,8 +36,8 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
                     Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
                             (Double.compare(m1.getFavorite(), m2.getFavorite()) != 0) ? Double.compare(m1.getFavorite(), m2.getFavorite()) :
                                     (Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) != 0) ? Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) :
-                                            (Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) != 0) ? Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) :
-                                                    Double.compare(m1.getVoteCNT(), m2.getVoteCNT())
+                                            (Double.compare(m1.getVoteCNT(), m2.getVoteCNT()) != 0) ? Double.compare(m1.getVoteCNT(), m2.getVoteCNT()) :
+                                                    Double.compare(m1.getVoteAVG(), m2.getVoteAVG())
                     ).reversed());
                     break;
 
@@ -45,8 +45,8 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
                     Collections.sort(mainList, ((Comparator<Main>) (Main m1, Main m2) ->
                             (Double.compare(m1.getFavorite(), m2.getFavorite()) != 0) ? Double.compare(m1.getFavorite(), m2.getFavorite()) :
                                     (Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) != 0) ? Double.compare(m1.getVoteAVG(), m2.getVoteAVG()) :
-                                            (Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) != 0) ? Double.compare(m1.getPopularVAL(), m2.getPopularVAL()) :
-                                                    Double.compare(m1.getVoteCNT(), m2.getVoteCNT())
+                                            (Double.compare(m1.getVoteCNT(), m2.getVoteCNT()) != 0) ? Double.compare(m1.getVoteCNT(), m2.getVoteCNT()) :
+                                                    Double.compare(m1.getPopularVAL(), m2.getPopularVAL())
                     ).reversed());
                     break;
             }

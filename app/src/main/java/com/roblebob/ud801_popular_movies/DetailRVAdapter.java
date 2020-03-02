@@ -109,7 +109,9 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
             labelTv .setTextSize(12);
             labelTv .setText(  detail.getOrder());
             if (detail.getLink() == null)  labelIv.setVisibility(View.GONE);
-            else labelIv.setVisibility(View.VISIBLE);
+            else {
+                labelIv.setVisibility(View.VISIBLE);
+            }
 
             contentTv .setTextAlignment(View.  TEXT_ALIGNMENT_VIEW_END);
             final String emptySpacesIntro = "       ";
@@ -182,22 +184,22 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                     contentTv.setTextSize(17);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
                     contentTv.setText( detail.getOrder());
-                    urlString = detail.getContent();
+                    this.urlString = detail.getUrl();
                     break;
 
-                case "imdb":
+                case "imdb_id":
                     contentTv.setTextSize(17);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
                     contentTv.setText("imdb page's version");
-                    urlString = detail.getUrl();
+                    this.urlString = detail.getUrl();
                     break;
 
 
                 case "videos":
                     contentTv .setTextSize(17);
                     contentCv .setCardBackgroundColor(itemView.getResources().getColor(  R.color.colorWhite));
-                    contentTv .setText( detail.getContent());
-
+                    contentTv .setText( "       " + detail.getContent());
+                    this.urlString = detail.getUrl();
                     break;
 
 

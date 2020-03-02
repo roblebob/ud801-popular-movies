@@ -13,7 +13,7 @@ import java.util.Objects;
 
 
 
-@Entity(tableName = "Detail", indices = {@Index(value = {"movieID","order"}, unique = true)})
+@Entity(tableName = "Detail", indices = {@Index(value = {"movieID","order"}, unique = false)})
 public class Detail {
 
     @Ignore public static final List< String> ORDER = new ArrayList<>( Arrays.asList(
@@ -28,7 +28,7 @@ public class Detail {
             /*  8 */     "budget",
             /*  9 */     "revenue",
             /* 10 */     "homepage",
-            /* 11 */     "imdb",
+            /* 11 */     "imdb_id",
             /* 12 */     "videos",       // ... a single movie trailer, each
             /* 13 */     "reviews"       // ... a single review, each
     ));
@@ -62,7 +62,7 @@ public class Detail {
     public String getLink()    { return this.link; }
     @Ignore public String getUrl() {
         if (     getOrder() .equals("homepage")) return getLink();
-        else if (getOrder() .equals("imdb"))     return "https://www.imdb.com/title/" + getLink();
+        else if (getOrder() .equals("imdb_id"))  return "https://www.imdb.com/title/" + getLink();
         else if (getOrder() .equals("videos"))   return "https://www.youtube.com/watch?v=" + getLink();
         else if (getOrder() .equals("reviews"))  return "https://www.themoviedb.org/review/" + getLink();
         return null;
