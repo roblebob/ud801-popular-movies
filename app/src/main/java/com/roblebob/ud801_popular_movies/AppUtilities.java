@@ -1,26 +1,14 @@
 package com.roblebob.ud801_popular_movies;
-
-
-import androidx.annotation.NonNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class AppUtilities {
-
-    public static final List< String> ORDER = new ArrayList<>( Arrays.asList( "popular", "top_rated"));
-
-    public static String youtubeUrl( final String youtubeKey) { return "https://www.youtube.com/watch?v=" + youtubeKey; }
-
-
     /* *********************************************************************************************
      * This method returns the entire result from the HTTP response.
      *
@@ -39,22 +27,13 @@ public class AppUtilities {
             scanner.useDelimiter("\\A");
 
             boolean hasInput = scanner.hasNext();
-            if (hasInput) {
-                return scanner.next();
-            } else {
-                return null;
-            }
+            if (hasInput)  return scanner.next();
+            else           return null;
         }
         finally { urlConnection.disconnect(); }
     }
 
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-    public int getDetailedItemCountValidated( List<Main> mainList) {
-        return  mainList.parallelStream() .filter(movie -> movie.isDetailed())  .mapToInt(movie -> 1)  .sum();
-    }
-
+    public static final List< String> ORDER = new ArrayList<>( Arrays.asList( "popular", "top_rated"));
+    public int getDetailedItemCountValidated( List<Main> mainList) { return  mainList.parallelStream() .filter(movie -> movie.isDetailed())  .mapToInt(movie -> 1)  .sum(); }
 }

@@ -6,14 +6,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class DetailViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
+public class DetailViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final Application application;
+    private final AppDatabase appDatabase;
     private final int movieID;
 
-    public DetailViewModelFactory(Application application, int movieID) {
-        super(application);
-        this.application = application;
+    public DetailViewModelFactory(AppDatabase appDatabase, int movieID) {
+
+        this.appDatabase = appDatabase;
         this.movieID = movieID;
     }
 
@@ -21,6 +21,6 @@ public class DetailViewModelFactory extends ViewModelProvider.AndroidViewModelFa
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         //noinspection unchecked
-        return (T) new DetailViewModel( application, movieID);
+        return (T) new DetailViewModel( appDatabase, movieID);
     }
 }

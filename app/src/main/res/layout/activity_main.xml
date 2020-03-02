@@ -23,13 +23,13 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBlack"
             android:backgroundTint="@color/colorBlack"
-            appState:layout_scrollFlags="scroll|enterAlways"
+            appState:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             appState:titleTextColor="@android:color/white">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                appState:layout_scrollFlags="scroll|enterAlways">
+                appState:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
 
                 <TextView
                     android:id="@+id/activity_main_TOOLBAR_textview"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorBlack"
             android:backgroundTint="@color/colorBlack"
-            android:visibility="gone"
+            android:visibility="visible"
             appState:layout_scrollFlags="enterAlways">
 
             <ProgressBar
@@ -166,7 +166,7 @@
         <com.google.android.material.tabs.TabLayout android:id="@+id/activity_main_TAB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             appState:layout_scrollFlags="enterAlways"
             appState:tabIndicatorColor="@color/colorPrimary"
             appState:tabIndicatorHeight="7dp"
@@ -195,7 +195,7 @@
         android:layout_height="0dp"
         android:layout_gravity="fill_vertical"
         android:alwaysDrawnWithCache="false"
-        android:visibility="gone"
+        android:visibility="visible"
         appState:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
@@ -208,7 +208,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_vertical"
         appState:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:visibility="visible"
+        android:visibility="gone"
         appState:layout_scrollFlags="scroll|enterAlways"
         >
 

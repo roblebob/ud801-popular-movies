@@ -6,17 +6,16 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-public class MainViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
+public class MainViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private final Application application;
+    private final AppDatabase appDatabase;
 
-    public MainViewModelFactory(Application application) {
-        super(application);
-        this.application = application;
+    public MainViewModelFactory(AppDatabase appDatabase) {
+        this.appDatabase = appDatabase;
     }
 
     @NonNull @Override public < T extends ViewModel> T create( @NonNull Class< T> modelClass) {
         //noinspection unchecked
-        return (T) new MainViewModel( this.application);
+        return (T) new MainViewModel( this.appDatabase);
     }
 }

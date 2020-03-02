@@ -3,10 +3,12 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+
 import java.util.List;
 
 
-public class DetailViewModel extends AndroidViewModel {
+public class DetailViewModel extends ViewModel {
 
     private AppDatabase appDatabase;
     private MainRepository mainRepository;
@@ -14,11 +16,10 @@ public class DetailViewModel extends AndroidViewModel {
     private int movieID;
 
 
-    public DetailViewModel( Application application, int movieID) {
-        super( application);
-        appDatabase      = AppDatabase.getInstance( application);
-        mainRepository   = new MainRepository(   AppDatabase.getInstance( application));
-        detailRepository = new DetailRepository( AppDatabase.getInstance( application));
+    public DetailViewModel( AppDatabase appDatabase, int movieID) {
+        this.appDatabase = appDatabase;
+        mainRepository   = new MainRepository(   this.appDatabase);
+        detailRepository = new DetailRepository( this.appDatabase);
         this.movieID = movieID;
     }
 

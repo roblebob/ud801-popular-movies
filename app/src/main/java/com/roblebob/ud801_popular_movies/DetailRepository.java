@@ -45,10 +45,7 @@ public class DetailRepository {
      * @param movieID
      */
     public  void integrate(final String apiKey, final Integer movieID)  {
-
-
-        Log.e(this.getClass().getSimpleName() + "::integrate() ", "----API-KEY----> " + apiKey );
-
+        Log.e(this.getClass().getSimpleName() + "::integrate(\t", "\t" + "apiKey=" + apiKey + "\t,\t" + "movieID=" + movieID + "\t)" );
 
         if (apiKey != null)
             AppExecutors .getInstance() .networkIO() .execute( () -> {
@@ -56,19 +53,15 @@ public class DetailRepository {
                     JSONObject  jsonObject = new JSONObject( Objects.requireNonNull(
                             getResponseFromHttpUrl( buildUrl(   apiKey,  String.valueOf(movieID)))));
 
-
                     for (String order : Detail.ORDER) {
                         switch (order) {
-
                             case "title":
                             case "release_date":
                             case "runtime":
                             case "tagline":
                             case "overview":
                                 insert(  new Detail( movieID, order, jsonObject.getString( order), null));
-
                                 break;
-
 
                             case "original_title":
                             case "original_language":
@@ -76,25 +69,20 @@ public class DetailRepository {
                                     insert(  new Detail( movieID, order, jsonObject.getString( order), null));
                                 break;
 
-
                             case "genres":
                                 JSONArray jsonArray = jsonObject.getJSONArray( order);
-
                                 String content = jsonArray .getJSONObject(0) .getString("name");
                                 for (int i = 1; i < jsonArray.length(); i++) {
                                     content += "\n" + jsonArray .getJSONObject( i) .getString("name");
                                 }
-
                                 insert(  new Detail( movieID, order, content, null));
                                 break;
-
 
                             case "budget":
                             case "revenue":
                                 if (jsonObject.getInt(order) > 0)
                                     insert(  new Detail( movieID, order, jsonObject.getString( order), null));
                                 break;
-
 
                             case "homepage":
                             case "imdb_key":
@@ -142,12 +130,6 @@ public class DetailRepository {
     }
 
 
-
-
-    /* *********************************************************************************************
-     *
-     * @param detail
-     */
     public void insert( Detail detail) { AppExecutors.getInstance().diskIO().execute( () -> this.appDatabase .detailDao() .insert(detail)); }
 
 
@@ -170,10 +152,10 @@ public class DetailRepository {
                 .appendQueryParameter("language", "en-US")
                 .build()
                 .toString()
-        ).toString();
+            ).toString();
         } catch ( MalformedURLException e) {
             e.printStackTrace();
-            Log.e(this.getClass().getSimpleName(), "E R R O R  in  buildUrl():\tMalformedURLException");
+            Log.e(this.getClass().getSimpleName() + "::buildUrl()\t", "\tMalformedURLException");
             return null;
         }
     }

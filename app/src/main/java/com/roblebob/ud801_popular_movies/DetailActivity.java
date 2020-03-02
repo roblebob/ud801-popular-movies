@@ -50,7 +50,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
         // if (savedInstanceState != null && savedInstanceState.containsKey( INSTANCE_ID))  ID = savedInstanceState .getInt( INSTANCE_ID, -1);
         if (movieID > 0) {
 
-            DetailViewModelFactory detailViewModelFactory = new DetailViewModelFactory(this.getApplication(), movieID);
+            DetailViewModelFactory detailViewModelFactory = new DetailViewModelFactory(AppDatabase.getInstance(getApplicationContext()), movieID);
             final DetailViewModel detailViewModel = ViewModelProviders.of(this, detailViewModelFactory) .get( DetailViewModel.class);
 
             favoriteStar = (ImageView) findViewById( R.id.activity_details_TOOLBAR_favorite_star);
@@ -120,10 +120,26 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
      */
     private void populateToolbar(Main main) {
 
-        Toolbar toolbar = (Toolbar) findViewById( R.id.activity_detail_TOOLBAR);
-        if (toolbar != null)  setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) { getSupportActionBar() .setDisplayShowTitleEnabled( false); }
-        toolbar.setFitsSystemWindows(false);
+        try {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.activity_detail_TOOLBAR);
+
+            setSupportActionBar(toolbar);
+            toolbar.setFitsSystemWindows(true);
+
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            toolbar.setNavigationIcon(R.drawable.arrow_back);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    finish();
+                }
+            });
+        } catch (NullPointerException e) { e.printStackTrace(); }
+
 
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_movieID_tv))            .setText(  valueOf( main .getMovieID()));
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_popularity_value_tv))   .setText(  valueOf( main .getPopularVAL()));
@@ -131,12 +147,12 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
         ((TextView) findViewById( R.id.activity_detail_TOOLBAR_vote_count_value_tv))   .setText(  valueOf( main .getVoteCNT()));
 
         ImageView imageView = ((ImageView) findViewById( R.id.activity_detail_TOOLBAR_iv));
-        imageView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        imageView.getViewTreeObserver() .addOnGlobalLayoutListener( new ViewTreeObserver.OnGlobalLayoutListener() {
             public void onGlobalLayout() {
                 Picasso .get()
                         .load( main.getPosterURL())
                         .placeholder( R.drawable.placeholder)
-                        .error(R.drawable.error)
+                        .error( R.drawable.error)
                         //.resize(screenWidth, imageHeight)
                         .fit()
                         .centerInside()
