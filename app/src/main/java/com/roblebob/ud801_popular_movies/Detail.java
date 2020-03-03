@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(tableName = "Detail", indices = {@Index(value = {"movieID","order"}, unique = false)})
+@Entity(tableName = "Detail", indices = {@Index(value = {"movieID","order","link"}, unique = false)})
 public class Detail {
 
     @Ignore public static final List< String> ORDER = new ArrayList<>( Arrays.asList(
