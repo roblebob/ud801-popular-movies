@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         context = MainActivity.this;
         appDatabase = AppDatabase.getInstance( this.context);
         mainViewModelFactory = new MainViewModelFactory( this.appDatabase);
-        final MainViewModel mainViewModel = ViewModelProviders.of(this, this.mainViewModelFactory) .get( MainViewModel.class);
+        final MainViewModel mainViewModel = new ViewModelProvider(this, this.mainViewModelFactory) .get( MainViewModel.class);
 
         RecyclerView mMainRV = (RecyclerView) this.findViewById( R.id.activity_main_RV);
         RecyclerView.LayoutManager mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
     public void populateApiKeyUI( String apiKey) {
 
-        final MainViewModel mainViewModel = ViewModelProviders.of(this, this.mainViewModelFactory) .get( MainViewModel.class);
+        final MainViewModel mainViewModel = new ViewModelProvider(this, this.mainViewModelFactory) .get( MainViewModel.class);
 
         Log.e(TAG + "::populateApiKeyUI()\t" , "\t<---(apiKey)---\t" + apiKey);
 

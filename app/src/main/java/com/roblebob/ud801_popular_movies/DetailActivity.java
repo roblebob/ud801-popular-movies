@@ -2,7 +2,7 @@ package com.roblebob.ud801_popular_movies;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
@@ -35,7 +35,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
         if (movieID > 0) {
 
             DetailViewModelFactory detailViewModelFactory = new DetailViewModelFactory(AppDatabase.getInstance(getApplicationContext()), movieID);
-            final DetailViewModel detailViewModel = ViewModelProviders.of(this, detailViewModelFactory) .get( DetailViewModel.class);
+            final DetailViewModel detailViewModel = new ViewModelProvider(this, detailViewModelFactory).get( DetailViewModel.class);
 
             ImageView favoriteStar = (ImageView) findViewById(R.id.activity_details_TOOLBAR_favorite_star);
             favoriteStar.setOnClickListener( (v) -> detailViewModel.inverseFavorite());
