@@ -8,7 +8,8 @@ into
 
 each stored separately within its table.
 
-\
+&nbsp;
+&nbsp;
 
 The __Main__ only contains:
 - ___movieID___ , an INTEGER
@@ -20,7 +21,10 @@ The __Main__ only contains:
 as well as the following user interaction specifics
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
 
-\
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
 
 Each __Detail__ contains:
 - __movieID__
