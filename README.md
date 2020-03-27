@@ -1,12 +1,12 @@
 # ud801: Popular Movies
 
-The here presented solution devides all data associated with a movie
+The here presented solution devides all data associated with a particular movie
 (accessible using "www.moviedb.org")
 into
 - one __Main__
-- multiple __Details__
+- multiple __Detail__s
 
-each stored separately within its table.
+each is stored separately within its own table.
 
 &nbsp;
 &nbsp;
@@ -23,11 +23,11 @@ as well as the following user interaction specifics
 
 &nbsp;
 &nbsp;
-&nbsp;
-&nbsp;
 
 Each __Detail__ contains:
 - __movieID__
-\
+
+&nbsp;
+&nbsp;
 
 [overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
