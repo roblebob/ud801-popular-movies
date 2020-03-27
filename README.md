@@ -6,13 +6,15 @@ into
 - one __Main__
 - multiple __Details__
 
-each stored separately within its table.  
+each stored separately within its table.
+&nbsp;
+&nbsp;
 
 The __Main__ only contains:
 - ___movieID___ , an INTEGER
-- ___popular___ , a DOUBLE representing the popularity
-- ___voteAVG___ , a DOUBLE representing the vote average
-- ___voteCNT___ , an INTEGER representing the vote count
+- ___popular___ , a DOUBLE denoting the popularity
+- ___voteAVG___ , a DOUBLE denoting the vote average
+- ___voteCNT___ , an INTEGER denoting the vote count
 - ___posterID___ , a String with no more than 32 chars
 
 as well as the following user interaction specifics
