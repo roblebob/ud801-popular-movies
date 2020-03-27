@@ -6,8 +6,7 @@ into
 - one __Main__
 - multiple __Details__
 
-each stored separately within its table.
-&nbsp;
+each stored separately within its table.  
 
 The __Main__ only contains:
 - ___movieID___ , an INTEGER
