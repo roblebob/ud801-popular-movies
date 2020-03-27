@@ -8,21 +8,9 @@ into
 
 each stored separately within its table.
 
-&nbsp;
-&nbsp;
-
 &NewLine;
 &NewLine;
 
-</br>
-</br>
-
-\
-\
-
-The __Main__ only contains:
-- ___movieID___ , an INTEGER
-- ___popular___ , a DOUBLE denoting the popularity
 - ___voteAVG___ , a DOUBLE denoting the vote average
 - ___voteCNT___ , an INTEGER denoting the vote count
 - ___posterID___ , a STRING with no more than 32 chars
