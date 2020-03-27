@@ -1,5 +1,7 @@
 # ud801: Popular Movies
 
+## Overview
+
 The here presented solution devides all data associated with a particular movie
 (accessible using "www.moviedb.org")
 into
@@ -29,5 +31,14 @@ Each __Detail__ contains:
 
 &nbsp;
 &nbsp;
+
+
+## Strategy
+
+
+
+
+## Architecture
+
 
 [overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
