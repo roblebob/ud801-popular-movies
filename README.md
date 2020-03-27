@@ -8,9 +8,11 @@ into
 
 each stored separately within its table.
 
-&NewLine;
-&NewLine;
+\
 
+The __Main__ only contains:
+- ___movieID___ , an INTEGER
+- ___popular___ , a DOUBLE denoting the popularity
 - ___voteAVG___ , a DOUBLE denoting the vote average
 - ___voteCNT___ , an INTEGER denoting the vote count
 - ___posterID___ , a STRING with no more than 32 chars
@@ -18,9 +20,10 @@ each stored separately within its table.
 as well as the following user interaction specifics
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
 
+\
 
-
-
-
+Each __Detail__ contains:
+- __movieID__
+\
 
 [overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
