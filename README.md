@@ -36,16 +36,13 @@ This is why initially a background thread is started, downloading all Mains, acc
 
 
 Each __Detail__ contains:
+- ___ID__
 - __movieID__
-
+- __order
 
 &nbsp;&nbsp;
 
 
-
-It only contains:
-- ___Key___ , a STRING
-- ___Value___ , a STRING
 
 
 &nbsp;&nbsp;
