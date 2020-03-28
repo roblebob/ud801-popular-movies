@@ -17,11 +17,21 @@ each is stored separately within its own table.
 
 
 The __Main__ only contains:
-- ___movieID___ , an INTEGER
-- ___popular___ , a DOUBLE denoting the popularity
-- ___voteAVG___ , a DOUBLE denoting the vote average
-- ___voteCNT___ , an INTEGER denoting the vote count
-- ___posterID___ , a STRING with no more than 32 chars
+- ___movieID___ , an INTEGER (__4__ bytes)
+- ___popular___ , a FLOAT (__4__ bytes) denoting the popularity
+- ___voteAVG___ , a FLOAT (__4__ bytes) denoting the vote average
+- ___voteCNT___ , an INTEGER (__4__ bytes) denoting the vote count
+- ___posterID___ , a STRING, presuming with no more than 32 chars (32 x (? __2__ bytes ?) = __64__ bytes)
+
+gives a total size of __80__ bytes.
+Furthermore, presuming about __12 000__ movies, gives about __one mega__ bytes plus some overhead.
+
+
+&nbsp;&nbsp;
+
+
+Therefore,   
+
 
 as well as the following user interaction specific
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
@@ -37,8 +47,13 @@ Each __Detail__ contains:
 &nbsp;&nbsp;
 
 
-THere is a third kind of data not related to any movie, but to the users interactions, called __AppState__.
+There is a third kind of data not related to any movie, but to the users interactions, called __AppState__.
+It only contains:
+- ___Key___ , a STRING
+- ___Value___ , a STRING
 
+
+&nbsp;&nbsp;
 
 &nbsp;&nbsp;
 
