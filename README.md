@@ -15,8 +15,6 @@ each is stored separately within its own table.
 
 &nbsp;&nbsp;
 
-&nbsp;&nbsp;
-
 
 The __Main__ only contains:
 - ___movieID___ , an INTEGER
@@ -38,8 +36,16 @@ Each __Detail__ contains:
 
 &nbsp;&nbsp;
 
+
+THere is a third kind of data not related to any movie, but to the users interactions, called __AppState__.
+
+
 &nbsp;&nbsp;
 
+&nbsp;&nbsp;
+
+
+As shown in the
 
 
 [overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
