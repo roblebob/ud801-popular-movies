@@ -11,6 +11,7 @@ into
 - multiple __Detail__ s
 
 each is stored separately within its own table.
+There is a third kind of data having its own table, and not related to any movie, but to the users interactions, called __AppState__, containing only simple key-value pairs.
 
 
 &nbsp;&nbsp;
@@ -28,7 +29,6 @@ as well as the following user interaction specific
 
 Presuming a granularity of 8 bytes, and for the STRING: 32 x (2 bytes) = 64 bytes, gives __104__ bytes.
 Furthermore, presuming about __12 000__ movies gives a little over one mega bytes plus some overhead -- definitely no more than __1.5 mega__ bytes.
-(This rough estimate should also hold when presuming a granularity of 8 bytes.)
 This is why initially a background thread is started, downloading all Mains, accessible.
 
 
@@ -42,7 +42,7 @@ Each __Detail__ contains:
 &nbsp;&nbsp;
 
 
-There is a third kind of data not related to any movie, but to the users interactions, called __AppState__.
+
 It only contains:
 - ___Key___ , a STRING
 - ___Value___ , a STRING
