@@ -29,15 +29,7 @@ as well as the following user interaction specific
 gives a total size of __80__ bytes.
 Furthermore, presuming about __12 000__ movies gives about __one mega__ bytes plus some overhead -- definitely no more than __1.5 mega__ bytes.
 (This rough estimate should also hold when presuming a granularity of 8 bytes.)
-This is why initially a background thread is started, downloading all __Main__ s accessible.
-
-
-&nbsp;&nbsp;
-
-
-Therefore,
-
-
+This is why initially a background thread is started, downloading all Mains, accessible.
 
 
 &nbsp;&nbsp;
