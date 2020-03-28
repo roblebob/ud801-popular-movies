@@ -38,18 +38,14 @@ This is why initially a background thread is started, downloading all Mains, acc
 Each __Detail__ contains:
 - ___ID__
 - __movieID__
-- __order
-
-&nbsp;&nbsp;
-
-
+- __context__ , a STRING indexed by __CONTEXTs__
+- __content__ , a STRING, denotation context-sensitive
+- __link__ , a STRING, denoting a link fragment, whereas its counterpart is context-sensitive
 
 
 &nbsp;&nbsp;
 
-&nbsp;&nbsp;
 
-&nbsp;&nbsp;
 
 
 As shown in the

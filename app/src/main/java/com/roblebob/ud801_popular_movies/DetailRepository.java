@@ -4,8 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +11,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import static com.roblebob.ud801_popular_movies.AppUtilities.getResponseFromHttpUrl;
@@ -33,62 +30,62 @@ public class DetailRepository {
                     JSONObject  jsonObject = new JSONObject( Objects.requireNonNull(
                             getResponseFromHttpUrl( buildUrl(   apiKey,  String.valueOf(movieID)))));
 
-                    for (String order : Detail.ORDER) {
-                        switch (order) {
+                    for (String context : Detail.CONTEXTs) {
+                        switch (context) {
                             case "title":
                             case "release_date":
                             case "runtime":
                             case "tagline":
                             case "overview":
-                                insert(  new Detail( movieID, order, jsonObject.getString( order), null));
+                                insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
                                 break;
 
                             case "original_title":
                             case "original_language":
                                 if ( ! jsonObject.getString("title") .equals( jsonObject.getString("original_title")))
-                                    insert(  new Detail( movieID, order, jsonObject.getString( order), null));
+                                    insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
                                 break;
 
                             case "genres":
-                                JSONArray jsonArray = jsonObject.getJSONArray( order);
+                                JSONArray jsonArray = jsonObject.getJSONArray( context);
                                 String content = jsonArray .getJSONObject(0) .getString("name");
                                 for (int i = 1; i < jsonArray.length(); i++) {
                                     content += "\n" + jsonArray .getJSONObject( i) .getString("name");
                                 }
-                                insert(  new Detail( movieID, order, content, null));
+                                insert(  new Detail( movieID, context, content, ""));
                                 break;
 
                             case "budget":
                             case "revenue":
-                                if (jsonObject.getInt(order) > 0)
-                                    insert(  new Detail( movieID, order, jsonObject.getString( order), null));
+                                if (jsonObject.getInt(context) > 0)
+                                    insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
                                 break;
 
                             case "homepage":
                             case "imdb_id":
-                                insert(  new Detail( movieID, order, order, jsonObject.getString( order)));
+                                insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
                                 break;
 
                         }
                     }
 
 
-                    for (String order : Detail.ORDER.subList( 12 /*videos*/, 14 /*reviews*/)) {
+                    for (String context : Detail.CONTEXTs.subList( 12 /* videos , reviews */, 14 )) {
 
-                        String res = getResponseFromHttpUrl(  buildUrl( apiKey, (movieID + "/" + order)));
+                        String res = getResponseFromHttpUrl(  buildUrl( apiKey, (movieID + "/" + context)));
                         JSONArray jsonArray = (new JSONObject ( Objects.requireNonNull (res))).getJSONArray("results");
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObj = jsonArray .getJSONObject (i);
-                            switch (order) {
+                            switch (context) {
 
                                 case "videos":
                                     if (jsonObj.getString("type").equals("Trailer"))
-                                        insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("name"),  /*link*/ jsonObj.getString("key")));
+                                        insert( new Detail(  movieID,  context,  /*content*/ jsonObj.getString("name"),  /*link*/ jsonObj.getString("key")));
                                     break;
 
                                 case "reviews":
-                                    insert( new Detail(  movieID,  order,  /*content*/ jsonObj.getString("author"),
+                                    insert( new Detail(  movieID,  context,  /*content*/ jsonObj.getString("author"),
                                             /*link*/ ((jsonObj.getString("url"))
                                             .replace("https://www.themoviedb.org/review/", "")
                                             .equals( jsonObj.getString("id")))

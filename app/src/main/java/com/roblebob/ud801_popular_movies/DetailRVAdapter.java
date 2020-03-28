@@ -2,7 +2,6 @@ package com.roblebob.ud801_popular_movies;
 
 import android.graphics.Typeface;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,12 +74,12 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
             labelCv .setCardBackgroundColor( itemView.getResources().getColor(  R.color.colorBlack));
             labelTv .setTextColor( itemView.getResources().getColor(  R.color.colorWhite));
             labelTv .setTextSize( 12);
-            labelTv .setText( detail.getOrder());
+            labelTv .setText( detail.getContext());
             if (detail.getLink() == null)  labelIv.setVisibility( View.GONE);
             else                           labelIv.setVisibility( View.VISIBLE);
             contentTv .setTextAlignment(View .TEXT_ALIGNMENT_VIEW_END);
 
-            switch (detail.getOrder()) {
+            switch (detail.getContext()) {
 
                 case "title":
                     contentTv .setTextSize(35);
@@ -143,7 +142,7 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
                 case "imdb_id":
                     contentTv.setTextSize(17);
                     contentCv.setCardBackgroundColor(itemView.getResources().getColor(R.color.colorWhite));
-                    contentTv.setText( detail.getOrder());
+                    contentTv.setText( detail.getContext());
                     this.urlString = detail.getUrl();
                     break;
 
