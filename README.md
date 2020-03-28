@@ -23,18 +23,20 @@ The __Main__ only contains:
 - ___voteCNT___ , an INTEGER (__4__ bytes) denoting the vote count
 - ___posterID___ , a STRING, presuming with no more than 32 chars (32 x (? __2__ bytes ?) = __64__ bytes)
 
+as well as the following user interaction specific
+- ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
+
 gives a total size of __80__ bytes.
-Furthermore, presuming about __12 000__ movies, gives about __one mega__ bytes plus some overhead.
+Furthermore, presuming about __12 000__ movies, gives about __one mega__ bytes plus some overhead, definitely no more than __1.5 mega__ bytes.
+(This rough estimate should also hold when presuming a granularity of 8 bytes.)
 
 
 &nbsp;&nbsp;
 
 
-Therefore,   
+Therefore,
 
 
-as well as the following user interaction specific
-- ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
 
 
 &nbsp;&nbsp;
