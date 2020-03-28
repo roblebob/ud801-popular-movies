@@ -1,11 +1,8 @@
 # ud801: Popular Movies
 
-&nbsp;&nbsp;
-
-## Overview
-
 
 &nbsp;&nbsp;
+
 
 The here presented solution devides all data associated with a particular movie
 (accessible using "www.moviedb.org")
@@ -15,7 +12,11 @@ into
 
 each is stored separately within its own table.
 
+
 &nbsp;&nbsp;
+
+&nbsp;&nbsp;
+
 
 The __Main__ only contains:
 - ___movieID___ , an INTEGER
@@ -27,20 +28,18 @@ The __Main__ only contains:
 as well as the following user interaction specific
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
 
+
 &nbsp;&nbsp;
+
 
 Each __Detail__ contains:
 - __movieID__
 
+
 &nbsp;&nbsp;
 
+&nbsp;&nbsp;
 
-## Strategy
-
-
-
-
-## Architecture
 
 
 [overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
