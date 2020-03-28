@@ -17,17 +17,17 @@ each is stored separately within its own table.
 
 
 The __Main__ only contains:
-- ___movieID___ , an INTEGER (__4__ bytes)
-- ___popular___ , a FLOAT (__4__ bytes) denoting the popularity
-- ___voteAVG___ , a FLOAT (__4__ bytes) denoting the vote average
-- ___voteCNT___ , an INTEGER (__4__ bytes) denoting the vote count
-- ___posterID___ , a STRING, presuming with no more than 32 chars (32 x (? __2__ bytes ?) = __64__ bytes)
+- ___movieID___ , an INTEGER
+- ___popular___ , a DOUBLE denoting the popularity
+- ___voteAVG___ , a DOUBLE  denoting the vote average
+- ___voteCNT___ , an INTEGER denoting the vote count
+- ___posterID___ , a STRING, presuming with no more than 32 chars
 
 as well as the following user interaction specific
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
 
-gives a total size of __80__ bytes.
-Furthermore, presuming about __12 000__ movies gives about __one mega__ bytes plus some overhead -- definitely no more than __1.5 mega__ bytes.
+Presuming a granularity of 8 bytes, and for the STRING: 32 x (2 bytes) = 64 bytes, gives __104__ bytes.
+Furthermore, presuming about __12 000__ movies gives a little over one mega bytes plus some overhead -- definitely no more than __1.5 mega__ bytes.
 (This rough estimate should also hold when presuming a granularity of 8 bytes.)
 This is why initially a background thread is started, downloading all Mains, accessible.
 
