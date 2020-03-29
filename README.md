@@ -74,5 +74,4 @@ In trying to familiarize myself with design principle like MVVM, Repositories, .
 architecture is chosen:
 
 
-![overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
-Format: ![Alt Text](url)
+![overview](diagram.svg)
