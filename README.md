@@ -43,6 +43,22 @@ Each __Detail__ contains:
 - __content__ , a STRING, denotation context-sensitive
 - __link__ , a STRING, denoting a link fragment, whereas its counterpart is context-sensitive
 
+the __context__ is indexed in the following sense:
+0. "title",
+1. "original_title",
+2. "original_language",
+3. "release_date",
+4. "runtime",
+5. "tagline",
+6. "overview",
+7. "genres",
+8. "budget",
+9. "revenue",
+10. "homepage",
+11. "imdb_id",
+12. "videos",
+13. "reviews"
+
 
 &nbsp;&nbsp;
 
