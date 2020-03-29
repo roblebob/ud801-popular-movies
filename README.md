@@ -39,9 +39,9 @@ This is why initially, a background thread is started, downloading the Mains of 
 Each __Detail__ contains:
 - ___ID__
 - __movieID__
-- __context__ , a STRING indexed by __CONTEXTs__
+- __context__ , a STRING, denoting the slot it is presented (see below)
 - __content__ , a STRING, denotation context-sensitive
-- __link__ , a STRING, denoting a link fragment, whereas its counterpart is context-sensitive
+- __link__ , a STRING, denoting a link fragment, whereas its counterpart is context-dependent
 
 the __context__ is indexed in the following sense:
 
@@ -60,13 +60,19 @@ the __context__ is indexed in the following sense:
 12. ___videos___,
 13. ___reviews___
 
+as it is the order it is presented within the __DetailActivity__.
+(Note, that if 0. and 1. are the same, 1. and 2. are omitted.)
+As it is not needed within the __MainActivity__ it is only downloaded as the user enters the __DetailActivity__
+and only those associated with that particular movie, that is presented.
+
 
 &nbsp;&nbsp;
 
 
 
+In trying to familiarize myself with design principle like MVVM, Repositories, ... the following
+architecture is chosen:
 
-As shown in the
 
-
-[overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
+![overview](https://docs.google.com/presentation/d/1fsxVuD4k3UhCbKSODCukvlmV_juS_78vWPYRxkAHlM4/preview)
+Format: ![Alt Text](url)
