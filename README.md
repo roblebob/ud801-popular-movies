@@ -37,11 +37,11 @@ This is why initially, a background thread is started, downloading the Mains of 
 
 
 Each __Detail__ contains:
-- ___ID__
-- __movieID__
-- __context__ , a STRING, denoting the slot it is presented (see below)
-- __content__ , a STRING, denotation context-sensitive
-- __link__ , a STRING, denoting a link fragment, whereas its counterpart is context-dependent
+- ____ID___
+- ___movieID___
+- ___context___ , a STRING, denoting the slot it is presented (see below)
+- ___content___ , a STRING, denotation context-sensitive
+- ___link___ , a STRING, denoting a link fragment, whereas its counterpart is context-dependent
 
 the __context__ is indexed in the following sense:
 
