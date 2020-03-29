@@ -72,5 +72,5 @@ public class Detail {
     public void setLink   ( String link   )  { this.link    = link;    }
 
     @Override public boolean equals(@Nullable Object obj) { return (obj != null) && this.toString().equals(obj.toString()); }
-    @Override public int hashCode() { return Objects.hash( _ID, movieID, context, content, link); }
+    @Override public int hashCode() { return Objects.hash( movieID, context, content, link); }
 }

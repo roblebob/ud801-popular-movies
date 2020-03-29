@@ -26,10 +26,11 @@ The __Main__ only contains:
 
 as well as the following user interaction specific
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
+- ___hasDetails___ , a BOOLEAN flag denoting if the user has already been there, and therefore is accessible in offline case (initially set to FALSE)
 
-Presuming a granularity of 8 bytes, and for the STRING: 32 x (2 bytes) = 64 bytes, gives __104__ bytes.
-Furthermore, presuming about __12 000__ movies gives a little over one mega bytes plus some overhead -- definitely no more than __1.5 mega__ bytes.
-This is why initially a background thread is started, downloading all Mains, accessible.
+For a rough estimate of the worst case scenario, presuming a granularity of 8 bytes (6 * 8 bytes =  48 bytes), and for the STRING: 32 x (2 bytes) = 64 bytes, gives __112__ bytes total.
+Furthermore, presuming about __12 000__ movies gives a little over one mega bytes (1 344 000 bytes) plus some overhead -- definitely no more than __1.5 mb__ .
+This is why initially, a background thread is started, downloading the Mains of all movies accessible.
 
 
 &nbsp;&nbsp;

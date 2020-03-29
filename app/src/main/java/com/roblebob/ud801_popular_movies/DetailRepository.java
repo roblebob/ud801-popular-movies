@@ -37,13 +37,13 @@ public class DetailRepository {
                             case "runtime":
                             case "tagline":
                             case "overview":
-                                insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
+                                insert(  new Detail( movieID, context, jsonObject.getString( context), null));
                                 break;
 
                             case "original_title":
                             case "original_language":
                                 if ( ! jsonObject.getString("title") .equals( jsonObject.getString("original_title")))
-                                    insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
+                                    insert(  new Detail( movieID, context, jsonObject.getString( context), null));
                                 break;
 
                             case "genres":
@@ -52,18 +52,18 @@ public class DetailRepository {
                                 for (int i = 1; i < jsonArray.length(); i++) {
                                     content += "\n" + jsonArray .getJSONObject( i) .getString("name");
                                 }
-                                insert(  new Detail( movieID, context, content, ""));
+                                insert(  new Detail( movieID, context, content, null));
                                 break;
 
                             case "budget":
                             case "revenue":
                                 if (jsonObject.getInt(context) > 0)
-                                    insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
+                                    insert(  new Detail( movieID, context, jsonObject.getString( context), null));
                                 break;
 
                             case "homepage":
                             case "imdb_id":
-                                insert(  new Detail( movieID, context, jsonObject.getString( context), ""));
+                                insert(  new Detail( movieID, context, null, jsonObject.getString( context)));
                                 break;
 
                         }
