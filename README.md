@@ -4,9 +4,7 @@
 &nbsp;&nbsp;
 
 
-The here presented solution devides all data associated with a particular movie
-(accessible using "www.moviedb.org")
-into
+The here presented solution devides all data associated with a particular movie (using www.moviedb.org) into:
 - one __Main__
 - multiple __Detail__ s
 
@@ -24,13 +22,14 @@ The __Main__ only contains:
 - ___voteCNT___ , an INTEGER denoting the vote count
 - ___posterID___ , a STRING, presuming with no more than 32 chars
 
-as well as the following user interaction specific
+as well as the following user interaction specifics:
 - ___isFavorite___ , a BOOLEAN flag denoting the users attitude towards the movie (initially set to FALSE)
 - ___hasDetails___ , a BOOLEAN flag denoting if the user has already been there, and therefore is accessible in offline case (initially set to FALSE)
 
 For a rough estimate of the worst case scenario, presuming a granularity of 8 bytes (6 * 8 bytes =  48 bytes), and for the STRING: 32 x (2 bytes) = 64 bytes, gives __112__ bytes total.
 Furthermore, presuming about __12 000__ movies gives a little over one mega bytes (1 344 000 bytes) plus some overhead -- definitely no more than __1.5 mb__ .
-This is why initially, a background thread is started, downloading the Mains of all movies accessible.
+
+This is why initially, a background thread is started, downloading the Mains of all movies accessible (both, www.moviedb.org 's  ___popular___ and ___top_rated___ requests.')
 
 
 &nbsp;&nbsp;
