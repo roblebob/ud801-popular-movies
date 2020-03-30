@@ -78,5 +78,5 @@ In trying to familiarize myself with the proper design principles *(e.g.: MVVM, 
 
 ![overview](ud801-Popular-Movies--diagram.svg)
 
-Note, that the __DetailActivity__ has access to both, the __Main__ s and the __Detail__ s.
+Note, that the __DetailActivity__ has access to both, the __Main__s and the __Detail__s.
 This is because its toolbar is showing the content of the __Main__ of that movie, whose __Detail__ s are presented.
