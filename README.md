@@ -31,10 +31,10 @@ as well as the following user interaction specifics:
 For a rough estimate of a worst case scenario, presuming a granularity of 8 bytes (6 * 8 bytes =  48 bytes), and for the STRING: 32 x (2 bytes) = 64 bytes, gives __112__ bytes total.
 Furthermore, presuming about __12 000__ movies gives a little over one mega bytes (1 344 000 bytes) plus some overhead -- definitely no more than __1.5 mb__ .
 
-This is why initially, a background thread is started, downloading the Mains of all movies accessible.
+This is why initially, a background thread is started, downloading the __Main__ s of all movies accessible.
 It uses both www.moviedb.org 's  ___popular___ and ___top_rated___ requests and puts them together.
-Although the differ in size, they have a strong overlap, resulting in about 12 000 movies mentioned earlier.
-The ordering itself is done later within the app and not by a web request call.)*.
+Although the results differ in size, they have a strong overlap, resulting in about 12 000 movies total, as mentioned earlier.
+The ordering itself is done later within the app.
 
 
 &nbsp;&nbsp;
@@ -78,5 +78,5 @@ In trying to familiarize myself with the proper design principles *(e.g.: MVVM, 
 
 ![overview](ud801-Popular-Movies--diagram.svg)
 
-Note, that the DetailActivity has access to both, the Mains and the Details.
-This is because its toolbar is showing the content of the Main of that movie, whose Details are presented.
+Note, that the __DetailActivity__ has access to both, the __Main__ s and the __Detail__ s.
+This is because its toolbar is showing the content of the __Main__ of that movie, whose __Detail__ s are presented.
