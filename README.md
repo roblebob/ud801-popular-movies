@@ -71,8 +71,9 @@ and only those associated with that particular movie, that is presented.
 
 
 
-In trying to familiarize myself with design principle *(e.g.: MVVM, Repositories, ...)* the following
-architecture is chosen:
-
+In trying to familiarize myself with the proper design principles *(e.g.: MVVM, Repositories, ...)* the following architecture is chosen:
 
 ![overview](ud801-Popular-Movies--diagram.svg)
+
+Note, that the DetailActivity has access to both, the Mains and the Details.
+This is because its toolbar is showing the content of the Main of that movie, whose Details are presented.
