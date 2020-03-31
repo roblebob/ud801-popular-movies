@@ -46,27 +46,21 @@ public class Detail {
         this.link = link;
 
         this._ID = hashCode();
-        Log.e(this.getClass().getSimpleName(), "_ID: " + _ID);
     }
-
-//    @Ignore public Detail( /* int _ID, */ int movieID, String context, String content, String link) {
-//        this.movieID = movieID;
-//        this.context = context;
-//        this.content = content;
-//        this.link = link;
-//    }
 
     public int    get_ID()     { return this._ID; }
     public int    getMovieID() { return this.movieID; }
-    public String getContext()   { return this.context; }
+    public String getContext() { return this.context; }
     public String getContent() { return this.content; }
     public String getLink()    { return this.link; }
     @Ignore public String getUrl() {
-        if (     getContext() .equals("homepage")) return getLink();
-        else if (getContext() .equals("imdb_id"))  return "https://www.imdb.com/title/" + getLink();
-        else if (getContext() .equals("videos"))   return "https://www.youtube.com/watch?v=" + getLink();
-        else if (getContext() .equals("reviews"))  return "https://www.themoviedb.org/review/" + getLink();
-        return null;
+        switch (getContext()) {
+            case "homepage" : return getLink();
+            case "imdb_id"  : return "https://www.imdb.com/title/" + getLink();
+            case "videos"   : return "https://www.youtube.com/watch?v=" + getLink();
+            case "reviews"  : return "https://www.themoviedb.org/review/" + getLink();
+            default: return null;
+        }
     }
 
     public void set_ID    ( int    _ID    )  { this._ID     = _ID;     }

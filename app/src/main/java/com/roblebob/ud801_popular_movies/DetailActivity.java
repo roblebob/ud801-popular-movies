@@ -50,14 +50,15 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
             detailViewModel.getApiKeyLive() .observe(this,
                     new Observer< String>() { @Override public void onChanged( String apiKey) {
-                        detailViewModel .getApiKeyLive() .removeObserver( this);
+
+                        //detailViewModel .getApiKeyLive() .removeObserver( this);
                         Log.d( TAG + ":::getApiKeyLive()\t", "\t[DB]---(apiKey)--->\t" + apiKey);
                         detailViewModel.integrate(apiKey);
                     }});
 
             detailViewModel .getMainLive() .observe(this,
                     new Observer<Main>() { @Override public void onChanged( Main main) {
-                        detailViewModel .getMainLive() .removeObserver( this);
+                        //detailViewModel .getMainLive() .removeObserver( this);
                         Log.d( TAG + ":::getMainLive()\t", "\t[DB]---(main)--->\t" + main.toString());
                         Log.e(TAG, "CLICKED !!! " + main.isFavorite());
                         populateToolbar( main);
@@ -65,7 +66,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
             detailViewModel .getListLive() .observe(this,
                     new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
-                        detailViewModel .getListLive() .removeObserver( this);
+                       // detailViewModel .getListLive() .removeObserver( this);
                         Log.d( TAG + ":::getListLive()\t", "\t[DB]---(detailList)--->\t" + detailList.toString());
                         /* if (detailList.size() > 0) */  mDetailRVAdapter .submitList( detailList);
                     }});

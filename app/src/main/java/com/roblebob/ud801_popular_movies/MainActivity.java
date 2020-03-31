@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         mainViewModel .apiKeyLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
-                mainViewModel .apiKeyLive .removeObserver( this);
+                //mainViewModel .apiKeyLive .removeObserver( this);
 
                 //Toast .makeText( context, "apiKey: " + apiKey, Toast.LENGTH_SHORT).show();
                 Log.e(TAG + ":::mainViewModel .apiKeyLive\t", "\t" + apiKey);
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         mainViewModel .orderLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable  String order) {
-                mainViewModel .orderLive .removeObserver( this);
+                //mainViewModel .orderLive .removeObserver( this);
 
                 //Toast .makeText( context, "order: " + order, Toast.LENGTH_SHORT).show();
                 Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\t" + order);
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         mainViewModel .mainListByDatabaseLive .observe(this, new Observer< List< Main>>() {
             @Override public void onChanged( @Nullable  List< Main> mainList) {
-                mainViewModel .mainListByDatabaseLive .removeObserver( this);
+                //mainViewModel .mainListByDatabaseLive .removeObserver( this);
 
                 if (mainList != null) {
                     mMainRVAdapter .submitList( mainList);
@@ -133,17 +133,17 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         mainViewModel .movieCountLive .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @Nullable Integer movieCount) {
-                mainViewModel .movieCountLive .removeObserver( this);
+                //mainViewModel .movieCountLive .removeObserver( this);
 
-                //Toast .makeText( context, "movieCount changed: " + movieCount, Toast.LENGTH_SHORT).show();
-                Log.e(TAG + ":::mainViewModel .movieCountLive\t" , "\tMovieCount: " + movieCount);
                 ((TextView) findViewById( R.id.activitity_main_BASIC_COUNT_tv))  .setText(  String.valueOf(  movieCount));
+                //Toast .makeText( context, "movieCount changed: " + movieCount, Toast.LENGTH_SHORT).show();
+                Log.e(TAG + ":::mainViewModel .movieCountLive\t" , "\tMovieCount: " + (movieCount + 1));
             }
         });
 
         mainViewModel .detailedMovieCountLive .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @Nullable Integer detailedMovieCount) {
-                mainViewModel .detailedMovieCountLive .removeObserver( this);
+                //mainViewModel .detailedMovieCountLive .removeObserver( this);
 
                 //Toast .makeText( context, "detailedMovieCount changed: " + , Toast.LENGTH_SHORT).show();
                 Log.e(TAG + ":::detailedMovieCountLive\t" , "\t" + detailedMovieCount);
