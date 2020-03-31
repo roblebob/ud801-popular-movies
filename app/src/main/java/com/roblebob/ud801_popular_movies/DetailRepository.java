@@ -20,6 +20,7 @@ public class DetailRepository {
     public DetailRepository( @NonNull AppDatabase appDatabase) { this.appDatabase = appDatabase; }
     public LiveData< List<Detail>> getListLive( int movieID)  { return this.appDatabase .detailDao() .loadList( movieID); }
 
+    public LiveData< Integer>     getMovieCount()             { return this.appDatabase .detailDao() .countMovies(); }
 
     public  void integrate( final String apiKey, final Integer movieID)  {
         Log.e(this.getClass().getSimpleName() + "::integrate(\t", "\t" + "apiKey=" + apiKey + "\t,\t" + "movieID=" + movieID + "\t)" );

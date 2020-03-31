@@ -24,10 +24,12 @@ public class AppStateRepository {
     public LiveData< String> getApiKeyLive() { return appDatabase .appStateDao() .loadApiKey(); }
 
 
-    public void setOrder(String order) { AppExecutors .getInstance() .diskIO() .execute(  () -> {
-        appDatabase.appStateDao().update(new AppState("order", order));
-        Log.e(this.getClass().getSimpleName(), "-------->\t" + order);
-    }); }
+    public void setOrder(String order) {
+        AppExecutors .getInstance() .diskIO() .execute(  () -> {
+            if (order.equals("popular") || order.equals("top_rated"))  appDatabase.appStateDao().insert( new AppState("order", order));
+            Log.e(this.getClass().getSimpleName() + " ::setOrder(", "\t" + order);
+        });
+    }
 
 
     public void setApiKey( String apiKey) {

@@ -20,15 +20,16 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVViewHolder> {
-    private final static String TAG =   MainRVAdapter.class .getSimpleName();
-    private List<Main> mainList = new ArrayList<>();
+public class MainRVAdapterDiffer extends RecyclerView.Adapter< MainRVAdapterDiffer.MainRVViewHolder> {
+    private final static String TAG =   MainRVAdapterDiffer.class .getSimpleName();
+    private final AsyncListDiffer<Main> mDiffer = new AsyncListDiffer(this, DIFF_CALLBACK);
     private ItemClickListener mItemClickListener;
     private String order;
 
     public void submitOrder(@NonNull String order) {
         if (getItemCount() > 0) {
             this.order = order;
+            List<Main> mainList = new ArrayList<Main>(mDiffer.getCurrentList());
             switch (order) {
 
                 case "popular":
@@ -54,11 +55,14 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
         }
     }
 
-    public void submitList( List< Main> mainList) { this.mainList = new ArrayList<>(mainList); notifyDataSetChanged(); }
+    public void submitList( @NonNull  List< Main> mainList) { mDiffer.submitList( new ArrayList<>(mainList)); }
 
+    public static final DiffUtil.ItemCallback< Main> DIFF_CALLBACK =  new DiffUtil.ItemCallback< Main>() {
+        @Override public boolean areItemsTheSame    (@NonNull Main oldMain, @NonNull Main newMain) { return  oldMain.getMovieID()  ==  newMain.getMovieID(); }
+        @Override public boolean areContentsTheSame (@NonNull Main oldMain, @NonNull Main newMain) { return  oldMain          .equals( newMain); }
+    };
 
-
-    MainRVAdapter(ItemClickListener itemClickListener) { mItemClickListener = itemClickListener; }
+    MainRVAdapterDiffer(ItemClickListener itemClickListener) { mItemClickListener = itemClickListener; }
 
     @NonNull @Override public MainRVViewHolder  onCreateViewHolder( @NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater .from( parent .getContext()) .inflate( R.layout.main_rv_single_item, parent, false);
@@ -66,18 +70,18 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
     }
 
     @Override public void  onBindViewHolder( @NonNull MainRVViewHolder holder, int position) {
-        Main main = this.mainList .get( position);
+        Main main = mDiffer .getCurrentList() .get( position);
         holder.bindTo( main);
-        Log.e(TAG + "::onBindViewHolder()\t", "\t---(POS:" + position + ")--->\t" + main.getMovieID());
+        Log.d(TAG + "::onBindViewHolder()\t", "\t---(POS:" + position + ")--->\t" + main.getMovieID());
     }
 
-    @Override public int  getItemCount() { return  mainList.size(); }
+    @Override public int  getItemCount() { return  mDiffer.getCurrentList().size(); }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////
-    public interface  ItemClickListener  { void onItemClickListener( int id); }
+    public interface  ItemClickListener  { void onItemClickListener(int id); }
     //
     public class  MainRVViewHolder  extends RecyclerView .ViewHolder  implements View .OnClickListener  {
 
@@ -92,7 +96,7 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
         }
 
         @Override public void onClick( View v) {
-            mItemClickListener .onItemClickListener(  mainList.get( getAdapterPosition()).getMovieID());
+            mItemClickListener .onItemClickListener(  mDiffer.getCurrentList().get( getAdapterPosition()).getMovieID());
         }
 
         public void bindTo( Main main) {

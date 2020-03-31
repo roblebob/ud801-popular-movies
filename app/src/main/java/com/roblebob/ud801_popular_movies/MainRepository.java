@@ -33,8 +33,8 @@ public class MainRepository  {
     public LiveData< List<Main>>  getPopularListLive()        { return this.appDatabase .mainDao() .loadPopularListLive(); }
     public LiveData< List<Main>>  getTopRatedListLive()       { return this.appDatabase .mainDao() .loadTopRatedListLive(); }
     public LiveData< Integer>     getMovieCount()             { return this.appDatabase .mainDao() .loadMainCountLive(); }
-    public LiveData< Main>        getMainLive(int movieID)    { return this.appDatabase .mainDao() .loadMainLive( movieID); }
 
+    public LiveData< Main>        getMainLive(int movieID)    { return this.appDatabase .mainDao() .loadMainLive( movieID); }
     public void inverseFavorite(int movieID) {
         AppExecutors.getInstance().diskIO().execute(() -> this.appDatabase.mainDao().inverseFavorite( movieID)); }
 
@@ -106,10 +106,4 @@ public class MainRepository  {
 
         } catch ( MalformedURLException e) { e.printStackTrace(); return null; }
     }
-
-
-
-
-
-
 }

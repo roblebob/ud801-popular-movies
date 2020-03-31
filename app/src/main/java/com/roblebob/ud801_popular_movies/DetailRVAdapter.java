@@ -13,6 +13,8 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.DetailsRVViewholder> {
@@ -28,8 +30,12 @@ public class DetailRVAdapter extends RecyclerView .Adapter<DetailRVAdapter.Detai
         this.itemClickListener = itemClickListener;
     }
 
-    void setDetailList(List<Detail> detailList) {
+    void submitList(List<Detail> detailList) {
         this.detailList = new ArrayList<>(detailList);
+
+        Collections.sort(this.detailList, ((Comparator<Detail>) (Detail d1, Detail d2) ->
+                Double.compare( Detail.CONTEXTs.indexOf(d1.getContext()), Detail.CONTEXTs.indexOf(d2.getContext()))));
+
         notifyDataSetChanged();
     }
 

@@ -26,7 +26,7 @@ public interface AppStateDao {
     @Query("UPDATE AppState SET `value` =:apiKey WHERE `key` = 'api_key'")
     void updateApiKey(String apiKey);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)     void insert(AppState appState);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)    void insert(AppState appState);
     @Update(onConflict = OnConflictStrategy.REPLACE)    void update(AppState appState);
     @Delete                                             void delete(AppState appState);
 }

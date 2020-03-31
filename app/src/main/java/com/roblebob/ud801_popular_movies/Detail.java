@@ -1,4 +1,6 @@
 package com.roblebob.ud801_popular_movies;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -30,27 +32,29 @@ public class Detail {
             /* 13 */     "reviews"       // ... a single review, each
     ));
 
-    @PrimaryKey(autoGenerate = true)  private int    _ID;
+    @PrimaryKey(autoGenerate = false) private int    _ID;
     @ColumnInfo(name = "movieID")     private int    movieID;
     @ColumnInfo(name = "context")     private String context;
     @ColumnInfo(name = "content")     private String content;
     @ColumnInfo(name = "link")        private String link;
 
 
-    public Detail(int _ID, int movieID, String context, String content, String link) {
-        this._ID = _ID;
+    public Detail( /* int _ID, */ int movieID, String context, String content, String link) {
         this.movieID = movieID;
         this.context = context;
         this.content = content;
         this.link = link;
+
+        this._ID = hashCode();
+        Log.e(this.getClass().getSimpleName(), "_ID: " + _ID);
     }
 
-    @Ignore public Detail( /* int _ID, */ int movieID, String context, String content, String link) {
-        this.movieID = movieID;
-        this.context = context;
-        this.content = content;
-        this.link = link;
-    }
+//    @Ignore public Detail( /* int _ID, */ int movieID, String context, String content, String link) {
+//        this.movieID = movieID;
+//        this.context = context;
+//        this.content = content;
+//        this.link = link;
+//    }
 
     public int    get_ID()     { return this._ID; }
     public int    getMovieID() { return this.movieID; }

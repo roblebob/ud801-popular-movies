@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
     public Context context;
     private AppDatabase appDatabase;
     private MainViewModelFactory mainViewModelFactory;
+
 
     @Override protected void onCreate( Bundle savedInstanceState) {
         super .onCreate( savedInstanceState);
@@ -51,56 +53,100 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         if (getSupportActionBar() != null) {
             getSupportActionBar() .setDisplayShowTitleEnabled( false);
         }
-        toolbar.setFitsSystemWindows(true);
-
-        TabLayout mTabLayout = findViewById(R.id.activity_main_TAB);
-        mTabLayout .setSelected( true);
-        mTabLayout .addOnTabSelectedListener( new TabLayout .OnTabSelectedListener() {
-            @Override public void onTabSelected(   TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
-            @Override public void onTabUnselected( TabLayout.Tab tab) {}
-            @Override public void onTabReselected( TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
-        });
+        toolbar.setFitsSystemWindows( true);
 
 
-        mainViewModel .getApiKeyLive() .observe(this, new Observer< String>() {
+
+        mainViewModel .apiKeyLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
-                mainViewModel .getApiKeyLive() .removeObserver( this);
-                Toast .makeText( context, "apiKey: " + apiKey, Toast.LENGTH_SHORT).show();      Log.e(TAG + ":::mainViewModel .apiKeyLive\t", "\t" + apiKey);
+                mainViewModel .apiKeyLive .removeObserver( this);
+
+                //Toast .makeText( context, "apiKey: " + apiKey, Toast.LENGTH_SHORT).show();
+                Log.e(TAG + ":::mainViewModel .apiKeyLive\t", "\t" + apiKey);
                 populateApiKeyUI( apiKey);
             }
         });
-        mainViewModel .getOrderLive() .observe(this, new Observer<String>() {
-            @Override public void onChanged( @Nullable String order) {
-                mainViewModel .getOrderLive() .removeObserver( this);
-                Toast .makeText( context, "order: " + order, Toast.LENGTH_SHORT).show();        Log.e(TAG + ":::mainViewModel .orderLive\t", "\t" + order);
-                if (order != null)  mMainRVAdapter .submitOrder(  order);
+
+        mainViewModel .orderLive .observe(this, new Observer< String>() {
+            @Override public void onChanged( @Nullable  String order) {
+                mainViewModel .orderLive .removeObserver( this);
+
+                //Toast .makeText( context, "order: " + order, Toast.LENGTH_SHORT).show();
+                Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\t" + order);
+
+                if (order != null) {
+                    mMainRVAdapter .submitOrder(  order);
+
+                    switch (order) {
+                        case "popular":
+                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(true);
+                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(false);
+                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\t the order \"" + order + "\" has been applied !");
+                            break;
+
+                        case "top_rated":
+                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(false);
+                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(true);
+
+                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\tthe order \"" + order + "\" has been applied !");
+                            break;
+                        default:
+                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\tthe new order \"" + order + "\"  could not be applied !");
+                    }
+
+
+                    TabLayout tabLayout = findViewById( R.id.activity_main_TABLAYOUT);
+                    //tabLayout .setSelected( true);
+                    tabLayout .addOnTabSelectedListener( new TabLayout .OnTabSelectedListener() {
+                        @Override public void onTabSelected( TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
+                        @Override public void onTabUnselected( TabLayout.Tab tab) {}
+                        @Override public void onTabReselected( TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
+                    });
+
+
+
+                } else mainViewModel.setOrder("popular");
+
+
+
+
+
+
             }
         });
-//        mainViewModel .orderLive .observe(this, new Observer< String>() {
-//            @Override public void onChanged( @Nullable  String order) {
-//                mainViewModel .orderLive .removeObserver( this);
-//                Toast .makeText( context, "order: " + order, Toast.LENGTH_SHORT).show();        Log.e(TAG + ":::mainViewModel .orderLive\t", "\t" + order);
-//                if (order != null)  mMainRVAdapter .submitOrder(  order);
-//            }
-//        });
+
         mainViewModel .mainListByDatabaseLive .observe(this, new Observer< List< Main>>() {
             @Override public void onChanged( @Nullable  List< Main> mainList) {
                 mainViewModel .mainListByDatabaseLive .removeObserver( this);
-                if (mainList != null)  mMainRVAdapter .submitList( mainList);
-                Toast .makeText( context, "mainList changed", Toast.LENGTH_SHORT).show();       Log.e(TAG + ":::mainListByDatabaseLive\t" , "\t" + ((mainList != null)  ? mainList.toString() : "null"));
+
+                if (mainList != null) {
+                    mMainRVAdapter .submitList( mainList);
+                    //Toast .makeText( context, "mainList changed", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG + ":::mainListByDatabaseLive\t" , "\t" + ((mainList != null)  ? mainList.toString() : "null"));
+                }
             }
         });
+
         mainViewModel .movieCountLive .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @Nullable Integer movieCount) {
                 mainViewModel .movieCountLive .removeObserver( this);
-                Toast .makeText( context, "movieCount changed", Toast.LENGTH_SHORT).show();     Log.e(TAG + ":::mainViewModel .movieCountLive\t" , "\t" + movieCount);
+
+                //Toast .makeText( context, "movieCount changed: " + movieCount, Toast.LENGTH_SHORT).show();
+                Log.e(TAG + ":::mainViewModel .movieCountLive\t" , "\tMovieCount: " + movieCount);
                 ((TextView) findViewById( R.id.activitity_main_BASIC_COUNT_tv))  .setText(  String.valueOf(  movieCount));
             }
         });
+
         mainViewModel .detailedMovieCountLive .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @Nullable Integer detailedMovieCount) {
                 mainViewModel .detailedMovieCountLive .removeObserver( this);
-                Toast .makeText( context, "detailedMovieCount changed", Toast.LENGTH_SHORT).show();       Log.e(TAG + ":::detailedMovieCountLive\t" , "\t" + detailedMovieCount);
+
+                //Toast .makeText( context, "detailedMovieCount changed: " + , Toast.LENGTH_SHORT).show();
+                Log.e(TAG + ":::detailedMovieCountLive\t" , "\t" + detailedMovieCount);
                 ((TextView) findViewById( R.id.activitity_main_DETAILED_COUNT_tv))  .setText(  String.valueOf(  detailedMovieCount));
             }
         });
@@ -123,14 +169,14 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         if (apiKey != null)  {   Toast.makeText(  this.context, "apiKey accepted", Toast.LENGTH_SHORT).show();
             ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.GONE);
-            ((TabLayout)         findViewById( R.id.activity_main_TAB)               )   .setVisibility( View.VISIBLE);
+            ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)         )   .setVisibility( View.VISIBLE);
             ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
             ((RecyclerView)      findViewById( R.id.activity_main_RV)                )   .setVisibility( View.VISIBLE);
             mainViewModel .start( apiKey);
 
         } else {                 Toast .makeText( this.context, "apiKey rejected", Toast.LENGTH_SHORT).show();
             ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.VISIBLE);
-            ((TabLayout)         findViewById( R.id.activity_main_TAB)               )   .setVisibility( View.GONE);
+            ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)         )   .setVisibility( View.GONE);
             ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.GONE);
             ((RecyclerView)      findViewById( R.id.activity_main_RV)                )   .setVisibility( View.GONE);
             ((TextInputEditText) findViewById( R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(   (v, actionId, event) -> {

@@ -67,7 +67,7 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
                     new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
                         detailViewModel .getListLive() .removeObserver( this);
                         Log.d( TAG + ":::getListLive()\t", "\t[DB]---(detailList)--->\t" + detailList.toString());
-                        if (detailList.size() > 0)  mDetailRVAdapter .setDetailList( detailList);
+                        /* if (detailList.size() > 0) */  mDetailRVAdapter .submitList( detailList);
                     }});
 
         } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID");
