@@ -17,6 +17,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,7 +59,20 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         toolbar.setFitsSystemWindows( true);
 
 
+        ConnectionMonitor connectionMonitor = new ConnectionMonitor( getApplicationContext());
+        connectionMonitor.observe( this, new Observer<Boolean>() {
+            @Override public void onChanged(Boolean aBoolean) {
+                if (aBoolean) /* available */ {
+                    ((ImageView) findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW)) .setColorFilter( getApplicationContext() .getColor( R.color.colorPrimary));
+                    ((ProgressBar) findViewById( R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .setVisibility( View.VISIBLE);
+                } else /* lost */ {
+                    ((ImageView) findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW)) .setColorFilter( getApplicationContext() .getColor( R.color.colorGray));
+                    ((ProgressBar) findViewById( R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .setVisibility( View.GONE);
+                }
+            }
+        });
 
+        
         mainViewModel .apiKeyLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
                 //mainViewModel .apiKeyLive .removeObserver( this);
@@ -122,12 +137,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         });
     }
 
-    public boolean isConnected() {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = (activeNetwork != null)  &&  (activeNetwork.isConnectedOrConnecting());
-        return isConnected;
-    }
 
 
 
@@ -170,4 +179,16 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         intent .putExtra( DetailActivity.INTENT_EXTRA_movieID, movieID);
         startActivity( intent);
     }
+
+
+
+
+    public boolean isConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = (activeNetwork != null)  &&  (activeNetwork.isConnectedOrConnecting());
+        Log.e( AppUtilities.class.getSimpleName(), "isConnected: " + isConnected);
+        return isConnected;
+    }
+
 }

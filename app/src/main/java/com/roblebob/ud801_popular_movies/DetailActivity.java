@@ -50,24 +50,19 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
             detailViewModel.getApiKeyLive() .observe(this,
                     new Observer< String>() { @Override public void onChanged( String apiKey) {
-
                         //detailViewModel .getApiKeyLive() .removeObserver( this);
-                        Log.d( TAG + ":::getApiKeyLive()\t", "\t[DB]---(apiKey)--->\t" + apiKey);
                         detailViewModel.integrate(apiKey);
                     }});
 
             detailViewModel .getMainLive() .observe(this,
                     new Observer<Main>() { @Override public void onChanged( Main main) {
                         //detailViewModel .getMainLive() .removeObserver( this);
-                        Log.d( TAG + ":::getMainLive()\t", "\t[DB]---(main)--->\t" + main.toString());
-                        Log.e(TAG, "CLICKED !!! " + main.isFavorite());
                         populateToolbar( main);
                     }});
 
             detailViewModel .getListLive() .observe(this,
                     new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
                        // detailViewModel .getListLive() .removeObserver( this);
-                        Log.d( TAG + ":::getListLive()\t", "\t[DB]---(detailList)--->\t" + detailList.toString());
                         /* if (detailList.size() > 0) */  mDetailRVAdapter .submitList( detailList);
                     }});
 
@@ -80,7 +75,6 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
     /////
 
     @Override public void onItemClickListener(String type, String url) {
-        Log .e(TAG, "CLICKED !!!   [type]:" + type + "   [url]:" + url);
         try {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse( (new URL(url).toString())));
             startActivity(browserIntent);

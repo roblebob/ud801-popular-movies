@@ -50,7 +50,7 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
                     break;
             }
             submitList( mainList);
-            Log.e(TAG + "::submitOrder()\t",  order +  "---> "  +   mainList .parallelStream() .map(  (movie) -> movie.getMovieID())  .collect(  Collectors.toList())  .toString());
+            //Log.e(TAG + "::submitOrder()\t",  order +  "---> "  +   mainList .parallelStream() .map(  (movie) -> movie.getMovieID())  .collect(  Collectors.toList())  .toString());
         }
     }
 
@@ -68,7 +68,7 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
     @Override public void  onBindViewHolder( @NonNull MainRVViewHolder holder, int position) {
         Main main = this.mainList .get( position);
         holder.bindTo( main);
-        Log.e(TAG + "::onBindViewHolder()\t", "\t---(POS:" + position + ")--->\t" + main.getMovieID());
+        //Log.e(TAG + "::onBindViewHolder()\t\t", "\t\tPOS:" + position + "\t\t" + main.getMovieID());
     }
 
     @Override public int  getItemCount() { return  mainList.size(); }

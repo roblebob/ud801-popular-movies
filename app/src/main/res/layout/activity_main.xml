@@ -69,7 +69,7 @@
             appState:layout_scrollFlags="enterAlways">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/activity_main_TOOLBAR_state_disp_IMAGE_VIEW"
                 android:layout_width="37dp"
                 android:layout_height="36dp"
                 android:src="@drawable/connection_status_indicator"
@@ -77,7 +77,7 @@
                 appState:layout_constraintStart_toStartOf="parent" />
 
             <ProgressBar
-                android:id="@+id/progressBar"
+                android:id="@+id/activity_main_TOOLBAR_state_disp_PROGRESS_BAR"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
                 android:layout_height="19dp"
@@ -96,8 +96,8 @@
                 android:progressTint="#06060A0A"
                 appState:layout_constraintBottom_toBottomOf="parent"
                 appState:layout_constraintEnd_toStartOf="@+id/activitity_main_MAIN_COUNT"
-                appState:layout_constraintStart_toEndOf="@+id/imageView"
-                appState:layout_constraintTop_toTopOf="@+id/imageView" />
+                appState:layout_constraintStart_toEndOf="@+id/activity_main_TOOLBAR_state_disp_IMAGE_VIEW"
+                appState:layout_constraintTop_toTopOf="@+id/activity_main_TOOLBAR_state_disp_IMAGE_VIEW" />
 
             <TextView
                 android:id="@+id/activitity_main_MAIN_COUNT_label"
@@ -118,9 +118,9 @@
                 android:background="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
-                appState:layout_constraintBottom_toBottomOf="@+id/progressBar"
+                appState:layout_constraintBottom_toBottomOf="@+id/activity_main_TOOLBAR_state_disp_PROGRESS_BAR"
                 appState:layout_constraintEnd_toStartOf="@+id/activitity_main_DETAILED_COUNT"
-                appState:layout_constraintTop_toTopOf="@+id/progressBar">
+                appState:layout_constraintTop_toTopOf="@+id/activity_main_TOOLBAR_state_disp_PROGRESS_BAR">
 
                 <TextView
                     android:id="@+id/activitity_main_MAIN_COUNT_tv"
