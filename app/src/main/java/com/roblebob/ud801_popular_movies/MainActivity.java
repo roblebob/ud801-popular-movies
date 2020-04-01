@@ -2,6 +2,7 @@ package com.roblebob.ud801_popular_movies;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         RecyclerView.LayoutManager mRVLayoutManager = new GridLayoutManager(this, 2, RecyclerView.VERTICAL, false);
         ((LinearLayoutManager) mRVLayoutManager) .setInitialPrefetchItemCount( 100);
         mMainRV .setLayoutManager( mRVLayoutManager);
-        mMainRVAdapter = new MainRVAdapter( this);
+        mMainRVAdapter = new MainRVAdapter(this);
         mMainRV .setAdapter( mMainRVAdapter);
         mMainRV .setHasFixedSize( true);
 
@@ -60,9 +61,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         mainViewModel .apiKeyLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
                 //mainViewModel .apiKeyLive .removeObserver( this);
-
-                //Toast .makeText( context, "apiKey: " + apiKey, Toast.LENGTH_SHORT).show();
-                Log.e(TAG + ":::mainViewModel .apiKeyLive\t", "\t" + apiKey);
                 populateApiKeyUI( apiKey);
             }
         });
@@ -70,34 +68,8 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         mainViewModel .orderLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable  String order) {
                 //mainViewModel .orderLive .removeObserver( this);
-
-                //Toast .makeText( context, "order: " + order, Toast.LENGTH_SHORT).show();
-                Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\t" + order);
-
                 if (order != null) {
                     mMainRVAdapter .submitOrder(  order);
-
-                    switch (order) {
-                        case "popular":
-                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
-                                ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(true);
-                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
-                                ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(false);
-                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\t the order \"" + order + "\" has been applied !");
-                            break;
-
-                        case "top_rated":
-                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
-                                ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(false);
-                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
-                                ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(true);
-
-                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\tthe order \"" + order + "\" has been applied !");
-                            break;
-                        default:
-                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\tthe new order \"" + order + "\"  could not be applied !");
-                    }
-
 
                     TabLayout tabLayout = findViewById( R.id.activity_main_TABLAYOUT);
                     //tabLayout .setSelected( true);
@@ -107,46 +79,44 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
                         @Override public void onTabReselected( TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
                     });
 
+                    switch (order) {
+                        case "popular":
+                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(true);
+                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(false);
+                            break;
 
-
+                        case "top_rated":
+                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(false);
+                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
+                                ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(true);
+                            break;
+                        default:
+                            Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\tthe new order \"" + order + "\"  could not be applied !");
+                    }
                 } else mainViewModel.setOrder("popular");
-
-
-
-
-
-
             }
         });
 
         mainViewModel .mainListByDatabaseLive .observe(this, new Observer< List< Main>>() {
             @Override public void onChanged( @Nullable  List< Main> mainList) {
                 //mainViewModel .mainListByDatabaseLive .removeObserver( this);
-
-                if (mainList != null) {
-                    mMainRVAdapter .submitList( mainList);
-                    //Toast .makeText( context, "mainList changed", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG + ":::mainListByDatabaseLive\t" , "\t" + ((mainList != null)  ? mainList.toString() : "null"));
-                }
+                if (mainList != null) mMainRVAdapter .submitList( mainList);
             }
         });
 
         mainViewModel .movieCountLive .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @Nullable Integer movieCount) {
                 //mainViewModel .movieCountLive .removeObserver( this);
-
-                ((TextView) findViewById( R.id.activitity_main_BASIC_COUNT_tv))  .setText(  String.valueOf(  movieCount));
-                //Toast .makeText( context, "movieCount changed: " + movieCount, Toast.LENGTH_SHORT).show();
-                Log.e(TAG + ":::mainViewModel .movieCountLive\t" , "\tMovieCount: " + (movieCount + 1));
+                ((TextView) findViewById( R.id.activitity_main_MAIN_COUNT_tv))  .setText(  String.valueOf(  movieCount));
             }
         });
 
         mainViewModel .detailedMovieCountLive .observe(this, new Observer< Integer>() {
             @Override public void onChanged( @Nullable Integer detailedMovieCount) {
                 //mainViewModel .detailedMovieCountLive .removeObserver( this);
-
-                //Toast .makeText( context, "detailedMovieCount changed: " + , Toast.LENGTH_SHORT).show();
-                Log.e(TAG + ":::detailedMovieCountLive\t" , "\t" + detailedMovieCount);
                 ((TextView) findViewById( R.id.activitity_main_DETAILED_COUNT_tv))  .setText(  String.valueOf(  detailedMovieCount));
             }
         });
@@ -154,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
     public boolean isConnected() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = null;
-        if (cm != null)  activeNetwork = cm.getActiveNetworkInfo();
-        return  (activeNetwork != null)  &&  (activeNetwork.isConnectedOrConnecting());
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = (activeNetwork != null)  &&  (activeNetwork.isConnectedOrConnecting());
+        return isConnected;
     }
 
 
@@ -165,22 +135,28 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         final MainViewModel mainViewModel = new ViewModelProvider(this, this.mainViewModelFactory) .get( MainViewModel.class);
 
-        Log.e(TAG + "::populateApiKeyUI()\t" , "\t<---(apiKey)---\t" + apiKey);
-
         if (apiKey != null)  {   Toast.makeText(  this.context, "apiKey accepted", Toast.LENGTH_SHORT).show();
             ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.GONE);
             ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)         )   .setVisibility( View.VISIBLE);
             ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
+            ((CardView)          findViewById( R.id.activitity_main_MAIN_COUNT)     )   .setVisibility( View.VISIBLE);
+            ((TextView)          findViewById( R.id.activitity_main_MAIN_COUNT_label))  .setVisibility( View.VISIBLE);
+            ((CardView)          findViewById( R.id.activitity_main_DETAILED_COUNT)     )   .setVisibility( View.VISIBLE);
+            ((TextView)          findViewById( R.id.activitity_main_DETAILED_COUNT_label))  .setVisibility( View.VISIBLE);
             ((RecyclerView)      findViewById( R.id.activity_main_RV)                )   .setVisibility( View.VISIBLE);
             mainViewModel .start( apiKey);
+            mainViewModel.apiKeyLive.removeObservers(this);
 
         } else {                 Toast .makeText( this.context, "apiKey rejected", Toast.LENGTH_SHORT).show();
             ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.VISIBLE);
             ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)         )   .setVisibility( View.GONE);
-            ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.GONE);
+            ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
+            ((CardView)          findViewById( R.id.activitity_main_MAIN_COUNT)     )   .setVisibility( View.GONE);
+            ((TextView)          findViewById( R.id.activitity_main_MAIN_COUNT_label))  .setVisibility( View.GONE);
+            ((CardView)          findViewById( R.id.activitity_main_DETAILED_COUNT)     )   .setVisibility( View.GONE);
+            ((TextView)          findViewById( R.id.activitity_main_DETAILED_COUNT_label))  .setVisibility( View.GONE);
             ((RecyclerView)      findViewById( R.id.activity_main_RV)                )   .setVisibility( View.GONE);
             ((TextInputEditText) findViewById( R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(   (v, actionId, event) -> {
-                Log.e(TAG + "::populateApiKeyUI()\t", "----------->    ACTION was called:   " + v.getText().toString());
                 mainViewModel.setApiKey(v.getText().toString());
                 return false;   //  FALSE -> keyboard display goes into hiding
             });

@@ -95,23 +95,23 @@
                 android:progressDrawable="@drawable/ic_refresh_black_24dp"
                 android:progressTint="#06060A0A"
                 appState:layout_constraintBottom_toBottomOf="parent"
-                appState:layout_constraintEnd_toStartOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintEnd_toStartOf="@+id/activitity_main_MAIN_COUNT"
                 appState:layout_constraintStart_toEndOf="@+id/imageView"
                 appState:layout_constraintTop_toTopOf="@+id/imageView" />
 
             <TextView
-                android:id="@+id/activitity_main_BASIC_COUNT_label"
+                android:id="@+id/activitity_main_MAIN_COUNT_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="basics:"
+                android:text="movies:"
                 android:textColor="@color/colorPrimary"
                 android:textSize="9sp"
-                appState:layout_constraintBottom_toTopOf="@+id/activitity_main_BASIC_COUNT"
-                appState:layout_constraintStart_toStartOf="@+id/activitity_main_BASIC_COUNT" />
+                appState:layout_constraintBottom_toTopOf="@+id/activitity_main_MAIN_COUNT"
+                appState:layout_constraintStart_toStartOf="@+id/activitity_main_MAIN_COUNT" />
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/activitity_main_BASIC_COUNT"
+                android:id="@+id/activitity_main_MAIN_COUNT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -123,7 +123,7 @@
                 appState:layout_constraintTop_toTopOf="@+id/progressBar">
 
                 <TextView
-                    android:id="@+id/activitity_main_BASIC_COUNT_tv"
+                    android:id="@+id/activitity_main_MAIN_COUNT_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
@@ -153,9 +153,9 @@
                 android:background="@color/colorPrimary"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
-                appState:layout_constraintBottom_toBottomOf="@+id/activitity_main_BASIC_COUNT"
+                appState:layout_constraintBottom_toBottomOf="@+id/activitity_main_MAIN_COUNT"
                 appState:layout_constraintEnd_toEndOf="parent"
-                appState:layout_constraintTop_toTopOf="@+id/activitity_main_BASIC_COUNT">
+                appState:layout_constraintTop_toTopOf="@+id/activitity_main_MAIN_COUNT">
 
                 <TextView
                     android:id="@+id/activitity_main_DETAILED_COUNT_tv"

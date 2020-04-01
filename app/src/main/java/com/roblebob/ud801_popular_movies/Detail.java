@@ -48,11 +48,11 @@ public class Detail {
         this._ID = hashCode();
     }
 
-    public int    get_ID()     { return this._ID; }
-    public int    getMovieID() { return this.movieID; }
-    public String getContext() { return this.context; }
-    public String getContent() { return this.content; }
-    public String getLink()    { return this.link; }
+    public int    get_ID()      { return this._ID;     }
+    public int    getMovieID()  { return this.movieID; }
+    public String getContext()  { return this.context; }
+    public String getContent()  { return this.content; }
+    public String getLink()     { return this.link;    }
     @Ignore public String getUrl() {
         switch (getContext()) {
             case "homepage" : return getLink();
@@ -65,7 +65,7 @@ public class Detail {
 
     public void set_ID    ( int    _ID    )  { this._ID     = _ID;     }
     public void setMovieID( int    movieID)  { this.movieID = movieID; }
-    public void setContext(String context)  { this.context = context;   }
+    public void setContext(String context)   { this.context = context; }
     public void setContent( String content)  { this.content = content; }
     public void setLink   ( String link   )  { this.link    = link;    }
 
