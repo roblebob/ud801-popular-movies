@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         toolbar.setFitsSystemWindows( true);
 
 
-        new AppConnection( getApplicationContext()) .observe( this, new Observer<Boolean>() {
+        new AppConnectivity( getApplicationContext()) .observe( this, new Observer<Boolean>() {
             @Override public void onChanged(Boolean aBoolean) {
                 if (aBoolean) /* available */ {
                     ((ImageView)   findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW))   .setColorFilter(     getApplicationContext() .getColor( R.color.colorPrimary));
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
         mainViewModel .apiKeyLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
-                //mainViewModel .apiKeyLive .removeObserver( this);
+                //mainViewModel .apiKeyLive .removeObserver( this); 
                 populateApiKeyUI( apiKey);
             }
         });
@@ -96,23 +97,23 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
                     TabLayout tabLayout = findViewById( R.id.activity_main_TABLAYOUT);
                     //tabLayout .setSelected( true);
                     tabLayout .addOnTabSelectedListener( new TabLayout .OnTabSelectedListener() {
-                        @Override public void onTabSelected( TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
+                        @Override public void onTabSelected(   TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
                         @Override public void onTabUnselected( TabLayout.Tab tab) {}
                         @Override public void onTabReselected( TabLayout.Tab tab) { mainViewModel .setOrder( AppUtilities.ORDER.get( tab.getPosition())); }
                     });
 
                     switch (order) {
                         case "popular":
-                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
+                            if (((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
                                 ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(true);
-                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
+                            if (((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) != null)
                                 ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(false);
                             break;
 
                         case "top_rated":
-                            if ( ((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
+                            if (((TabItem) findViewById( R.id.activity_main_TAB_popular)) != null)
                                 ((TabItem) findViewById( R.id.activity_main_TAB_popular)) .setSelected(false);
-                            if ( ((TabItem) findViewById(R.id.activity_main_TAB_top_rated)) != null)
+                            if (((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) != null)
                                 ((TabItem) findViewById( R.id.activity_main_TAB_top_rated)) .setSelected(true);
                             break;
                         default:
@@ -146,32 +147,38 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
 
-
     public void populateApiKeyUI( String apiKey) {
 
         final MainViewModel mainViewModel = new ViewModelProvider(this, this.mainViewModelFactory) .get( MainViewModel.class);
 
-        if (apiKey != null)  {   Toast.makeText(  this.context, "apiKey accepted", Toast.LENGTH_SHORT).show();
-            ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.GONE);
-            ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)         )   .setVisibility( View.VISIBLE);
-            ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
-            ((CardView)          findViewById( R.id.activitity_main_MAIN_COUNT)     )   .setVisibility( View.VISIBLE);
-            ((TextView)          findViewById( R.id.activitity_main_MAIN_COUNT_label))  .setVisibility( View.VISIBLE);
-            ((CardView)          findViewById( R.id.activitity_main_DETAILED_COUNT)     )   .setVisibility( View.VISIBLE);
-            ((TextView)          findViewById( R.id.activitity_main_DETAILED_COUNT_label))  .setVisibility( View.VISIBLE);
-            ((RecyclerView)      findViewById( R.id.activity_main_RV)                )   .setVisibility( View.VISIBLE);
+        if (apiKey != null)  {
+            Toast.makeText(  this.context, "apiKey accepted!", Toast.LENGTH_SHORT).show();
+
+            ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)         ) .setVisibility( View.GONE);
+            ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)             ) .setVisibility( View.VISIBLE);
+            ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp)    ) .setVisibility( View.VISIBLE);
+            ((CardView)          findViewById( R.id.activitity_main_MAIN_COUNT)          ) .setVisibility( View.VISIBLE);
+            ((TextView)          findViewById( R.id.activitity_main_MAIN_COUNT_label)    ) .setVisibility( View.VISIBLE);
+            ((CardView)          findViewById( R.id.activitity_main_DETAILED_COUNT)      ) .setVisibility( View.VISIBLE);
+            ((TextView)          findViewById( R.id.activitity_main_DETAILED_COUNT_label)) .setVisibility( View.VISIBLE);
+            ((RecyclerView)      findViewById( R.id.activity_main_RV)                    ) .setVisibility( View.VISIBLE);
             mainViewModel .start( apiKey);
             mainViewModel.apiKeyLive.removeObservers(this);
 
-        } else {                 Toast .makeText( this.context, "apiKey rejected", Toast.LENGTH_SHORT).show();
-            ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)     )   .setVisibility( View.VISIBLE);
-            ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)         )   .setVisibility( View.GONE);
-            ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp))   .setVisibility( View.VISIBLE);
-            ((CardView)          findViewById( R.id.activitity_main_MAIN_COUNT)     )   .setVisibility( View.GONE);
-            ((TextView)          findViewById( R.id.activitity_main_MAIN_COUNT_label))  .setVisibility( View.GONE);
-            ((CardView)          findViewById( R.id.activitity_main_DETAILED_COUNT)     )   .setVisibility( View.GONE);
-            ((TextView)          findViewById( R.id.activitity_main_DETAILED_COUNT_label))  .setVisibility( View.GONE);
-            ((RecyclerView)      findViewById( R.id.activity_main_RV)                )   .setVisibility( View.GONE);
+        } else {
+            if ( ((ProgressBar) findViewById(R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .getVisibility() == View.VISIBLE)
+                Toast .makeText( this.context, "apiKey rejected!", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(  this.context, "NO connectivity!!!", Toast.LENGTH_SHORT).show();
+
+            ((ConstraintLayout)  findViewById( R.id.activity_main_INITIAL_SETUP)         ) .setVisibility( View.VISIBLE);
+            ((TabLayout)         findViewById( R.id.activity_main_TABLAYOUT)             ) .setVisibility( View.GONE);
+            ((ConstraintLayout)  findViewById( R.id.activity_main_TOOLBAR_state_disp)    ) .setVisibility( View.VISIBLE);
+            ((CardView)          findViewById( R.id.activitity_main_MAIN_COUNT)          ) .setVisibility( View.GONE);
+            ((TextView)          findViewById( R.id.activitity_main_MAIN_COUNT_label)    ) .setVisibility( View.GONE);
+            ((CardView)          findViewById( R.id.activitity_main_DETAILED_COUNT)      ) .setVisibility( View.GONE);
+            ((TextView)          findViewById( R.id.activitity_main_DETAILED_COUNT_label)) .setVisibility( View.GONE);
+            ((RecyclerView)      findViewById( R.id.activity_main_RV)                    ) .setVisibility( View.GONE);
             ((TextInputEditText) findViewById( R.id.activity_main_INITIAL_SETUP_textInputLayout_tv)) .setOnEditorActionListener(   (v, actionId, event) -> {
                 mainViewModel.setApiKey(v.getText().toString());
                 return false;   //  FALSE -> keyboard display goes into hiding
@@ -185,17 +192,6 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent .putExtra( DetailActivity.INTENT_EXTRA_movieID, movieID);
         startActivity( intent);
-    }
-
-
-
-
-    public boolean isConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = (activeNetwork != null)  &&  (activeNetwork.isConnectedOrConnecting());
-        Log.e( AppUtilities.class.getSimpleName(), "isConnected: " + isConnected);
-        return isConnected;
     }
 
 }
