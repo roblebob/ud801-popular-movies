@@ -59,20 +59,22 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         toolbar.setFitsSystemWindows( true);
 
 
-        ConnectionMonitor connectionMonitor = new ConnectionMonitor( getApplicationContext());
-        connectionMonitor.observe( this, new Observer<Boolean>() {
-            @Override public void onChanged(Boolean aBoolean) {
+        new AppConnection( getApplicationContext()) .observe( this, new Observer<Boolean>() {
+            //ConnectionMonitor connectionMonitor = new ConnectionMonitor( getApplicationContext());
+            //connectionMonitor.observe( this, new Observer<Boolean>() {
+
+                @Override public void onChanged(Boolean aBoolean) {
                 if (aBoolean) /* available */ {
-                    ((ImageView) findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW)) .setColorFilter( getApplicationContext() .getColor( R.color.colorPrimary));
+                    ((ImageView)   findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW))   .setColorFilter( getApplicationContext() .getColor( R.color.colorPrimary));
                     ((ProgressBar) findViewById( R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .setVisibility( View.VISIBLE);
                 } else /* lost */ {
-                    ((ImageView) findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW)) .setColorFilter( getApplicationContext() .getColor( R.color.colorGray));
+                    ((ImageView)   findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW))   .setColorFilter( getApplicationContext() .getColor( R.color.colorGray));
                     ((ProgressBar) findViewById( R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .setVisibility( View.GONE);
                 }
             }
         });
 
-        
+
         mainViewModel .apiKeyLive .observe(this, new Observer< String>() {
             @Override public void onChanged( @Nullable String apiKey) {
                 //mainViewModel .apiKeyLive .removeObserver( this);
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
                         default:
                             Log.e(TAG + ":::mainViewModel .orderLive\t\t", "\t\tthe new order \"" + order + "\"  could not be applied !");
                     }
-                } else mainViewModel.setOrder("popular");
+                } else mainViewModel.setOrder("popular");  // ... the DEFAULT
             }
         });
 

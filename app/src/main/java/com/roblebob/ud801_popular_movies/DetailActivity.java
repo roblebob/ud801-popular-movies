@@ -19,6 +19,13 @@ import java.net.URL;
 import java.util.List;
 import static java.lang.String.*;
 
+/**
+ * Within the DetailActivity:
+ *   the toolbar presents
+ *     the content of the Main of that movie that has been selected.
+ *   Within the RV below,
+ *     all Datails associated to it are shown, orderly.
+ */
 public class DetailActivity extends AppCompatActivity  implements DetailRVAdapter.ItemClickListener  {
     private static final String TAG = DetailActivity.class.getSimpleName();
     public static final String INTENT_EXTRA_movieID = "INTENT_EXTRA_movieID";
@@ -62,8 +69,8 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
             detailViewModel .getListLive() .observe(this,
                     new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
-                       // detailViewModel .getListLive() .removeObserver( this);
-                        /* if (detailList.size() > 0) */  mDetailRVAdapter .submitList( detailList);
+                        // detailViewModel .getListLive() .removeObserver( this);
+                        mDetailRVAdapter .submitList( detailList);
                     }});
 
         } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID");

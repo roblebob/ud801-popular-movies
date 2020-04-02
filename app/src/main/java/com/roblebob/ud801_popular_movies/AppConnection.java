@@ -5,20 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
-import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.NetworkRequest;
+
 import androidx.lifecycle.LiveData;
 
 
-public class ConnectionMonitor extends LiveData<Boolean> {
+public class AppConnection extends LiveData<Boolean> {
 
     private Context context;
     private ConnectivityManager.NetworkCallback networkCallback = null;
     private NetworkReceiver networkReceiver;
     private ConnectivityManager connectivityManager;
 
-    public ConnectionMonitor(Context context) {
+    public AppConnection(Context context) {
         this.context = context;
         this.connectivityManager = ((ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE));
         this.networkCallback = new NetworkCallBack(this);
@@ -37,11 +36,11 @@ public class ConnectionMonitor extends LiveData<Boolean> {
 
 
     class NetworkCallBack extends ConnectivityManager.NetworkCallback {
-        private ConnectionMonitor connectionMonitor;
-        public NetworkCallBack(ConnectionMonitor connectionMonitor) { this.connectionMonitor = connectionMonitor; }
+        private AppConnection appConnection;
+        public NetworkCallBack(AppConnection appConnection) { this.appConnection = appConnection; }
 
-        @Override public void onAvailable( Network network) { if (network != null)  connectionMonitor.postValue(true); }
-        @Override public void onLost(      Network network) {                       connectionMonitor.postValue(false);}
+        @Override public void onAvailable( Network network) { if (network != null)  appConnection.postValue(true); }
+        @Override public void onLost(      Network network) {                       appConnection.postValue(false);}
     }
 
 
