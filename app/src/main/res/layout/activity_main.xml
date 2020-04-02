@@ -115,9 +115,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:background="@color/colorPrimaryLight"
-                android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
+                appState:cardBackgroundColor="@color/colorPrimary"
                 appState:layout_constraintBottom_toBottomOf="@+id/activity_main_TOOLBAR_state_disp_PROGRESS_BAR"
                 appState:layout_constraintEnd_toStartOf="@+id/activitity_main_DETAILED_COUNT"
                 appState:layout_constraintTop_toTopOf="@+id/activity_main_TOOLBAR_state_disp_PROGRESS_BAR">
@@ -150,8 +149,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:background="@color/colorPrimary"
-                android:backgroundTint="@color/colorPrimary"
+                appState:cardBackgroundColor="@color/colorPrimary"
                 android:minWidth="60dp"
                 appState:layout_constraintBottom_toBottomOf="@+id/activitity_main_MAIN_COUNT"
                 appState:layout_constraintEnd_toEndOf="parent"
@@ -172,32 +170,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.tabs.TabLayout android:id="@+id/activity_main_TABLAYOUT"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/activity_main_TABLAYOUT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             android:visibility="visible"
             appState:layout_scrollFlags="enterAlways"
+            appState:tabGravity="fill"
             appState:tabIndicatorColor="@color/colorPrimaryDark"
+            appState:tabIndicatorFullWidth="true"
+            appState:tabIndicatorGravity="bottom"
             appState:tabIndicatorHeight="7dp"
+            appState:tabMaxWidth="0dp"
             appState:tabMode="fixed"
             appState:tabPaddingEnd="8dp"
             appState:tabSelectedTextColor="@color/colorBlack"
-            appState:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+            appState:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
             appState:tabTextColor="@color/colorGray">
+
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/activity_main_TAB_popular"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/TAB_popular_label"
+                android:textAlignment="center"
                 android:typeface="serif"
-                appState:fontFamily="@font/cutive_mono"
-                android:text="@string/TAB_popular_label" />
+                appState:fontFamily="@font/cutive_mono" />
+
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/activity_main_TAB_top_rated"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/TAB_top_rated_label"
                 android:typeface="serif"
-                appState:fontFamily="@font/cutive_mono"
-                android:text="@string/TAB_top_rated_label" />
+                appState:fontFamily="@font/cutive_mono" />
         </com.google.android.material.tabs.TabLayout>
 
 

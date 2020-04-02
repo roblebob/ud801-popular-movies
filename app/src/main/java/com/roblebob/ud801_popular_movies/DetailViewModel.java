@@ -23,9 +23,9 @@ public class DetailViewModel extends ViewModel {
         this.movieID = movieID;
     }
 
-    public LiveData< String> getApiKeyLive() { return appDatabase.appStateDao().loadState("api_key"); }
-    public LiveData< Main> getMainLive() { return  mainRepository .getMainLive( this.movieID);   }
-    public LiveData< List< Detail>> getListLive() { return detailRepository .getListLive( this.movieID); }
+    public LiveData< String>        getApiKeyLive() { return appDatabase.appStateDao().loadState("api_key"); }
+    public LiveData< Main>          getMainLive()   { return mainRepository .getMainLive( this.movieID);   }
+    public LiveData< List< Detail>> getListLive()   { return detailRepository .getListLive( this.movieID); }
     public LiveData< Integer> getDetailsPerMovieCountLive(int movieID) { return detailRepository.getDetailsCountPerMovieLive(movieID); }
 
     public void integrate( String apiKey) { detailRepository.integrate( apiKey, this.movieID);}
