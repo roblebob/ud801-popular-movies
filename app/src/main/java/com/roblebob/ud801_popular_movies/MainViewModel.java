@@ -2,7 +2,6 @@ package com.roblebob.ud801_popular_movies;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class MainViewModel extends ViewModel {
         this.apiKeyLive             =  appStateRepo .getApiKeyLive();
         this.mainListByDatabaseLive =  mainRepo     .getListLive();
         this.movieCountLive         =  mainRepo     .getMovieCount();
-        this.detailedMovieCountLive =  detailRepo   .getMovieCount();
+        this.detailedMovieCountLive =  detailRepo   .getMovieCountLive();
 //        final LiveData< List< Main>>  popularListLive  =  mainRepo .getPopularListLive();
 //        final LiveData< List< Main>>  topRatedListLive =  mainRepo .getTopRatedListLive();
 ////        movieListLiveByMediator =  new MediatorLiveData<>() ;

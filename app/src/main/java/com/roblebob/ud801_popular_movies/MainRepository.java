@@ -35,9 +35,8 @@ public class MainRepository  {
     public LiveData< Integer>     getMovieCount()             { return this.appDatabase .mainDao() .loadMainCountLive(); }
 
     public LiveData< Main>        getMainLive(int movieID)    { return this.appDatabase .mainDao() .loadMainLive( movieID); }
-    public void inverseFavorite(int movieID) {
-        AppExecutors.getInstance().diskIO().execute(() -> this.appDatabase.mainDao().inverseFavorite( movieID)); }
-
+    public void inverseFavorite(    int movieID) {  AppExecutors.getInstance().diskIO().execute(() -> this.appDatabase.mainDao().inverseFavorite( movieID)); }
+    public void setMovieIsDetailed( int movieID) {  AppExecutors.getInstance().diskIO().execute(() -> this.appDatabase.mainDao().setMovieIsDetails(movieID)); }
 
     /* *********************************************************************************************
      * Integrates all the basics of all movies accessible from the 'popular' and 'top_rated' orderedbys

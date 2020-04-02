@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorPrimaryLight"
                 android:backgroundTint="@color/colorPrimary"
                 android:minWidth="60dp"
                 appState:layout_constraintBottom_toBottomOf="@+id/activity_main_TOOLBAR_state_disp_PROGRESS_BAR"
@@ -188,11 +188,15 @@
                 android:id="@+id/activity_main_TAB_popular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:typeface="serif"
+                appState:fontFamily="@font/cutive_mono"
                 android:text="@string/TAB_popular_label" />
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/activity_main_TAB_top_rated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:typeface="serif"
+                appState:fontFamily="@font/cutive_mono"
                 android:text="@string/TAB_top_rated_label" />
         </com.google.android.material.tabs.TabLayout>
 

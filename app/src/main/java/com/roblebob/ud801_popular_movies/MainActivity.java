@@ -60,16 +60,17 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
         new AppConnection( getApplicationContext()) .observe( this, new Observer<Boolean>() {
-            //ConnectionMonitor connectionMonitor = new ConnectionMonitor( getApplicationContext());
-            //connectionMonitor.observe( this, new Observer<Boolean>() {
-
-                @Override public void onChanged(Boolean aBoolean) {
+            @Override public void onChanged(Boolean aBoolean) {
                 if (aBoolean) /* available */ {
                     ((ImageView)   findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW))   .setColorFilter( getApplicationContext() .getColor( R.color.colorPrimary));
                     ((ProgressBar) findViewById( R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .setVisibility( View.VISIBLE);
+                    ((CardView)    findViewById( R.id.activitity_main_MAIN_COUNT))                    .setBackgroundColor( getApplicationContext() .getColor( R.color.colorPrimaryLight));
+                    ((TextView)    findViewById( R.id.activitity_main_MAIN_COUNT_label))              .setTextColor( getApplicationContext() .getColor( R.color.colorPrimary));
                 } else /* lost */ {
                     ((ImageView)   findViewById( R.id.activity_main_TOOLBAR_state_disp_IMAGE_VIEW))   .setColorFilter( getApplicationContext() .getColor( R.color.colorGray));
                     ((ProgressBar) findViewById( R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .setVisibility( View.GONE);
+                    ((CardView)    findViewById( R.id.activitity_main_MAIN_COUNT))                    .setBackgroundColor( getApplicationContext() .getColor( R.color.colorGray));
+                    ((TextView)    findViewById( R.id.activitity_main_MAIN_COUNT_label))              .setTextColor( getApplicationContext() .getColor( R.color.colorGray));
                 }
             }
         });

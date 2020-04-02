@@ -55,23 +55,32 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
             mDetailRV.setHasFixedSize(false);
 
 
-            detailViewModel.getApiKeyLive() .observe(this,
-                    new Observer< String>() { @Override public void onChanged( String apiKey) {
-                        //detailViewModel .getApiKeyLive() .removeObserver( this);
-                        detailViewModel.integrate(apiKey);
-                    }});
+            detailViewModel.getApiKeyLive() .observe(this, new Observer< String>() {
+                @Override public void onChanged( String apiKey) {
+                    //detailViewModel .getApiKeyLive() .removeObserver( this);
+                    detailViewModel.integrate(apiKey);
+                }
+            });
 
-            detailViewModel .getMainLive() .observe(this,
-                    new Observer<Main>() { @Override public void onChanged( Main main) {
-                        //detailViewModel .getMainLive() .removeObserver( this);
-                        populateToolbar( main);
-                    }});
+            detailViewModel .getMainLive() .observe(this, new Observer< Main>() {
+                @Override public void onChanged( Main main) {
+                    //detailViewModel .getMainLive() .removeObserver( this);
+                    populateToolbar( main);
+                }
+            });
 
-            detailViewModel .getListLive() .observe(this,
-                    new Observer< List<Detail>>() { @Override public void onChanged( List<Detail> detailList) {
-                        // detailViewModel .getListLive() .removeObserver( this);
-                        mDetailRVAdapter .submitList( detailList);
-                    }});
+            detailViewModel .getListLive() .observe(this, new Observer< List< Detail>>() {
+                @Override public void onChanged( List<Detail> detailList) {
+                    // detailViewModel .getListLive() .removeObserver( this);
+                    mDetailRVAdapter .submitList( detailList);
+                }
+            });
+
+            detailViewModel .getDetailsPerMovieCountLive( movieID) .observe(this, new Observer< Integer>() {
+                @Override public void onChanged( Integer count) {
+                    if (count > 0) detailViewModel.setIsDetailed(movieID);
+                }
+            });
 
         } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID");
     }

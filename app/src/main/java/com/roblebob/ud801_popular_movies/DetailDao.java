@@ -26,4 +26,6 @@ public interface DetailDao {
     @Query(value = "SELECT COUNT( DISTINCT movieID) FROM Detail")
     LiveData< Integer> countMovies();
 
+    @Query(value = "SELECT COUNT(*) FROM Detail WHERE movieID = :movieID")
+    LiveData< Integer> countDetailsPerMovie(int movieID);
 }

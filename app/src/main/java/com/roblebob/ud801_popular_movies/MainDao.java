@@ -36,4 +36,7 @@ public interface MainDao {
 
     @Query(value = "UPDATE Main SET `favorite` = (CASE (SELECT favorite FROM Main WHERE movieID = :movieID) WHEN 0 THEN 1 WHEN 1 THEN 0 END) WHERE movieID = :movieID")
     void inverseFavorite(int movieID);
+
+    @Query(value = "UPDATE Main SET `detailed` = 1 WHERE movieID = :movieID")
+    void setMovieIsDetails(int movieID);
 }
