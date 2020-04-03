@@ -68,6 +68,7 @@ as it is the order it is presented within the __DetailActivity__.
 *(Note, that if 0. and 1. are the same, 1. and 2. are omitted.)*
 Since the __Detail__ s are not needed within the __MainActivity__ they are only downloaded as the user enters the __DetailActivity__
 and only those associated with that particular movie, that is presented.
+The left corner of the poster turns yellow when details are present.
 
 
 &nbsp;&nbsp;
@@ -80,3 +81,6 @@ In trying to familiarize myself with the proper design principles *(e.g.: MVVM, 
 
 Note, that the __DetailActivity__ has access to both, the __Main__s and the __Detail__s.
 This is because its toolbar is showing the content of the __Main__ of that movie, whose __Detail__ s are presented.
+
+
+
