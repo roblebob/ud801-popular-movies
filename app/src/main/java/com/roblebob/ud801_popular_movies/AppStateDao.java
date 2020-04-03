@@ -20,6 +20,10 @@ public interface AppStateDao {
     @Query("SELECT value FROM AppState WHERE `key` = 'api_key'")
     LiveData< String> loadApiKey();
 
+    @Query("SELECT value FROM AppState WHERE `key` = 'last_position'")
+    LiveData< String> loadLastPosition();
+
+
     @Query("UPDATE AppState SET `value` =:order WHERE `key` = 'order'")
     void updateOrder(String order);
 

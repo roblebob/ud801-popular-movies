@@ -16,6 +16,9 @@ public class AppStateRepository {
 
     public LiveData< String> getOrderLive()  { return appDatabase .appStateDao() .loadOrder(); }
     public LiveData< String> getApiKeyLive() { return appDatabase .appStateDao() .loadApiKey(); }
+    public LiveData< String> getLastPosition() { return appDatabase .appStateDao() .loadLastPosition(); }
+
+
 
     public void setOrder(String order) {
         AppExecutors .getInstance() .diskIO() .execute(  () -> {
@@ -34,6 +37,11 @@ public class AppStateRepository {
             } catch (IOException e) {
                 AppExecutors .getInstance() .diskIO() .execute( () -> appDatabase .appStateDao() .insert( new AppState("api_key", null)));
             }
+        });
+    }
+
+    public void setLastPosition(String position) {
+        AppExecutors .getInstance() .diskIO() .execute(  () -> { appDatabase.appStateDao().insert( new AppState("last_position", position));
         });
     }
 }

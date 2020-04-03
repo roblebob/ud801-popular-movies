@@ -5,11 +5,12 @@
     <string name="TOOLBAR_font"></string>
 
 
-    <string-array name="Orderedbys">
+    <string-array name="ORDERs">
         <item>popular</item>
         <item>top_rated</item>
     </string-array>
 
+    <integer name="MainRV_offset_when_return">2</integer>
 
 
 </resources>

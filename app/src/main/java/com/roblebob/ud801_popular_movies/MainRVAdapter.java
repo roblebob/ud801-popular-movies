@@ -77,7 +77,7 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
     ////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////
     /////
-    public interface  ItemClickListener  { void onItemClickListener( int id); }
+    public interface  ItemClickListener  { void onItemClickListener( int position, int movieID); }
     //
     public class  MainRVViewHolder  extends RecyclerView .ViewHolder  implements View .OnClickListener  {
 
@@ -92,14 +92,14 @@ public class MainRVAdapter extends RecyclerView.Adapter< MainRVAdapter.MainRVVie
         }
 
         @Override public void onClick( View v) {
-            mItemClickListener .onItemClickListener(  mainList.get( getAdapterPosition()).getMovieID());
+            mItemClickListener .onItemClickListener( getLayoutPosition(), mainList.get( getLayoutPosition()).getMovieID());
         }
 
         public void bindTo( Main main) {
 
             Picasso .get() .load( main.getPosterURL()) .into(posterIv);
 
-            rankingTv.setText( String .valueOf( getAdapterPosition() + 1));
+            rankingTv.setText( String .valueOf( getLayoutPosition() + 1));
             if (main.isDetailed())  rankingTv.setBackgroundColor( itemView.getContext().getColor( R.color.colorYellow));
             else                    rankingTv.setBackgroundColor( itemView.getContext().getColor( R.color.colorWhite));
         }

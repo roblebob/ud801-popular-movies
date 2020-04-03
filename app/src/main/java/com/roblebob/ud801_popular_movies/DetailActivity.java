@@ -78,11 +78,11 @@ public class DetailActivity extends AppCompatActivity  implements DetailRVAdapte
 
             detailViewModel .getDetailsPerMovieCountLive( movieID) .observe(this, new Observer< Integer>() {
                 @Override public void onChanged( Integer count) {
-                    if (count > 0) detailViewModel.setIsDetailed(movieID);
+                    if (count > 0) detailViewModel.setIsDetailed();
                 }
             });
 
-        } else Log .e(this.getClass().getSimpleName(), "ERROR, invalid movieID");
+        } else Log .e(TAG, "ERROR, invalid movieID");
     }
 
 

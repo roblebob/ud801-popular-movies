@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
                         mainViewModel.setApiKey(v.getText().toString());
                         return false;   //  FALSE -> keyboard display goes into hiding
                     });
-                    if ( ((ProgressBar) findViewById(R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .getVisibility() == View.VISIBLE)
+                    if ( ((ProgressBar) findViewById(R.id.activity_main_TOOLBAR_state_disp_PROGRESS_BAR)) .getVisibility() == View.VISIBLE)  // isConnected : BOOLEAN
                         Toast .makeText( getApplicationContext(), "apiKey rejected!", Toast.LENGTH_LONG).show();
                     else
                         Toast.makeText(  getApplicationContext(), "NO connectivity!!!", Toast.LENGTH_SHORT).show();
@@ -162,6 +162,19 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
                 ((TextView) findViewById( R.id.activitity_main_DETAILED_COUNT_tv))  .setText(  String.valueOf(  detailedMovieCount));
             }
         });
+
+
+
+        mainViewModel .lastPositionLive .observe(this, new Observer< String>() {
+            @Override public void onChanged(String s) {
+                if (s != null) {
+                    int position = Integer.parseInt(s);
+                    int offset = getApplicationContext().getResources().getInteger(R.integer.MainRV_offset_when_return);
+                    mMainRV.scrollToPosition( position + offset);
+                    Log.e(TAG, "---LastPosition--->\t" + position );
+                }
+            }
+        });
     }
 
 
@@ -170,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
         final MainViewModel mainViewModel = new ViewModelProvider(this, this.mainViewModelFactory) .get( MainViewModel.class);
 
         tabLayout .removeOnTabSelectedListener(onTabSelectedListener);
-        tabLayout.removeAllTabs();
+        tabLayout .removeAllTabs();
         tabLayout .addTab( tabLayout.newTab().setText( R.string.TAB_popular_label  ), 0, order.equals(getString( R.string.TAB_popular_label)));
         tabLayout .addTab( tabLayout.newTab().setText( R.string.TAB_top_rated_label), 1, order.equals(getString( R.string.TAB_top_rated_label)));
         tabLayout .addOnTabSelectedListener( onTabSelectedListener);
@@ -178,7 +191,10 @@ public class MainActivity extends AppCompatActivity implements MainRVAdapter.Ite
 
 
 
-    @Override public void onItemClickListener( int movieID) {
+    @Override public void onItemClickListener( int position, int movieID) {
+
+        final MainViewModel mainViewModel = new ViewModelProvider(this, this.mainViewModelFactory) .get( MainViewModel.class);
+        mainViewModel.setLastPosition(String.valueOf(position));
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent .putExtra( DetailActivity.INTENT_EXTRA_movieID, movieID);
         startActivity( intent);
